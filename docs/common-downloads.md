@@ -8,8 +8,11 @@
 - [Putty SSH 客户端](https://www.chiark.greenend.org.uk/~sgtatham/putty/)
 - [MobaSSH 客户端](https://mobassh.mobatek.net/download.html)
 - [FileZilla](https://filezilla-project.org/download.php)
-- [Windows 上的 X 服务器 VcXsrv](https://sourceforge.net/projects/vcxsrv/)
 - [MSYS2](https://www.msys2.org/)
+- [Windows 上的 X 服务器 VcXsrv](https://sourceforge.net/projects/vcxsrv/)
+
+### 编程
+
 - [Meld](http://meldmerge.org/)，可视化的文件比较与合并工具，比较文件、目录、版本控制的项目。
 - [Node.js](https://nodejs.org/en/download/)
 - [Python](https://www.python.org/downloads/)
