@@ -12,28 +12,31 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.45/vue.global.min.js"></script>
 </head>
 <body>
-<section id="app">
+<section id="app" style="margin: 16px 12px 0;">
     <form @submit.prevent="doQuery" ref="dictForm">
-        <div><label>输入单词(<u>W</u>)
-            <input accesskey="w" autocomplete="words" autofocus placeholder="输入查询的单词" required
-                   style="margin-left: 8px;" v-model.trim="q"></label>
+        <div style="display: flex;justify-content: center;align-items: center;flex-wrap: wrap;">
+            <label style="display: flex;align-items: center;">
+                <div style="white-space: nowrap;">输入单词(<u>W</u>)</div>
+                <input accesskey="w" autocomplete="words" autofocus placeholder="输入查询的单词" required
+                       style="margin: 0 8px;max-width: 180px;" v-model.trim="q">
+            </label>
 
-            <button accesskey="q" ref="submitBtn" style="margin-left: 8px;" type="submit">查询(<u>Q</u>)</button>
+            <button accesskey="q" ref="submitBtn" type="submit" style="flex-shrink: 0;">查询(<u>Q</u>)</button>
         </div>
 
-        <div>
-            <label>
-                选择网站(<u>S</u>)
-                <label v-for="(v, k) in links">
-                    <input :title="k" :value="k" accesskey="s" name="dictSite" required
-                           type="radio" v-model="currentQueryKey">
+        <div style="display: flex;flex-wrap: wrap;justify-content: center;">
+            <div style="white-space: nowrap;margin-right: 8px;">选择网站(<u>S</u>)</div>
+            <div style="display: flex;flex-wrap: wrap;">
+                <label style="margin-right: 8px;white-space: nowrap;" v-for="(v, k) in links">
+                    <input :title="k" :value="k" accesskey="s" name="dictSite" required type="radio"
+                           v-model="currentQueryKey">
                     {{ k }}
                 </label>
-                <!--<select :size="Object.keys(links).length" accesskey="s" required style="margin-left: 8px;"
-                        v-model="currentQueryKey">
-                    <option :value="k" v-for="(v, k) in links">{{ k }}</option>
-                </select>-->
-            </label>
+            </div>
+            <!--<select :size="Object.keys(links).length" accesskey="s" required style="margin-left: 8px;"
+                    v-model="currentQueryKey">
+                <option :value="k" v-for="(v, k) in links">{{ k }}</option>
+            </select>-->
         </div>
 
         <a :href="currentQuery" :target="currentQueryKey" hidden ref="queryLink" referrerpolicy="no-referrer"></a>
