@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>weather</title>
     <link href="https://static.hdslb.com/images/akari.jpg" rel="icon">
-    <link href="https://cdn.jsdelivr.net/npm/normalize.css@8.0/normalize.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" rel="stylesheet">
     <style>
         .weather-select-zone {
             font-size: large;
@@ -435,7 +435,7 @@
                     <div>省份: {{weather.data.real.station.province}}</div>
                     <div>城市: {{weather.data.real.station.city}}</div>
                     <div>来源: <a target="weather-source"
-                                :href="'http://www.nmc.cn'+weather.data.real.station.url">中央气象台</a>
+                                  :href="'http://www.nmc.cn'+weather.data.real.station.url">中央气象台</a>
                     </div>
                     <div>当前温度: {{weather.data.real.weather.temperature}}℃</div>
                     <div>当前气压: {{weather.data.real.weather.airpressure}}hPa</div>

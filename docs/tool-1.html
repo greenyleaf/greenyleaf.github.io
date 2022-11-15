@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta content="webkit" name="renderer"/>
+    <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+    <meta content="width=device-width,initial-scale=1" name="viewport"/>
+    <meta content="工具页面-词典" name="description"/>
+    <title>工具页面-词典</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" rel="stylesheet"
+          type="text/css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.45/vue.global.min.js"></script>
+</head>
+<body>
+<section id="app">
+    <form @submit.prevent="doQuery" ref="dictForm">
+        <div><label>输入单词(<u>W</u>)
+            <input accesskey="w" autocomplete="words" autofocus placeholder="输入查询的单词" required
+                   style="margin-left: 8px;" v-model.trim="q"></label>
+
+            <button accesskey="q" ref="submitBtn" style="margin-left: 8px;" type="submit">查询(<u>Q</u>)</button>
+        </div>
+
+        <div>
+            <label>
+                选择网站(<u>S</u>)
+                <select :size="Object.keys(links).length" accesskey="s" required style="margin-left: 8px;"
+                        v-model="currentQueryKey">
+                    <option :value="k" v-for="(v, k) in links">{{ k }}</option>
+                </select></label>
+        </div>
+
+        <a :href="currentQuery" :target="currentQueryKey" hidden ref="queryLink" referrerpolicy="no-referrer"></a>
+    </form>
+</section>
+
+<script>
+    Vue.createApp({
+        data: function () {
+            return {
+                links: {
+                    '有道': query => `//dict.youdao.com/result?word=${query}&lang=en`,
+                    '金山词霸': query => `//www.iciba.com/word?w=${query}`,
+                    '剑桥': query => `//dictionary.cambridge.org/dictionary/english-chinese-simplified/${query}`,
+                    '牛津': query => `//www.oxfordlearnersdictionaries.com/definition/english/${query}`,
+                    '朗文': query => `//www.ldoceonline.com/dictionary/${query}`,
+                },
+                currentQueryKey: undefined,
+                q: undefined,
+            };
+        },
+        computed: {
+            currentQuery() {
+                return this.currentQueryKey && this.q && this.links[this.currentQueryKey](this.q);
+            },
+        },
+        created() {
+            this.currentQueryKey = Object.keys(this.links)[0];
+        },
+        methods: {
+            doQuery() {
+                this.$refs.queryLink.click();
+                // window.open(this.currentQuery, this.currentQueryKey);
+            }
+        }
+    }).mount('#app');
+</script>
+</body>
+</html>
