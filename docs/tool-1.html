@@ -24,10 +24,16 @@
         <div>
             <label>
                 选择网站(<u>S</u>)
-                <select :size="Object.keys(links).length" accesskey="s" required style="margin-left: 8px;"
+                <label v-for="(v, k) in links">
+                    <input :title="k" :value="k" accesskey="s" name="dictSite" required
+                           type="radio" v-model="currentQueryKey">
+                    {{ k }}
+                </label>
+                <!--<select :size="Object.keys(links).length" accesskey="s" required style="margin-left: 8px;"
                         v-model="currentQueryKey">
                     <option :value="k" v-for="(v, k) in links">{{ k }}</option>
-                </select></label>
+                </select>-->
+            </label>
         </div>
 
         <a :href="currentQuery" :target="currentQueryKey" hidden ref="queryLink" referrerpolicy="no-referrer"></a>
