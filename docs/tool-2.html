@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta content="webkit" name="renderer"/>
+    <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+    <meta content="width=device-width,initial-scale=1" name="viewport"/>
+    <meta content="搜索引擎整合" name="description"/>
+    <title>搜索引擎</title>
+
+    <link href="https://img.icons8.com/clouds/512/home.png" rel="icon">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" rel="stylesheet"
+          type="text/css">
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+
+    </style>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.45/vue.global.min.js"></script>
+</head>
+<body>
+<div id="app" v-cloak>
+    <form @submit.prevent="doQuery" action="javascript:">
+        <label>
+            <span>查询内容</span>
+            <input autocomplete="web-search" autofocus placeholder="输入查询内容" required v-model.trim="q"></label>
+        <button>查询</button>
+
+        <div>
+            <span>站点</span>
+
+            <label v-for="(v,k) in sites">
+                <input :value="k" name="siteKey" type="radio" v-model="currentSiteKey">
+                {{ k }}
+            </label>
+        </div>
+
+        <div>
+            <label>
+                <input type="checkbox" v-model="withSameTab">
+                <span>在相同标签页打开</span>
+            </label>
+        </div>
+
+        <a :href="currentQuery" hidden ref="queryLink" referrerpolicy="no-referrer"
+           :target="withSameTab ? 'web-search' : currentSiteKey"></a>
+    </form>
+</div>
+
+<script>
+    Vue.createApp({
+        data() {
+            return {
+                sites: {
+                    '百度': query => `https://www.baidu.com/s?wd=${query}`,
+                    '百度+知乎': query => `https://www.baidu.com/s?wd=site%3Azhihu.com+${query}`,
+                    '人民日报': query => `http://search.people.cn/s/?keyword=${query}`,
+                    '搜狗': query => `http://sogou.com/web?query=${query}`,
+                    '必应': query => `https://cn.bing.com/search?q=${query}&ensearch=1`,
+                    '知网': query => `http://search.cnki.com.cn/Search/Result?content=${query}`,
+                    '央视视频': query => `https://search.cctv.com/search.php?qtext=${query}&type=video`,
+                    '央视网页': query => `https://search.cctv.com/search.php?qtext=${query}&type=web`,
+                    '哔哩哔哩': query => `https://search.bilibili.com/all?keyword=${query}`,
+                    '淘宝': query => `https://www.taobao.com/list/product/${query}.htm`,
+                    '百度+豆瓣': query => `https://www.baidu.com/s?wd=site%3Adouban.com+${query}`,
+                    '豆瓣': query => `https://www.douban.com/search?q=${query}`,
+                    '豆瓣电影': query => `https://search.douban.com/movie/subject_search?search_text=${query}`,
+                    '豆瓣音乐': query => `https://search.douban.com/music/subject_search?search_text=${query}`,
+                    'DuckDuckGo': query => `https://duckduckgo.com/?q=${query}`,
+                    '栈溢出': query => `https://stackoverflow.com/search?q=${query}`,
+                    '百度+博客园': query => `https://www.baidu.com/s?wd=site%3Acnblogs.com+${query}`,
+                    'MDN': query => `https://developer.mozilla.org/en-US/search?q=${query}`,
+                },
+                withSameTab: false,
+                currentSiteKey: undefined,
+                q: undefined,
+            };
+        },
+        computed: {
+            currentQuery() {
+                return this.currentSiteKey && this.q && this.sites[this.currentSiteKey](encodeURIComponent(this.q));
+            },
+        },
+        created() {
+            this.currentSiteKey = Object.keys(this.sites)[0];
+        },
+        mounted() {
+            window.addEventListener('visibilitychange', () => {
+                sessionStorage.setItem('ts', new Date().toJSON());
+                sessionStorage.setItem('q', this.q);
+            });
+
+            this.q = sessionStorage.getItem('q') || '';
+        },
+        methods: {
+            doQuery() {
+                this.$refs.queryLink.click();
+                // window.open(this.currentQuery, this.currentQueryKey);
+            }
+        }
+    }).mount('#app');
+</script>
+
+</body>
+</html>
