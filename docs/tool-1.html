@@ -105,15 +105,15 @@
             <div class="dict-sites-line">
                 <div class="dict-sites-label-text">选择网站(<u>S</u>)</div>
                 <div class="dict-sites-wrapper">
-                    <label class="dict-site-item" v-for="(v, k) in links">
+                    <label class="dict-site-item" v-for="(v, k) in sites">
                         <input :title="k" :value="k" accesskey="s" name="dictSite" required type="radio"
-                               v-model="currentQueryKey">
+                               v-model="currentSiteKey">
                         {{ k }}
                     </label>
                 </div>
-                <!--<select :size="Object.keys(links).length" accesskey="s" required style="margin-left: 8px;"
-                        v-model="currentQueryKey">
-                    <option :value="k" v-for="(v, k) in links">{{ k }}</option>
+                <!--<select :size="Object.keys(sites).length" accesskey="s" required style="margin-left: 8px;"
+                        v-model="currentSiteKey">
+                    <option :value="k" v-for="(v, k) in sites">{{ k }}</option>
                 </select>-->
             </div>
 
@@ -124,7 +124,7 @@
                 </label>
             </div>
 
-            <a :href="currentQuery" :target="withSameTab ? 'dict-search' : currentQueryKey" hidden ref="queryLink"
+            <a :href="currentQueryLink" :target="withSameTab ? 'dict-search' : currentSiteKey" hidden ref="queryLink"
                referrerpolicy="no-referrer"></a>
         </form>
     </template>
@@ -135,7 +135,7 @@
                 template: document.getElementById('main'),
                 data() {
                     return {
-                        links: {
+                        sites: {
                             '有道': query => `//youdao.com/result?word=${query}&lang=en`,
                             '金山词霸': query => `//www.iciba.com/word?w=${query}`,
                             '剑桥': query => `//dictionary.cambridge.org/dictionary/english-chinese-simplified/${query}`,
@@ -143,17 +143,17 @@
                             '朗文': query => `//www.ldoceonline.com/dictionary/${query}`,
                         },
                         withSameTab: false,
-                        currentQueryKey: undefined,
+                        currentSiteKey: undefined,
                         q: undefined,
                     };
                 },
                 computed: {
-                    currentQuery() {
-                        return this.currentQueryKey && this.q && this.links[this.currentQueryKey](encodeURIComponent(this.q));
+                    currentQueryLink() {
+                        return this.currentSiteKey && this.q && this.sites[this.currentSiteKey](encodeURIComponent(this.q));
                     },
                 },
                 created() {
-                    this.currentQueryKey = Object.keys(this.links)[0];
+                    this.currentSiteKey = Object.keys(this.sites)[0];
                 },
                 mounted() {
                     window.addEventListener('visibilitychange', () => {
@@ -173,7 +173,7 @@
                 methods: {
                     doQuery() {
                         this.$refs.queryLink.click();
-                        // window.open(this.currentQuery, this.currentQueryKey);
+                        // window.open(this.currentQueryLink, this.currentSiteKey);
                     }
                 }
             }).mount('#app');

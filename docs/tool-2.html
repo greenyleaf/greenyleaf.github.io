@@ -43,7 +43,7 @@
                 </label>
             </div>
 
-            <a :href="currentQuery" :target="withSameTab ? 'web-search' : currentSiteKey" hidden ref="queryLink"
+            <a :href="currentQueryLink" :target="withSameTab ? 'web-search' : currentSiteKey" hidden ref="queryLink"
                referrerpolicy="no-referrer"></a>
         </form>
     </template>
@@ -79,7 +79,7 @@
                 };
             },
             computed: {
-                currentQuery() {
+                currentQueryLink() {
                     return this.currentSiteKey && this.q && this.sites[this.currentSiteKey](encodeURIComponent(this.q));
                 },
             },
@@ -104,7 +104,7 @@
             methods: {
                 doQuery() {
                     this.$refs.queryLink.click();
-                    // window.open(this.currentQuery, this.currentQueryKey);
+                    // window.open(this.currentQueryLink, this.currentQueryKey);
                 }
             }
         }).mount('#app');
