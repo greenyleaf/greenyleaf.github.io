@@ -2,7 +2,8 @@
 
 一些常用软件的下载页面。
 
-- [Firefox](https://www.mozilla.org/zh-CN/firefox/new/); [link 2](https://www.mozilla.org/en-US/firefox/all/#product-desktop-release)
+- [Firefox](https://www.mozilla.org/zh-CN/firefox/new/)
+  ; [link 2](https://www.mozilla.org/en-US/firefox/all/#product-desktop-release)
 - [Google Chrome 离线安装文件](https://www.google.cn/intl/zh-CN/chrome/?standalone=1)
 - [7-Zip](https://www.7-zip.org/download.html)
 - [LibreOffice](https://www.libreoffice.org/download/download-libreoffice/)
@@ -24,11 +25,15 @@
 - [Adoptium OpenJDK](https://adoptopenjdk.net/)
 - [Amazon Corretto OpenJDK](https://aws.amazon.com/cn/corretto/?filtered-posts.sort-by=item.additionalFields.createdDate&filtered-posts.sort-order=desc)
 - [JavaFX](https://gluonhq.com/products/javafx/)
+- [Apache Maven](https://maven.apache.org/download.cgi)
+- [nginx](http://nginx.org/en/download.html)
+- [WhiteHorse nginx](http://nginx-win.ecsds.eu/download/) 用于 Windows 版本，包含了 rtmp 直播模块
 
 ### 媒体播放器
 
 - [AIMP](https://www.aimp.ru/?do=download)
-- [VLC Media Player](https://www.videolan.org/vlc/); [VLC for Windows](https://www.videolan.org/vlc/download-windows.html)
+- [VLC Media Player](https://www.videolan.org/vlc/)
+  ; [VLC for Windows](https://www.videolan.org/vlc/download-windows.html)
 - [foobar2000](https://www.foobar2000.org/download)
 
 ### 乐谱
