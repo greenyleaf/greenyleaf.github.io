@@ -162,6 +162,13 @@
                     });
 
                     this.q = sessionStorage.getItem('q');
+
+                    {
+                        const d = document.querySelector('[autofocus]');
+                        this.$nextTick(() => {
+                            d && d.focus();
+                        });
+                    }
                 },
                 methods: {
                     doQuery() {
