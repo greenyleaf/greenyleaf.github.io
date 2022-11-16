@@ -2,6 +2,7 @@
 
 一些常用软件的下载页面。
 
+- [Firefox](https://www.mozilla.org/zh-CN/firefox/new/); [link 2](https://www.mozilla.org/en-US/firefox/all/#product-desktop-release)
 - [Google Chrome 离线安装文件](https://www.google.cn/intl/zh-CN/chrome/?standalone=1)
 - [7-Zip](https://www.7-zip.org/download.html)
 - [LibreOffice](https://www.libreoffice.org/download/download-libreoffice/)
@@ -27,7 +28,7 @@
 ### 媒体播放器
 
 - [AIMP](https://www.aimp.ru/?do=download)
-- [VLC Media Player](https://www.videolan.org/vlc/) [VLC for Windows](https://www.videolan.org/vlc/download-windows.html)
+- [VLC Media Player](https://www.videolan.org/vlc/); [VLC for Windows](https://www.videolan.org/vlc/download-windows.html)
 - [foobar2000](https://www.foobar2000.org/download)
 
 ### 乐谱
