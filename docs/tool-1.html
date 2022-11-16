@@ -13,18 +13,18 @@
 </head>
 <body>
 <section id="app" style="margin: 16px 12px 0;">
-    <form @submit.prevent="doQuery" ref="dictForm">
-        <div style="display: flex;justify-content: center;align-items: center;flex-wrap: wrap;">
-            <label style="display: flex;align-items: center;">
-                <div style="white-space: nowrap;">输入单词(<u>W</u>)</div>
+    <form @submit.prevent="doQuery" ref="dictForm" style="max-width: 420px;margin: 0 auto;">
+        <div style="display: flex;justify-content: center;flex-wrap: wrap;margin-bottom: 8px;">
+            <label style="display: flex;align-items: center;flex: 1 1;">
+                <div style="white-space: nowrap;">输入(<u>W</u>)</div>
                 <input accesskey="w" autocomplete="words" autofocus placeholder="输入查询的单词" required
-                       style="margin: 0 8px;max-width: 180px;" v-model.trim="q">
+                       style="margin: 0 8px;flex: 1 1;" v-model.trim="q">
             </label>
 
-            <button accesskey="q" ref="submitBtn" type="submit" style="flex-shrink: 0;">查询(<u>Q</u>)</button>
+            <button accesskey="q" ref="submitBtn" style="flex-shrink: 0;" type="submit">查询(<u>Q</u>)</button>
         </div>
 
-        <div style="display: flex;flex-wrap: wrap;justify-content: center;">
+        <div style="display: flex;flex-wrap: wrap;justify-content: flex-start;">
             <div style="white-space: nowrap;margin-right: 8px;">选择网站(<u>S</u>)</div>
             <div style="display: flex;flex-wrap: wrap;">
                 <label style="margin-right: 8px;white-space: nowrap;" v-for="(v, k) in links">
