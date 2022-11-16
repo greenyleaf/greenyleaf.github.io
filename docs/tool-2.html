@@ -25,12 +25,12 @@
 
             <div style="display: flex;align-items: center;">
                 <label style="flex: 1 1;display: flex;align-items: center;">
-                    <span style="white-space: nowrap;margin-right: 8px;">查询内容</span>
-                    <input autocomplete="web-search" autofocus placeholder="输入查询内容" required
+                    <span style="white-space: nowrap;margin-right: 8px;">查询内容(<u>W</u>)</span>
+                    <input autocomplete="web-search" autofocus placeholder="输入查询内容" required accesskey="w"
                            style="flex: 1 1;margin-right: 8px;" v-model.trim="q">
                 </label>
 
-                <button>查询</button>
+                <button accesskey="q">查询(<u>Q</u>)</button>
             </div>
 
             <div style="line-height: 1.45em;">
@@ -77,6 +77,7 @@
                             '豆瓣': query => `https://www.douban.com/search?q=${query}`,
                             '豆瓣电影': query => `https://search.douban.com/movie/subject_search?search_text=${query}`,
                             '豆瓣音乐': query => `https://search.douban.com/music/subject_search?search_text=${query}`,
+                            '豆瓣同城': query => `https://www.douban.com/event/search?search_text=${query}`,
                             'DuckDuckGo': query => `https://duckduckgo.com/?q=${query}`,
                             '栈溢出': query => `https://stackoverflow.com/search?q=${query}`,
                             '百度+博客园': query => `https://www.baidu.com/s?wd=site%3Acnblogs.com+${query}`,
