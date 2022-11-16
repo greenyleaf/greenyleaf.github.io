@@ -21,23 +21,31 @@
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.45/vue.global.min.js"></script>
 
     <template id="main">
-        <form @submit.prevent="doQuery" action="javascript:">
-            <label>
-                <span>查询内容</span>
-                <input autocomplete="web-search" autofocus placeholder="输入查询内容" required v-model.trim="q"></label>
-            <button>查询</button>
+        <form @submit.prevent="doQuery" action="javascript:" style="margin: 0 auto;max-width: 420px;">
 
-            <div>
-                <span>站点</span>
-
-                <label v-for="(v,k) in sites">
-                    <input :value="k" name="siteKey" type="radio" v-model="currentSiteKey">
-                    {{ k }}
+            <div style="display: flex;align-items: center;">
+                <label style="flex: 1 1;display: flex;align-items: center;">
+                    <span style="white-space: nowrap;margin-right: 8px;">查询内容</span>
+                    <input autocomplete="web-search" autofocus placeholder="输入查询内容" required
+                           style="flex: 1 1;margin-right: 8px;" v-model.trim="q">
                 </label>
+
+                <button>查询</button>
             </div>
 
-            <div style="display: flex;">
-                <label style="align-self: flex-end;">
+            <div style="line-height: 1.45em;">
+                <span style="margin-right: 8px;">站点</span>
+
+                <div style="display: flex;flex-wrap: wrap;">
+                    <label v-for="(v,k) in sites" style="margin-right: 8px;">
+                        <input :value="k" name="siteKey" type="radio" v-model="currentSiteKey">
+                        {{ k }}
+                    </label>
+                </div>
+            </div>
+
+            <div style="display: flex;justify-content: flex-end;font-size: smaller;">
+                <label>
                     <input type="checkbox" v-model="withSameTab">
                     <span>在相同标签页打开</span>
                 </label>
@@ -97,8 +105,8 @@
 
                     {
                         const d = document.querySelector('[autofocus]');
-                        this.$nextTick(() => {
-                            d && d.focus();
+                        d && this.$nextTick(() => {
+                            d.focus();
                         });
                     }
                 },

@@ -165,8 +165,8 @@
 
                     {
                         const d = document.querySelector('[autofocus]');
-                        this.$nextTick(() => {
-                            d && d.focus();
+                        d && this.$nextTick(() => {
+                            d.focus();
                         });
                     }
                 },
