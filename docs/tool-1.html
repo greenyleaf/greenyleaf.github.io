@@ -7,27 +7,85 @@
     <meta content="width=device-width,initial-scale=1" name="viewport"/>
     <meta content="工具页面-词典" name="description"/>
     <title>工具页面-词典</title>
+    <style>
+        .container {
+            margin: 16px 12px 0;
+        }
+
+        .dict-form {
+            max-width: 420px;
+            margin: 0 auto;
+        }
+
+        .dict-input-line {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 8px;
+        }
+
+        .dict-input-box {
+            display: flex;
+            align-items: center;
+            flex: 1 1;
+        }
+
+        .dict-input-label-text {
+            white-space: nowrap;
+        }
+
+        .dict-input-field {
+            margin: 0 8px;
+            flex: 1 1;
+        }
+
+        .dict-query-button {
+            flex-shrink: 0;
+        }
+
+        .dict-sites-line {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+        }
+
+        .dict-sites-label-text {
+            white-space: nowrap;
+            margin-right: 8px;
+        }
+
+        .dict-sites-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .dict-site-item {
+            margin-right: 8px;
+            white-space: nowrap;
+        }
+    </style>
+
     <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" rel="stylesheet"
           type="text/css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.45/vue.global.min.js"></script>
 </head>
 <body>
-<section id="app" style="margin: 16px 12px 0;">
-    <form @submit.prevent="doQuery" ref="dictForm" style="max-width: 420px;margin: 0 auto;">
-        <div style="display: flex;justify-content: center;flex-wrap: wrap;margin-bottom: 8px;">
-            <label style="display: flex;align-items: center;flex: 1 1;">
-                <div style="white-space: nowrap;">输入(<u>W</u>)</div>
+<section id="app" class="container">
+    <form @submit.prevent="doQuery" ref="dictForm" class="dict-form">
+        <div class="dict-input-line">
+            <label class="dict-input-box">
+                <div class="dict-input-label-text">输入(<u>W</u>)</div>
                 <input accesskey="w" autocomplete="words" autofocus placeholder="输入查询的单词" required
-                       style="margin: 0 8px;flex: 1 1;" v-model.trim="q">
+                       class="dict-input-field" v-model.trim="q">
             </label>
 
-            <button accesskey="q" ref="submitBtn" style="flex-shrink: 0;" type="submit">查询(<u>Q</u>)</button>
+            <button accesskey="q" ref="submitBtn" class="dict-query-button" type="submit">查询(<u>Q</u>)</button>
         </div>
 
-        <div style="display: flex;flex-wrap: wrap;justify-content: flex-start;">
-            <div style="white-space: nowrap;margin-right: 8px;">选择网站(<u>S</u>)</div>
-            <div style="display: flex;flex-wrap: wrap;">
-                <label style="margin-right: 8px;white-space: nowrap;" v-for="(v, k) in links">
+        <div class="dict-sites-line">
+            <div class="dict-sites-label-text">选择网站(<u>S</u>)</div>
+            <div class="dict-sites-wrapper">
+                <label class="dict-site-item" v-for="(v, k) in links">
                     <input :title="k" :value="k" accesskey="s" name="dictSite" required type="radio"
                            v-model="currentQueryKey">
                     {{ k }}
@@ -39,7 +97,15 @@
             </select>-->
         </div>
 
-        <a :href="currentQuery" :target="currentQueryKey" hidden ref="queryLink" referrerpolicy="no-referrer"></a>
+        <div style="margin-top: 16px;display: flex;justify-content: flex-end;font-size: smaller;">
+            <label>
+                <input type="checkbox" v-model="withSameTab">
+                在相同标签页打开
+            </label>
+        </div>
+
+        <a :href="currentQuery" :target="withSameTab ? 'dict' : currentQueryKey" hidden ref="queryLink"
+           referrerpolicy="no-referrer"></a>
     </form>
 </section>
 
@@ -54,6 +120,7 @@
                     '牛津': query => `//www.oxfordlearnersdictionaries.com/definition/english/${query}`,
                     '朗文': query => `//www.ldoceonline.com/dictionary/${query}`,
                 },
+                withSameTab: false,
                 currentQueryKey: undefined,
                 q: undefined,
             };
