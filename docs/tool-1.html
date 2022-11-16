@@ -91,7 +91,7 @@
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.45/vue.global.min.js"></script>
 
     <template id="main">
-        <form @submit.prevent="doQuery" action="javascript:" class="dict-form" ref="dictForm">
+        <form @submit.prevent="doQuery" action="javascript:" class="dict-form">
             <div class="dict-input-line">
                 <label class="dict-input-box">
                     <span class="dict-input-label-text">输入(<u>W</u>)</span>
@@ -99,7 +99,7 @@
                            placeholder="输入查询的单词" required v-model.trim="q">
                 </label>
 
-                <button accesskey="q" class="dict-query-button" ref="submitBtn" type="submit">查询(<u>Q</u>)</button>
+                <button accesskey="q" class="dict-query-button" type="submit">查询(<u>Q</u>)</button>
             </div>
 
             <div class="dict-sites-line">
