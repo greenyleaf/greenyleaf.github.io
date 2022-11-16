@@ -23,21 +23,21 @@
     <template id="main">
         <form @submit.prevent="doQuery" action="javascript:" style="margin: 0 auto;max-width: 420px;">
 
-            <div style="display: flex;align-items: center;">
+            <div style="display: flex;align-items: center;justify-content: center;">
                 <label style="flex: 1 1;display: flex;align-items: center;">
                     <span style="white-space: nowrap;margin-right: 8px;">查询内容(<u>W</u>)</span>
-                    <input autocomplete="web-search" autofocus placeholder="输入查询内容" required accesskey="w"
+                    <input accesskey="w" autocomplete="web-search" autofocus placeholder="输入查询内容" required
                            style="flex: 1 1;margin-right: 8px;" v-model.trim="q">
                 </label>
 
-                <button accesskey="q">查询(<u>Q</u>)</button>
+                <button style="white-space: nowrap;" accesskey="q">查询(<u>Q</u>)</button>
             </div>
 
-            <div style="line-height: 1.45em;">
+            <div style="margin-top: 16px;line-height: 1.45em;">
                 <span style="margin-right: 8px;">站点</span>
 
                 <div style="display: flex;flex-wrap: wrap;">
-                    <label v-for="(v,k) in sites" style="margin-right: 8px;">
+                    <label style="margin-right: 8px;" v-for="(v,k) in sites">
                         <input :value="k" name="siteKey" type="radio" v-model="currentSiteKey">
                         {{ k }}
                     </label>
@@ -78,6 +78,7 @@
                             '豆瓣电影': query => `https://search.douban.com/movie/subject_search?search_text=${query}`,
                             '豆瓣音乐': query => `https://search.douban.com/music/subject_search?search_text=${query}`,
                             '豆瓣同城': query => `https://www.douban.com/event/search?search_text=${query}`,
+                            '1905电影网': query => `https://www.1905.com/search/?q=${query}`,
                             'DuckDuckGo': query => `https://duckduckgo.com/?q=${query}`,
                             '栈溢出': query => `https://stackoverflow.com/search?q=${query}`,
                             '百度+博客园': query => `https://www.baidu.com/s?wd=site%3Acnblogs.com+${query}`,
@@ -123,7 +124,7 @@
     </script>
 </head>
 <body>
-<div id="app" v-cloak></div>
+<div id="app" style="margin: 16px 12px 0;" v-cloak></div>
 
 </body>
 </html>
