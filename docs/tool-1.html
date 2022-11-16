@@ -161,7 +161,7 @@
                         sessionStorage.setItem('q', this.q);
                     });
 
-                    this.q = sessionStorage.getItem('q');
+                    this.q = sessionStorage.getItem('q') || '';
 
                     {
                         const d = document.querySelector('[autofocus]');
