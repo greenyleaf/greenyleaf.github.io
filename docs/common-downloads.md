@@ -3,7 +3,7 @@
 一些常用软件的下载页面。
 
 - [Firefox](https://www.mozilla.org/zh-CN/firefox/new/)
-  ; [link 2](https://www.mozilla.org/en-US/firefox/all/#product-desktop-release)
+  ; [离线版](https://www.mozilla.org/en-US/firefox/all/#product-desktop-release)
 - [Google Chrome 离线安装文件](https://www.google.cn/intl/zh-CN/chrome/?standalone=1)
 - [7-Zip](https://www.7-zip.org/download.html)
 - [LibreOffice](https://www.libreoffice.org/download/download-libreoffice/)
