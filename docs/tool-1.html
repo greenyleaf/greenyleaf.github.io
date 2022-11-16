@@ -98,9 +98,9 @@
         </div>
 
         <div style="margin-top: 16px;display: flex;justify-content: flex-end;font-size: smaller;">
-            <label>
+            <label style="display: flex;align-items: center;">
                 <input type="checkbox" v-model="withSameTab">
-                在相同标签页打开
+                <span style="line-height: 1em;margin-left: 4px;">在相同标签页打开</span>
             </label>
         </div>
 
@@ -111,7 +111,7 @@
 
 <script>
     Vue.createApp({
-        data: function () {
+        data() {
             return {
                 links: {
                     '有道': query => `//dict.youdao.com/result?word=${query}&lang=en`,
@@ -132,6 +132,11 @@
         },
         created() {
             this.currentQueryKey = Object.keys(this.links)[0];
+        },
+        mounted() {
+            window.addEventListener('unload', () => {
+                localStorage.setItem('ts', new Date().toJSON());
+            });
         },
         methods: {
             doQuery() {
