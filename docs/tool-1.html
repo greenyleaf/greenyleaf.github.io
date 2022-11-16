@@ -164,7 +164,7 @@
                     this.q = sessionStorage.getItem('q') || '';
 
                     {
-                        const d = document.querySelector('[autofocus]');
+                        const d = this.$el.querySelector('[autofocus]');
                         d && this.$nextTick(() => {
                             d.focus();
                         });
