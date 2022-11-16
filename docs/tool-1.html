@@ -21,7 +21,7 @@
             display: flex;
             justify-content: center;
             flex-wrap: wrap;
-            margin-bottom: 8px;
+            margin-bottom: 16px;
         }
 
         .dict-input-box {
@@ -30,12 +30,13 @@
             flex: 1 1;
         }
 
-        .dict-input-label-text {
+        .dict-input-label-text, .dict-sites-label-text {
             white-space: nowrap;
+            margin-right: 8px;
         }
 
         .dict-input-field {
-            margin: 0 8px;
+            margin-right: 8px;
             flex: 1 1;
         }
 
@@ -47,11 +48,7 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: flex-start;
-        }
-
-        .dict-sites-label-text {
-            white-space: nowrap;
-            margin-right: 8px;
+            line-height: 1.45em;
         }
 
         .dict-sites-wrapper {
@@ -62,6 +59,24 @@
         .dict-site-item {
             margin-right: 8px;
             white-space: nowrap;
+        }
+
+        .option-line {
+            margin-top: 24px;
+            display: flex;
+            justify-content: flex-end;
+            font-size: smaller;
+        }
+
+        .option-item {
+            display: flex;
+            align-items: center;
+            align-content: center;
+        }
+
+        .option-item-label-text {
+            line-height: 1em;
+            margin-left: 4px;
         }
     </style>
 
@@ -97,10 +112,10 @@
             </select>-->
         </div>
 
-        <div style="margin-top: 16px;display: flex;justify-content: flex-end;font-size: smaller;">
-            <label style="display: flex;align-items: center;">
+        <div class="option-line">
+            <label class="option-item">
                 <input type="checkbox" v-model="withSameTab">
-                <span style="line-height: 1em;margin-left: 4px;">在相同标签页打开</span>
+                <span class="option-item-label-text">在相同标签页打开</span>
             </label>
         </div>
 
