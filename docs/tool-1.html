@@ -8,7 +8,7 @@
     <meta content="工具页面-词典" name="description"/>
     <title>工具页面-词典</title>
 
-    <link rel="icon" href="https://img.icons8.com/clouds/512/home.png">
+    <link href="https://img.icons8.com/clouds/512/home.png" rel="icon">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" rel="stylesheet"
           type="text/css">
     <style>
@@ -88,18 +88,18 @@
         }
     </style>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.45/vue.global.min.js" defer></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.45/vue.global.min.js"></script>
 
     <template id="main">
-        <form @submit.prevent="doQuery" ref="dictForm" class="dict-form">
+        <form @submit.prevent="doQuery" action="javascript:" class="dict-form" ref="dictForm">
             <div class="dict-input-line">
                 <label class="dict-input-box">
                     <span class="dict-input-label-text">输入(<u>W</u>)</span>
-                    <input accesskey="w" autocomplete="words" autofocus placeholder="输入查询的单词" required
-                           class="dict-input-field" v-model.trim="q">
+                    <input accesskey="w" autocomplete="words" autofocus class="dict-input-field"
+                           placeholder="输入查询的单词" required v-model.trim="q">
                 </label>
 
-                <button accesskey="q" ref="submitBtn" class="dict-query-button" type="submit">查询(<u>Q</u>)</button>
+                <button accesskey="q" class="dict-query-button" ref="submitBtn" type="submit">查询(<u>Q</u>)</button>
             </div>
 
             <div class="dict-sites-line">
@@ -156,9 +156,12 @@
                     this.currentQueryKey = Object.keys(this.links)[0];
                 },
                 mounted() {
-                    window.addEventListener('unload', () => {
-                        localStorage.setItem('ts', new Date().toJSON());
+                    window.addEventListener('visibilitychange', () => {
+                        sessionStorage.setItem('ts', new Date().toJSON());
+                        sessionStorage.setItem('q', this.q);
                     });
+
+                    this.q = sessionStorage.getItem('q');
                 },
                 methods: {
                     doQuery() {
@@ -172,7 +175,7 @@
     </script>
 </head>
 <body>
-<section id="app" class="container"></section>
+<section class="container" id="app"></section>
 
 </body>
 </html>
