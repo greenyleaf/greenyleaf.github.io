@@ -49,65 +49,68 @@
     </template>
 
     <script>
-        Vue.createApp({
-            template: document.getElementById('main'),
-            data() {
-                return {
-                    sites: {
-                        '百度': query => `https://www.baidu.com/s?wd=${query}`,
-                        '百度+知乎': query => `https://www.baidu.com/s?wd=site%3Azhihu.com+${query}`,
-                        '人民日报': query => `http://search.people.cn/s/?keyword=${query}`,
-                        '搜狗': query => `http://sogou.com/web?query=${query}`,
-                        '必应': query => `https://cn.bing.com/search?q=${query}&ensearch=1`,
-                        '知网': query => `http://search.cnki.com.cn/Search/Result?content=${query}`,
-                        '央视视频': query => `https://search.cctv.com/search.php?qtext=${query}&type=video`,
-                        '央视网页': query => `https://search.cctv.com/search.php?qtext=${query}&type=web`,
-                        '哔哩哔哩': query => `https://search.bilibili.com/all?keyword=${query}`,
-                        '淘宝': query => `https://www.taobao.com/list/product/${query}.htm`,
-                        '百度+豆瓣': query => `https://www.baidu.com/s?wd=site%3Adouban.com+${query}`,
-                        '豆瓣': query => `https://www.douban.com/search?q=${query}`,
-                        '豆瓣电影': query => `https://search.douban.com/movie/subject_search?search_text=${query}`,
-                        '豆瓣音乐': query => `https://search.douban.com/music/subject_search?search_text=${query}`,
-                        'DuckDuckGo': query => `https://duckduckgo.com/?q=${query}`,
-                        '栈溢出': query => `https://stackoverflow.com/search?q=${query}`,
-                        '百度+博客园': query => `https://www.baidu.com/s?wd=site%3Acnblogs.com+${query}`,
-                        'MDN': query => `https://developer.mozilla.org/en-US/search?q=${query}`,
-                    },
-                    withSameTab: false,
-                    currentSiteKey: undefined,
-                    q: undefined,
-                };
-            },
-            computed: {
-                currentQueryLink() {
-                    return this.currentSiteKey && this.q && this.sites[this.currentSiteKey](encodeURIComponent(this.q));
+        window.addEventListener('DOMContentLoaded', () => {
+            Vue.createApp({
+                template: document.getElementById('main'),
+                data() {
+                    return {
+                        sites: {
+                            '百度': query => `https://www.baidu.com/s?wd=${query}`,
+                            '百度+知乎': query => `https://www.baidu.com/s?wd=site%3Azhihu.com+${query}`,
+                            '人民日报': query => `http://search.people.cn/s/?keyword=${query}`,
+                            '搜狗': query => `http://sogou.com/web?query=${query}`,
+                            '必应': query => `https://cn.bing.com/search?q=${query}&ensearch=1`,
+                            '知网': query => `http://search.cnki.com.cn/Search/Result?content=${query}`,
+                            '央视视频': query => `https://search.cctv.com/search.php?qtext=${query}&type=video`,
+                            '央视网页': query => `https://search.cctv.com/search.php?qtext=${query}&type=web`,
+                            '哔哩哔哩': query => `https://search.bilibili.com/all?keyword=${query}`,
+                            '淘宝': query => `https://www.taobao.com/list/product/${query}.htm`,
+                            '百度+豆瓣': query => `https://www.baidu.com/s?wd=site%3Adouban.com+${query}`,
+                            '豆瓣': query => `https://www.douban.com/search?q=${query}`,
+                            '豆瓣电影': query => `https://search.douban.com/movie/subject_search?search_text=${query}`,
+                            '豆瓣音乐': query => `https://search.douban.com/music/subject_search?search_text=${query}`,
+                            'DuckDuckGo': query => `https://duckduckgo.com/?q=${query}`,
+                            '栈溢出': query => `https://stackoverflow.com/search?q=${query}`,
+                            '百度+博客园': query => `https://www.baidu.com/s?wd=site%3Acnblogs.com+${query}`,
+                            'MDN': query => `https://developer.mozilla.org/en-US/search?q=${query}`,
+                        },
+                        withSameTab: false,
+                        currentSiteKey: undefined,
+                        q: undefined,
+                    };
                 },
-            },
-            created() {
-                this.currentSiteKey = Object.keys(this.sites)[0];
-            },
-            mounted() {
-                window.addEventListener('visibilitychange', () => {
-                    sessionStorage.setItem('ts', new Date().toJSON());
-                    sessionStorage.setItem('q', this.q);
-                });
-
-                this.q = sessionStorage.getItem('q') || '';
-
-                {
-                    const d = document.querySelector('[autofocus]');
-                    this.$nextTick(() => {
-                        d && d.focus();
+                computed: {
+                    currentQueryLink() {
+                        return this.currentSiteKey && this.q && this.sites[this.currentSiteKey](encodeURIComponent(this.q));
+                    },
+                },
+                created() {
+                    this.currentSiteKey = Object.keys(this.sites)[0];
+                },
+                mounted() {
+                    window.addEventListener('visibilitychange', () => {
+                        sessionStorage.setItem('ts', new Date().toJSON());
+                        sessionStorage.setItem('q', this.q);
                     });
+
+                    this.q = sessionStorage.getItem('q') || '';
+
+                    {
+                        const d = document.querySelector('[autofocus]');
+                        this.$nextTick(() => {
+                            d && d.focus();
+                        });
+                    }
+                },
+                methods: {
+                    doQuery() {
+                        this.$refs.queryLink.click();
+                        // window.open(this.currentQueryLink, this.currentQueryKey);
+                    }
                 }
-            },
-            methods: {
-                doQuery() {
-                    this.$refs.queryLink.click();
-                    // window.open(this.currentQueryLink, this.currentQueryKey);
-                }
-            }
-        }).mount('#app');
+            }).mount('#app');
+
+        });
     </script>
 </head>
 <body>
