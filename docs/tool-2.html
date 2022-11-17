@@ -23,18 +23,19 @@
     <template id="main">
         <form @submit.prevent="doQuery" action="javascript:" style="margin: 0 auto;max-width: 420px;">
 
-            <div style="display: flex;align-items: center;justify-content: center;">
+            <div style="display: flex;align-items: center;">
                 <label style="flex: 1 1;display: flex;align-items: center;">
-                    <span style="white-space: nowrap;margin-right: 8px;">查询内容(<u>W</u>)</span>
-                    <input accesskey="w" autocomplete="web-search" autofocus placeholder="输入查询内容" required
+                    <span style="white-space: nowrap;margin-right: 8px;font-size: 14px;">输入(<u>W</u>)</span>
+                    <input accesskey="w" autocomplete="web-search" autofocus placeholder="查询的内容" required
                            style="flex: 1 1;margin-right: 8px;" v-model.trim="q">
                 </label>
 
-                <button style="white-space: nowrap;" accesskey="q">查询(<u>Q</u>)</button>
+                <button accesskey="q" style="flex-shrink: 0;white-space: nowrap;font-size: 14px;">查询(<u>Q</u>)
+                </button>
             </div>
 
             <div style="margin-top: 16px;line-height: 1.45em;">
-                <span style="margin-right: 8px;">站点</span>
+                <span style="margin-right: 8px;font-size: 14px;">站点</span>
 
                 <div style="display: flex;flex-wrap: wrap;">
                     <label style="margin-right: 8px;" v-for="(v,k) in sites">

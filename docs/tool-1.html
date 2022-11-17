@@ -27,8 +27,8 @@
 
         .dict-input-line {
             display: flex;
-            justify-content: center;
             flex-wrap: wrap;
+            align-items: center;
             margin-bottom: 16px;
         }
 
@@ -41,15 +41,19 @@
         .dict-input-label-text, .dict-sites-label-text {
             white-space: nowrap;
             margin-right: 8px;
+            font-size: 14px;
         }
 
         .dict-input-field {
             margin-right: 8px;
             flex: 1 1;
+            width: 10px;
         }
 
         .dict-query-button {
             flex-shrink: 0;
+            white-space: nowrap;
+            font-size: 14px;
         }
 
         .dict-sites-line {
@@ -96,7 +100,7 @@
                 <label class="dict-input-box">
                     <span class="dict-input-label-text">输入(<u>W</u>)</span>
                     <input accesskey="w" autocomplete="words" autofocus class="dict-input-field"
-                           placeholder="输入查询的单词" required v-model.trim="q">
+                           placeholder="查询的单词" required v-model.trim="q">
                 </label>
 
                 <button accesskey="q" class="dict-query-button" type="submit">查询(<u>Q</u>)</button>
