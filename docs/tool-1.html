@@ -33,9 +33,10 @@
         }
 
         .dict-input-box {
+            flex: 1 1;
             display: flex;
             align-items: center;
-            flex: 1 1;
+            position: relative;
         }
 
         .dict-input-label-text, .dict-sites-label-text {
@@ -45,9 +46,20 @@
         }
 
         .dict-input-field {
-            margin-right: 8px;
             flex: 1 1;
             width: 10px;
+            margin-right: 8px;
+            padding-right: 1.5em;
+        }
+
+        .dict-input-clear {
+            background: transparent;
+            border: none;
+            position: absolute;
+            padding: 0;
+            right: .6em;
+            color: red;
+            user-select: none;
         }
 
         .dict-query-button {
@@ -111,12 +123,12 @@
             appearance: none;
             width: 1em;
             height: 1em;
-            border-bottom: .2em solid black;
-            transition: border-bottom-width cubic-bezier(.18, -0.36, .12, -0.63) .3s;
+            border-bottom: .2em solid darkslategray;
+            transition: border-bottom-width cubic-bezier(.16, -0.2, .18, -0.42) .3s;
         }
 
         .dict-site-item-input:checked {
-            border-bottom-width: .9em;
+            border-bottom-width: .96em;
             /*animation: radio-input .28s;*/
         }
 
@@ -167,7 +179,10 @@
                 <label class="dict-input-box">
                     <span class="dict-input-label-text">输入(<u>W</u>)</span>
                     <input accesskey="w" autocomplete="words" autofocus class="dict-input-field"
-                           placeholder="查询的单词" required v-model.trim="q">
+                           placeholder="查询的单词" ref="dictInputField" required v-model.trim="q">
+                    <button @click="q='';$refs.dictInputField.focus();" class="dict-input-clear" type="button"
+                            v-if="!!q">❌
+                    </button>
                 </label>
 
                 <button accesskey="q" class="dict-query-button" type="submit">查询(<u>Q</u>)</button>
