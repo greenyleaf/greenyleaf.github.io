@@ -56,7 +56,7 @@
             font-size: 14px;
             color: darkgreen;
             /*background: lightgreen;*/
-            background-image: radial-gradient(circle at 25% 50%, mediumspringgreen, greenyellow);
+            background-image: radial-gradient(circle at 30% 40%, gold, limegreen 60%, limegreen);
             text-decoration: none;
             border-radius: 4px;
             border: 2px solid green;
@@ -133,6 +133,26 @@
             align-content: center;
         }
 
+        .option-item-input {
+            width: 1em;
+            height: 1em;
+            appearance: none;
+            text-align: end;
+            vertical-align: middle;
+        }
+
+        .option-item-input:checked {
+            appearance: none;
+        }
+
+        .option-item-input:checked::before {
+            content: '❎';
+        }
+
+        .option-item-input:not(:checked)::before {
+            content: '🔲';
+        }
+
         .option-item-label-text {
             line-height: 1em;
             margin-left: 4px;
@@ -170,7 +190,7 @@
 
             <div class="option-line">
                 <label class="option-item">
-                    <input type="checkbox" v-model="withSameTab">
+                    <input class="option-item-input" type="checkbox" v-model="withSameTab">
                     <span class="option-item-label-text">在相同标签页打开</span>
                 </label>
             </div>
