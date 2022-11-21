@@ -26,8 +26,8 @@
             <div style="display: flex;align-items: center;">
                 <label style="flex: 1 1;display: flex;align-items: center;position: relative;">
                     <span style="white-space: nowrap;margin-right: 8px;font-size: 14px;">输入(<u>W</u>)</span>
-                    <input accesskey="w" autocomplete="web-search" autofocus placeholder="查询的内容" required
-                           style="flex: 1 1;margin-right: 8px;" v-model.trim="q" ref="inputField">
+                    <input accesskey="w" autocomplete="web-search" autofocus placeholder="查询的内容" ref="inputField"
+                           required style="flex: 1 1;margin-right: 8px;padding-right: 1.5em;" v-model.trim="q">
                     <button @click="q='';$refs.inputField.focus();"
                             style="padding: 0;background: none;border: none;position: absolute;right: .6em;color: red;user-select: none;"
                             type="button" v-if="!!q">❌
