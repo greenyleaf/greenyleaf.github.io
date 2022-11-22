@@ -122,8 +122,8 @@
             appearance: none;
             width: 1.1em;
             height: 1.1em;
-            border: .1em solid darkslategray;
-            border-bottom: .33em solid darkslategray;
+            border: .1em solid green;
+            border-bottom: .33em solid green;
             transition: border-bottom-width cubic-bezier(.43, -0.26, .43, -0.26) .3s;
         }
 
@@ -194,7 +194,7 @@
                     <label class="dict-site-item" v-for="(v, k) in sites">
                         <input :title="k" :value="k" accesskey="s" class="dict-site-item-input" name="dictSite" required
                                type="radio" v-model="currentSiteKey">
-                        {{ k }}
+                        <span>{{ k }}</span>
                     </label>
                 </div>
                 <!--<select :size="Object.keys(sites).length" accesskey="s" required style="margin-left: 8px;"
