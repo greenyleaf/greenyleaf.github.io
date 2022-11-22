@@ -25,6 +25,14 @@
             margin: 0 auto;
         }
 
+        .title {
+            margin: 16px 0;
+            font-size: 32px;
+            line-height: 1em;
+            text-shadow: darkgreen -2px 0, darkgreen 2px 0, 0 -2px darkgreen, 0 2px darkgreen;
+            color: white;
+        }
+
         .dict-input-line {
             display: flex;
             align-items: center;
@@ -175,6 +183,8 @@
 
     <template id="main">
         <form @submit.prevent="doQuery" action="javascript:" class="dict-form">
+            <div class="title">词典工具</div>
+
             <div class="dict-input-line">
                 <label class="dict-input-box">
                     <span class="dict-input-label-text">输入(<u>W</u>)</span>
