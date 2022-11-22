@@ -9,8 +9,11 @@
     <title>工具页面-词典</title>
 
     <link href="https://img.icons8.com/clouds/512/home.png" rel="icon">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" rel="stylesheet"
-          type="text/css">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/normalize.css@8.0.1/normalize.css" rel="stylesheet">
+
     <style>
         [v-cloak] {
             display: none;
@@ -179,7 +182,35 @@
         }
     </style>
 
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.45/vue.global.min.js"></script>
+    <script>
+        const {loadedHandler, loadedPromise} = (() => {
+            let vueR;
+            const vuePromise = Promise.all([
+                new Promise(r => {
+                    vueR = r;
+                }),
+            ]);
+
+            return {
+                loadedHandler:
+                    src => {
+                        switch (src) {
+                            case 'vue':
+                                vueR();
+                                break;
+                        }
+                    },
+                loadedPromise: vuePromise
+            };
+        })();
+    </script>
+
+    <script async onload="loadedHandler('vue')"
+            src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.45/vue.global.min.js"></script>
+    <script async onload="loadedHandler('vue')"
+            src="https://cdn.jsdelivr.net/npm/vue@3.2.45/dist/vue.global.js"></script>
+    <script async onload="loadedHandler('vue')"
+            src="https://unpkg.com/vue@3.2.45/dist/vue.global.js"></script>
 
     <template id="main">
         <form @submit.prevent="doQuery" action="javascript:" class="dict-form">
@@ -227,53 +258,54 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            Vue.createApp({
-                template: document.getElementById('main'),
-                data() {
-                    return {
-                        sites: {
-                            '有道': query => `//youdao.com/result?word=${query}&lang=en`,
-                            '金山词霸': query => `//www.iciba.com/word?w=${query}`,
-                            '剑桥': query => `//dictionary.cambridge.org/dictionary/english-chinese-simplified/${query}`,
-                            '牛津': query => `//www.oxfordlearnersdictionaries.com/definition/english/${query}`,
-                            '朗文': query => `//www.ldoceonline.com/dictionary/${query}`,
-                        },
-                        withSameTab: false,
-                        currentSiteKey: undefined,
-                        q: undefined,
-                    };
-                },
-                computed: {
-                    currentQueryLink() {
-                        return this.currentSiteKey && this.q && this.sites[this.currentSiteKey](encodeURIComponent(this.q));
+            loadedPromise.then(() => {
+                Vue.createApp({
+                    template: document.getElementById('main'),
+                    data() {
+                        return {
+                            sites: {
+                                '有道': query => `//youdao.com/result?word=${query}&lang=en`,
+                                '金山词霸': query => `//www.iciba.com/word?w=${query}`,
+                                '剑桥': query => `//dictionary.cambridge.org/dictionary/english-chinese-simplified/${query}`,
+                                '牛津': query => `//www.oxfordlearnersdictionaries.com/definition/english/${query}`,
+                                '朗文': query => `//www.ldoceonline.com/dictionary/${query}`,
+                            },
+                            withSameTab: false,
+                            currentSiteKey: undefined,
+                            q: undefined,
+                        };
                     },
-                },
-                created() {
-                    this.currentSiteKey = Object.keys(this.sites)[0];
-                },
-                mounted() {
-                    window.addEventListener('visibilitychange', () => {
-                        sessionStorage.setItem('ts', new Date().toJSON());
-                        sessionStorage.setItem('q', this.q);
-                    });
-
-                    this.q = sessionStorage.getItem('q') || '';
-
-                    {
-                        const d = this.$el.querySelector('[autofocus]');
-                        d && this.$nextTick(() => {
-                            d.focus();
+                    computed: {
+                        currentQueryLink() {
+                            return this.currentSiteKey && this.q && this.sites[this.currentSiteKey](encodeURIComponent(this.q));
+                        },
+                    },
+                    created() {
+                        this.currentSiteKey = Object.keys(this.sites)[0];
+                    },
+                    mounted() {
+                        window.addEventListener('visibilitychange', () => {
+                            sessionStorage.setItem('ts', new Date().toJSON());
+                            sessionStorage.setItem('q', this.q);
                         });
-                    }
-                },
-                methods: {
-                    doQuery() {
-                        this.$refs.queryLink.click();
-                        // window.open(this.currentQueryLink, this.currentSiteKey);
-                    }
-                }
-            }).mount('#app');
 
+                        this.q = sessionStorage.getItem('q') || '';
+
+                        {
+                            const d = this.$el.querySelector('[autofocus]');
+                            d && this.$nextTick(() => {
+                                d.focus();
+                            });
+                        }
+                    },
+                    methods: {
+                        doQuery() {
+                            this.$refs.queryLink.click();
+                            // window.open(this.currentQueryLink, this.currentSiteKey);
+                        }
+                    }
+                }).mount('#app');
+            });
         });
     </script>
 </head>
