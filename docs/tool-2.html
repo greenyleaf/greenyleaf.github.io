@@ -221,9 +221,9 @@
             <div class="dict-input-line">
                 <label class="dict-input-box">
                     <span class="dict-input-label-text">输入(<u>W</u>)</span>
-                    <input accesskey="w" autocomplete="web-search" autofocus class="dict-input-field"
-                           placeholder="查询的内容"
-                           ref="inputField" required v-model.trim="q">
+                    <input @mouseover="$event.target.focus()" accesskey="w" autocomplete="web-search" autofocus
+                           class="dict-input-field" enterkeyhint="search" placeholder="查询的内容" ref="inputField"
+                           required v-model.trim="q">
                     <button @click="q='';$refs.inputField.focus();" class="dict-input-clear" type="button" v-if="!!q">
                         ❌
                     </button>
