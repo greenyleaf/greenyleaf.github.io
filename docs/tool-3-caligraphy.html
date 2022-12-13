@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta content="webkit" name="renderer"/>
+    <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+    <meta content="width=device-width,initial-scale=1" name="viewport"/>
+
+    <title>Calligraphy</title>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/normalize.css@8.0.1/normalize.css" rel="stylesheet">
+
+    <style>
+        .char-container {
+            margin: 24px;
+            padding: 24px;
+            font-size: 180px;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .char {
+            margin: 2px;
+            width: 1em;
+            height: 1em;
+            overflow: hidden;
+            line-height: 1;
+            box-sizing: content-box;
+            border: lightseagreen 3px solid;
+            display: inline-flex;
+            align-content: center;
+            justify-content: center;
+            vertical-align: middle;
+            font-family: "Brush Script MT", "Comic Sans MS", cursive;
+            color: indianred;
+            background-color: greenyellow;
+            background-image: repeating-linear-gradient(to right, slategrey, slategrey 9px, transparent 9px, transparent 15px),
+            repeating-linear-gradient(to bottom, slategrey, slategrey 9px, transparent 9px, transparent 15px),
+            linear-gradient(to right bottom, transparent calc(50% - 1px / 1.8), grey calc(50% - 1px / 1.8), grey calc(50% + 1px / 1.8), transparent calc(50% + 1px / 1.8)),
+            linear-gradient(to right top, transparent calc(50% - 1px / 1.8), grey calc(50% - 1px / 1.8), grey calc(50% + 1px / 1.8), transparent calc(50% + 1px / 1.8));
+            background-size: auto 1px, 1px auto, auto, auto;
+            background-repeat: no-repeat;
+            background-position: center;
+            -webkit-background-clip: content-box;
+        }
+    </style>
+
+</head>
+<body>
+<div class="char-container">
+    <span class="char">天</span>
+    <span class="char">上</span>
+    <span class="char">白</span>
+    <span class="char">云</span>
+    <span class="char">垂</span>
+    <span class="char">钓</span>
+    <span class="char">奤</span>
+    <span class="char">器</span>
+    <span class="char">春</span>
+    <span class="char">E</span>
+    <span class="char">n</span>
+    <span class="char">g</span>
+    <span class="char">l</span>
+    <span class="char">i</span>
+    <span class="char">s</span>
+    <span class="char">h</span>
+</div>
+
+</body>
+</html>
