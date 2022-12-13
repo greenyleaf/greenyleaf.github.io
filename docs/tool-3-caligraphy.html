@@ -13,19 +13,20 @@
     <link href="https://unpkg.com/normalize.css@8.0.1/normalize.css" rel="stylesheet">
 
     <style>
+        [v-cloak] {
+            display: none;
+        }
+
         .char-container {
-            margin: 24px;
-            padding: 24px;
-            font-size: 180px;
-            display: flex;
-            flex-wrap: wrap;
+            margin: 8px 12px;
+            font-size: 120px;
+            display: inline-block;
         }
 
         .char {
             margin: 2px;
-            width: 1em;
-            height: 1em;
-            overflow: hidden;
+            width: 1.06em;
+            height: 1.06em;
             line-height: 1;
             box-sizing: content-box;
             border: lightseagreen 3px solid;
@@ -47,26 +48,76 @@
         }
     </style>
 
+    <script>
+        const {loadedHandler, loadedPromise} = (() => {
+            let vueR;
+            const vuePromise = Promise.all([
+                new Promise(r => {
+                    vueR = r;
+                }),
+            ]);
+
+            return {
+                loadedHandler:
+                    src => {
+                        switch (src) {
+                            case 'vue':
+                                vueR();
+                                break;
+                        }
+                    },
+                loadedPromise: vuePromise
+            };
+        })();
+    </script>
+
+    <script async onload="loadedHandler('vue')"
+            src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.45/vue.global.min.js"></script>
+    <script async onload="loadedHandler('vue')"
+            src="https://cdn.jsdelivr.net/npm/vue@3.2.45/dist/vue.global.js"></script>
+    <script async onload="loadedHandler('vue')"
+            src="https://unpkg.com/vue@3.2.45/dist/vue.global.js"></script>
+
+    <template id="main">
+        <div>
+            <label style="margin: 16px 16px 0;display: block;">
+                <span style="margin-bottom: 8px;display: block;">输入文字</span>
+                <textarea placeholder="输入文字" v-model="chars"
+                          style="width: calc(100% - 28px);height: 128px;"></textarea>
+            </label>
+        </div>
+
+        <div class="char-container">
+            <template v-for="c in stripped">
+                <br v-if="c === '\n'">
+                <span class="char" v-else>{{c}}</span>
+            </template>
+        </div>
+    </template>
+
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            console.log('stage 1')
+            loadedPromise.then(() => {
+                Vue.createApp({
+                    template: document.getElementById('main'),
+                    data() {
+                        return {
+                            chars: '山木啸兮云幽幽，秣我归马兮无为久留。',
+                        }
+                    },
+                    computed: {
+                        stripped() {
+                            return this.chars.trim().replaceAll(/(?<=\n)\s+(?=\n)/g, '').replaceAll(/\n{2,}/g, '\n');
+                        }
+                    }
+                }).mount('#app');
+            });
+        });
+    </script>
 </head>
 <body>
-<div class="char-container">
-    <span class="char">天</span>
-    <span class="char">上</span>
-    <span class="char">白</span>
-    <span class="char">云</span>
-    <span class="char">垂</span>
-    <span class="char">钓</span>
-    <span class="char">奤</span>
-    <span class="char">器</span>
-    <span class="char">春</span>
-    <span class="char">E</span>
-    <span class="char">n</span>
-    <span class="char">g</span>
-    <span class="char">l</span>
-    <span class="char">i</span>
-    <span class="char">s</span>
-    <span class="char">h</span>
-</div>
+<div id="app"></div>
 
 </body>
 </html>
