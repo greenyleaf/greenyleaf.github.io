@@ -47,21 +47,18 @@
         }
 
         .char {
-            margin: calc((1.25em - 1.07em) / 2) 2px;
+            margin: calc((1.25em - 1.07em) / 2) 0;
             width: 1.07em;
             height: 1.07em;
             line-height: 1;
-            border: lightseagreen 3px solid;
+            border: 4px solid lightseagreen;
+            border-right-width: 2px;
+            border-left-width: 2px;
             display: inline-block;
             text-align: center;
             font-family: "Brush Script MT", "Comic Sans MS", cursive;
             color: indianred;
             background-color: greenyellow;
-            background-image: repeating-linear-gradient(to right, slategrey, slategrey 9px, transparent 9px, transparent 15px),
-            repeating-linear-gradient(to bottom, slategrey, slategrey 9px, transparent 9px, transparent 15px),
-            linear-gradient(to right bottom, transparent calc(50% - 1px / 2), grey calc(50% - 1px / 2), grey calc(50% + 1px / 2), transparent calc(50% + 1px / 2)),
-            linear-gradient(to right top, transparent calc(50% - 1px / 2), grey calc(50% - 1px / 2), grey calc(50% + 1px / 2), transparent calc(50% + 1px / 2));
-            background-size: auto 1px, 1px auto, auto, auto;
             background-repeat: no-repeat;
             background-position: center;
             -webkit-background-clip: content-box;
@@ -72,6 +69,23 @@
             transform: scale(1.1);
             z-index: 20;
         }
+
+        .char-bg-x {
+            background-image: repeating-linear-gradient(to right, slategrey, slategrey 6px, transparent 6px, transparent 8px),
+            repeating-linear-gradient(to bottom, slategrey, slategrey 6px, transparent 6px, transparent 8px),
+            linear-gradient(to right bottom, transparent calc(50% - 1px / 2), grey calc(50% - 1px / 2), grey calc(50% + 1px / 2), transparent calc(50% + 1px / 2)),
+            linear-gradient(to right top, transparent calc(50% - 1px / 2), grey calc(50% - 1px / 2), grey calc(50% + 1px / 2), transparent calc(50% + 1px / 2));
+            background-size: auto 1px, 1px auto, auto, auto;
+        }
+
+        .char-bg-rhomb {
+            background-image: repeating-linear-gradient(to right, slategrey, slategrey 6px, transparent 6px, transparent 8px),
+            repeating-linear-gradient(to bottom, slategrey, slategrey 6px, transparent 6px, transparent 8px),
+            linear-gradient(to right bottom, transparent calc(25% - 1px / 2), slategrey calc(25% - 1px / 2), slategrey calc(25% + 1px / 2), transparent calc(25% + 1px / 2), transparent calc(75% - 1px / 2), slategrey calc(75% - 1px / 2), slategrey calc(75% + 1px / 2), transparent calc(75% + 1px / 2)),
+            linear-gradient(to right top, transparent calc(25% - 1px / 2), slategrey calc(25% - 1px / 2), slategrey calc(25% + 1px / 2), transparent calc(25% + 1px / 2), transparent calc(75% - 1px / 2), slategrey calc(75% - 1px / 2), slategrey calc(75% + 1px / 2), transparent calc(75% + 1px / 2));
+            background-size: auto 1px, 1px auto, auto, auto;
+        }
+
     </style>
 
     <script>
@@ -108,29 +122,35 @@
         <h1 class="page-title">书法字帖工具</h1>
         <div style="margin: 16px 16px 0;position: sticky;top: 0;background-color: white;">
             <label style="display: block;">
-                <span style="margin-bottom: 8px;display: block;">输入文字</span>
+                <span style="margin-bottom: 8px;display: block;user-select: none;">输入文字</span>
                 <textarea @mouseover="$event.target.focus();" autofocus placeholder="输入文字" ref="ta"
                           style="width: calc(100%);height: 128px;box-sizing: border-box;" v-model="chars"></textarea>
             </label>
             <button @click="chars='';$refs.ta.focus();"
                     accesskey="c"
-                    style="margin-top: 4px;width: 32px;line-height: 1.5;color: red;position: absolute;bottom: 8px;right: 40px;"
+                    style="margin-top: 4px;width: 32px;line-height: 1.5;color: red;position: absolute;bottom: 8px;right: 40px;user-select: none;"
                     type="button">
                 &#x232b;
             </button>
         </div>
 
         <div style="margin: 8px 16px 0;text-align: right;">
-            <button @click="adjustment > -8 && adjustment--" style="width: 1.6em;" title="减小字号">-</button>
-            <button @click="adjustment = 0;" style="margin-left: 4px;width: 1.8em;" title="默认字号">↺</button>
-            <button @click="adjustment < 8 && adjustment++" style="margin-left: 4px;width: 1.6em;" title="增加字号">+
+            <label style="user-select: none;"><input type="checkbox" v-model="rhomb">菱形十字格</label>
+            <button @click="adjustment > -8 && adjustment--" style="margin-left: 8px;width: 1.6em;user-select: none;"
+                    title="减小字号">-
+            </button>
+            <button @click="adjustment = 0;" style="margin-left: 4px;width: 1.8em;user-select: none;" title="默认字号">
+                ↺
+            </button>
+            <button @click="adjustment < 8 && adjustment++" style="margin-left: 4px;width: 1.6em;user-select: none;"
+                    title="增加字号">+
             </button>
         </div>
 
         <div class="char-container">
             <template v-for="c in stripped">
                 <br v-if="c === '\n'">
-                <span class="char" v-else>{{c}}</span>
+                <span :class="rhomb ? 'char-bg-x' : 'char-bg-rhomb'" class="char" v-else>{{c}}</span>
             </template>
         </div>
     </template>
@@ -145,6 +165,7 @@
                         return {
                             chars: '山木啸兮云幽幽，秣我归马兮无为久留。',
                             adjustment: 0,
+                            rhomb: false,
                         }
                     },
                     computed: {
