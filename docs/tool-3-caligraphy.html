@@ -150,7 +150,7 @@
         <div class="char-container">
             <template v-for="c in stripped">
                 <br v-if="c === '\n'">
-                <span :class="rhomb ? 'char-bg-x' : 'char-bg-rhomb'" class="char" v-else>{{c}}</span>
+                <span :class="!rhomb ? 'char-bg-x' : 'char-bg-rhomb'" class="char" v-else>{{c}}</span>
             </template>
         </div>
     </template>
