@@ -14,7 +14,8 @@
 
     <style>
         :root {
-            --char-font-size: 96px;
+            --font-size: 96px;
+            --adjustment: 0;
         }
 
         [v-cloak] {
@@ -36,12 +37,12 @@
         }
 
         .page-title:hover {
-            transform: scaleX(1.016) scaleY(1.04);
+            transform: scaleX(1.016) scaleY(1.02);
         }
 
         .char-container {
             margin: 0 12px;
-            font-size: var(--char-font-size);
+            font-size: calc(var(--font-size) + var(--adjustment) * 8px);
             display: inline-block;
         }
 
@@ -67,7 +68,7 @@
         }
 
         .char:hover {
-            transform: scale(1.16);
+            transform: scale(1.1);
             z-index: 20;
         }
     </style>
@@ -104,17 +105,24 @@
 
     <template id="main">
         <h1 class="page-title">书法字帖工具</h1>
-        <div style="margin: 16px 16px 0;position: sticky;">
+        <div style="margin: 16px 16px 0;position: sticky;top: 0;background-color: white;">
             <label style="display: block;">
                 <span style="margin-bottom: 8px;display: block;">输入文字</span>
                 <textarea @mouseover="$event.target.focus();" autofocus placeholder="输入文字" ref="ta"
-                          style="width: calc(100% - 28px);height: 128px;" v-model="chars"></textarea>
+                          style="width: calc(100%);height: 128px;box-sizing: border-box;" v-model="chars"></textarea>
             </label>
             <button @click="chars='';$refs.ta.focus();"
                     accesskey="c"
                     style="margin-top: 4px;width: 32px;line-height: 1.5;color: red;position: absolute;bottom: 8px;right: 40px;"
                     type="button">
                 &#x232b;
+            </button>
+        </div>
+
+        <div style="margin: 8px 16px 0;text-align: right;">
+            <button @click="adjustment > -8 && adjustment--" style="width: 1.6em;" title="减小字号">-</button>
+            <button @click="adjustment = 0;" style="margin-left: 4px;width: 1.8em;" title="重置字号">↺</button>
+            <button @click="adjustment < 8 && adjustment++" style="margin-left: 4px;width: 1.6em;" title="增加字号">+
             </button>
         </div>
 
@@ -135,11 +143,17 @@
                     data() {
                         return {
                             chars: '山木啸兮云幽幽，秣我归马兮无为久留。',
+                            adjustment: 0,
                         }
                     },
                     computed: {
                         stripped() {
                             return this.chars.trim().replaceAll(/(?<=\n)\s+(?=\n)/g, '').replaceAll(/\n{2,}/g, '\n');
+                        }
+                    },
+                    watch: {
+                        adjustment() {
+                            document.querySelector(':root')?.style.setProperty?.('--adjustment', this.adjustment);
                         }
                     }
                 }).mount('#app');
@@ -149,6 +163,5 @@
 </head>
 <body>
 <div id="app" style="position: relative;"></div>
-
 </body>
 </html>
