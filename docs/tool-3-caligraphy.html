@@ -6,7 +6,7 @@
     <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
     <meta content="width=device-width,initial-scale=1" name="viewport"/>
 
-    <title>Calligraphy</title>
+    <title>书法工具</title>
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css" rel="stylesheet">
@@ -20,6 +20,14 @@
 
         [v-cloak] {
             display: none;
+        }
+
+        .fade-enter-active, .fade-leave-active {
+            transition: transform .22s;
+        }
+
+        .fade-enter-from, .fade-leave-to {
+            transform: translateY(-24px);
         }
 
         .page-title {
@@ -42,10 +50,37 @@
 
         .char-container {
             margin: 0 12px;
-            font-size: calc(var(--font-size) + var(--adjustment) * 8px);
             display: flex;
             flex-wrap: wrap;
-            align-items: center;
+            align-items: start;
+            align-content: start;
+            position: relative;
+            background-color: white;
+            font-size: calc(var(--font-size) + var(--adjustment) * 8px);
+        }
+
+        .char-container:fullscreen {
+            padding: 12px;
+            overflow-y: auto;
+        }
+
+        .exit-btn {
+            display: none;
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            background-color: orange;
+        }
+
+        .exit-btn:hover, .exit-btn:active {
+            background-color: lightgoldenrodyellow;
+        }
+
+        .char-container:fullscreen .exit-btn {
+            display: inline-block;
+            font-size: 16px;
+            width: 1.8em;
+            user-select: none;
         }
 
         .char {
@@ -127,7 +162,8 @@
             <label style="display: block;">
                 <span style="margin-bottom: 8px;display: block;user-select: none;">输入文字</span>
                 <textarea @mouseover="$event.target.focus();" autofocus placeholder="输入文字" ref="ta"
-                          style="width: calc(100%);height: 128px;box-sizing: border-box;" v-model="chars"></textarea>
+                          style="width: calc(100%);height: 128px;box-sizing: border-box;line-height: 1.5;"
+                          v-model="chars"></textarea>
             </label>
             <button @click="chars='';$refs.ta.focus();"
                     accesskey="c"
@@ -138,23 +174,29 @@
         </div>
 
         <div style="margin: 8px 16px 0;text-align: right;">
-            <label style="user-select: none;"><input type="checkbox" v-model="rhomb">菱形十字格</label>
-            <button @click="adjustment > -8 && adjustment--" style="margin-left: 8px;width: 1.6em;user-select: none;"
-                    title="减小字号">-
+            <button @click="$refs.chars.requestFullscreen();" accesskey="f"
+                    style="margin-left: 4px;width: 1.8em;user-select: none;" title="全屏显示" type="button">
+                ⛶
             </button>
-            <button @click="adjustment = 0;" style="margin-left: 4px;width: 1.8em;user-select: none;" title="默认字号">
+            <label style="margin-left: 8px;user-select: none;"><input type="checkbox" v-model="rhomb">菱形十字格</label>
+            <button @click="adjustment > -8 && adjustment--" style="margin-left: 8px;width: 1.6em;user-select: none;"
+                    title="减小字号" type="button">-
+            </button>
+            <button @click="adjustment = 0;" style="margin-left: 4px;width: 1.8em;user-select: none;" title="默认字号"
+                    type="button">
                 ↺
             </button>
             <button @click="adjustment < 8 && adjustment++" style="margin-left: 4px;width: 1.6em;user-select: none;"
-                    title="增加字号">+
+                    title="增加字号" type="button">+
             </button>
         </div>
 
-        <div class="char-container">
+        <div class="char-container" ref="chars" style="position: relative;">
+            <button @click="exitFullscreen" class="exit-btn" title="退出全屏" type="button">⤡</button>
             <template v-for="c in stripped">
-                <!--                <br v-if="c === '\n'">-->
-                <div style="width: 100%;box-sizing: border-box;" v-if="c === '\n'"></div>
-                <span :class="!rhomb ? 'char-bg-x' : 'char-bg-rhomb'" class="char" v-else>{{c}}</span>
+                <div style="width: 100%;box-sizing: border-box;position: relative;" v-if="c === '\n'"></div>
+                <span :class="!rhomb ? 'char-bg-x' : 'char-bg-rhomb'" class="char"
+                      style="position: relative;" v-else>{{c}}</span>
             </template>
         </div>
     </template>
@@ -181,7 +223,12 @@
                         adjustment() {
                             document.querySelector(':root')?.style.setProperty?.('--adjustment', this.adjustment);
                         }
-                    }
+                    },
+                    methods: {
+                        exitFullscreen() {
+                            document.exitFullscreen();
+                        },
+                    },
                 }).mount('#app');
             });
         });
