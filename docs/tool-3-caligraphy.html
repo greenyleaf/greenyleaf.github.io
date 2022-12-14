@@ -152,7 +152,8 @@
 
         <div class="char-container">
             <template v-for="c in stripped">
-                <br v-if="c === '\n'">
+                <!--                <br v-if="c === '\n'">-->
+                <div style="width: 100%;box-sizing: border-box;" v-if="c === '\n'"></div>
                 <span :class="!rhomb ? 'char-bg-x' : 'char-bg-rhomb'" class="char" v-else>{{c}}</span>
             </template>
         </div>
