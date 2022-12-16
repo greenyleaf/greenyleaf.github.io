@@ -6,7 +6,7 @@
     <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
     <meta content="width=device-width,initial-scale=1" name="viewport"/>
 
-    <title>书法工具</title>
+    <title>字帖工具</title>
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css" rel="stylesheet">
@@ -16,6 +16,7 @@
         :root {
             --font-size: 96px;
             --adjustment: 0;
+            background: linear-gradient(greenyellow, transparent 120px) no-repeat;
         }
 
         [v-cloak] {
@@ -38,7 +39,7 @@
             color: dodgerblue;
             font-size: 56px;
             font-weight: 900;
-            background-image: linear-gradient(dodgerblue 30%, white 90%);
+            background-image: linear-gradient(dodgerblue 16%, white 50%, dodgerblue 50%, white 108%);
             -webkit-background-clip: text;
             transition: .18s;
             transform-origin: left;
@@ -66,7 +67,7 @@
 
         .exit-btn {
             display: none;
-            position: absolute;
+            position: fixed;
             top: 4px;
             right: 4px;
             background-color: orange;
@@ -79,7 +80,7 @@
         }
 
         .char-container:fullscreen .exit-btn {
-            display: inline-block;
+            display: block;
             font-size: 16px;
             width: 1.8em;
             user-select: none;
@@ -160,8 +161,8 @@
             src="https://unpkg.com/vue@3.2.45/dist/vue.global.js"></script>
 
     <template id="main">
-        <h1 class="page-title">书法字帖工具</h1>
-        <div style="margin: 16px 16px 0;position: sticky;top: 0;background-color: white;">
+        <h1 class="page-title">字帖工具</h1>
+        <div style="margin: 16px 16px 0;position: sticky;z-index: 30;top: 0;">
             <label style="display: block;">
                 <span style="margin-bottom: 8px;display: block;user-select: none;">输入文字</span>
                 <textarea @mouseover="$event.target.focus();" autofocus placeholder="输入文字" ref="ta"
