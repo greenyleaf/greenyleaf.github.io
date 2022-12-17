@@ -60,7 +60,7 @@
             width: 10px;
             margin-right: 8px;
             padding-right: 1.5em;
-            background-image: linear-gradient(to top, turquoise, transparent 6px);
+            background-image: linear-gradient(to top, turquoise, transparent .86em);
         }
 
         .dict-input-clear {
@@ -223,23 +223,22 @@
                 <label class="dict-input-box">
                     <span class="dict-input-label-text">输入(<u>W</u>)</span>
                     <input @mouseover="$event.target.focus()" accesskey="w" autocomplete="web-search" autofocus
-                           class="dict-input-field" enterkeyhint="search" placeholder="查询的内容" ref="inputField"
+                           class="dict-input-field" enterkeyhint="search" placeholder="输入查询的单词" ref="inputField"
                            required v-model.trim="q">
-                    <button @click="q='';$refs.inputField.focus();" class="dict-input-clear" type="button" v-if="!!q">
-                        ❌
+                    <button @click="q='';$refs.inputField.focus();" class="dict-input-clear" title="清除" type="button"
+                            v-if="!!q">❌
                     </button>
                 </label>
 
-                <button accesskey="q" class="dict-query-button">查询(<u>Q</u>)
-                </button>
+                <button accesskey="q" class="dict-query-button" title="查询">🔍查询(<u>Q</u>)</button>
             </div>
 
             <div class="dict-sites-line">
-                <span class="dict-sites-label-text">站点</span>
+                <span class="dict-sites-label-text">选择站点(<u>S</u>)</span>
 
                 <div class="dict-sites-wrapper">
                     <label class="dict-site-item" v-for="(v,k) in sites">
-                        <input :value="k" class="dict-site-item-input" name="siteKey" type="radio"
+                        <input :value="k" accesskey="s" class="dict-site-item-input" name="siteKey" type="radio"
                                v-model="currentSiteKey">
                         <span>{{ k }}</span>
                     </label>
@@ -327,12 +326,12 @@
                         }
                     }
                 }).mount('#app');
-            })
+            });
         });
     </script>
 </head>
 <body>
-<div id="app" style="margin: 16px 12px 0;" v-cloak></div>
+<div class="container" id="app" v-cloak></div>
 
 </body>
 </html>
