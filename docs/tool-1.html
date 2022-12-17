@@ -60,6 +60,7 @@
             width: 10px;
             margin-right: 8px;
             padding-right: 1.5em;
+            background-image: linear-gradient(to top, turquoise, transparent 6px);
         }
 
         .dict-input-clear {
@@ -78,7 +79,7 @@
             font-size: 14px;
             color: darkgreen;
             /*background: lightgreen;*/
-            background-image: radial-gradient(circle at 30% 40%, paleturquoise, limegreen 60%, limegreen);
+            background-image: radial-gradient(circle at 72% 50%, paleturquoise, limegreen 16px, limegreen);
             text-decoration: none;
             border-radius: 4px;
             border: 2px solid green;
@@ -222,7 +223,8 @@
                 <label class="dict-input-box">
                     <span class="dict-input-label-text">输入(<u>W</u>)</span>
                     <input @mouseover="$event.target.focus()" accesskey="w" autocomplete="words" autofocus
-                           class="dict-input-field" enterkeyhint="search" placeholder="查询的单词" ref="dictInputField"
+                           class="dict-input-field" enterkeyhint="search" placeholder="输入查询的单词"
+                           ref="dictInputField"
                            required v-model.trim="q">
                     <button @click="q='';$refs.dictInputField.focus();" class="dict-input-clear" type="button"
                             v-if="!!q">❌
