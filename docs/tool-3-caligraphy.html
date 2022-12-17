@@ -16,7 +16,8 @@
         :root {
             --font-size: 96px;
             --adjustment: 0;
-            background: linear-gradient(greenyellow, transparent 120px) no-repeat;
+            background-image: linear-gradient(225deg, gold, transparent 42px), linear-gradient(skyblue, transparent 108px);
+            background-repeat: no-repeat, no-repeat;
         }
 
         [v-cloak] {
@@ -39,7 +40,7 @@
             color: dodgerblue;
             font-size: 56px;
             font-weight: 900;
-            background-image: linear-gradient(dodgerblue 16%, white 50%, dodgerblue 50%, white 108%);
+            background-image: linear-gradient(dodgerblue 16%, white 50%, deepskyblue 50%, white 108%);
             -webkit-background-clip: text;
             transition: .18s;
             transform-origin: left;
@@ -58,7 +59,13 @@
 
         .chars-input::selection {
             background-color: greenyellow;
+            color: orangered;
             text-shadow: 0 0 3px;
+        }
+
+        @font-face {
+            font-family: "方正新楷体简体";
+            src: url("FZXKTJW.TTF");
         }
 
         .char-container {
@@ -99,18 +106,21 @@
         }
 
         .char {
-            margin: calc((1.25em - 1.07em) / 2) 0;
-            width: 1.07em;
-            height: 1.07em;
+            --side: 1.10em;
+            margin: calc((1.25em - var(--side)) / 2) 0;
+            width: var(--side);
+            height: var(--side);
             line-height: 1;
             vertical-align: center;
             border: 4px solid lightseagreen;
             border-right-width: 2px;
             border-left-width: 2px;
             border-collapse: collapse;
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             text-align: center;
-            font-family: "Brush Script MT", "Comic Sans MS", cursive;
+            font-family: "方正新楷体简体", "Brush Script MT", "Comic Sans MS", cursive;
             color: indianred;
             background-color: greenyellow;
             background-repeat: no-repeat;
