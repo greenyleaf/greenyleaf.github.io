@@ -2,16 +2,16 @@
 
 一些常用软件的下载页面。
 
-- [Firefox](https://www.mozilla.org/zh-CN/firefox/new/)
-  ; [离线版](https://www.mozilla.org/en-US/firefox/all/#product-desktop-release)
-- [Google Chrome 离线安装文件](https://www.google.cn/intl/zh-CN/chrome/?standalone=1)
+- [Firefox](https://www.mozilla.org/zh-CN/firefox/new/);
+  和[离线安装包](https://www.mozilla.org/en-US/firefox/all/#product-desktop-release)
+- [Google Chrome 离线安装包](https://www.google.cn/intl/zh-CN/chrome/?standalone=1)
 - [7-Zip](https://www.7-zip.org/download.html)
 - [LibreOffice](https://www.libreoffice.org/download/download-libreoffice/)
 - [Putty SSH 客户端](https://www.chiark.greenend.org.uk/~sgtatham/putty/)
 - [MobaSSH 客户端](https://mobassh.mobatek.net/download.html)
 - [FileZilla](https://filezilla-project.org/download.php)
 - [MSYS2](https://www.msys2.org/)
-- [Windows 上的 X 服务器 VcXsrv](https://sourceforge.net/projects/vcxsrv/)
+- [Win 的 X 服务器 VcXsrv](https://sourceforge.net/projects/vcxsrv/)
 
 ### 编程
 

@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta content="webkit" name="renderer"/>
+    <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+    <meta content="width=device-width,initial-scale=1" name="viewport"/>
+
+    <title>字帖工具</title>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/normalize.css@8.0.1/normalize.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --font-size: 96px;
+            --adjustment: 0;
+            background-image: linear-gradient(225deg, gold, transparent 42px), linear-gradient(skyblue, transparent 108px);
+            background-repeat: no-repeat, no-repeat;
+        }
+
+        [v-cloak] {
+            display: none;
+        }
+
+        .fade-enter-active, .fade-leave-active {
+            transition: transform .22s;
+        }
+
+        .fade-enter-from, .fade-leave-to {
+            transform: translateY(-24px);
+        }
+
+        .page-title {
+            width: max-content;
+            margin: 16px;
+            -webkit-text-stroke: 1px mediumblue;
+            -webkit-text-fill-color: transparent;
+            color: dodgerblue;
+            font-size: 56px;
+            font-weight: 900;
+            background-image: linear-gradient(dodgerblue 16%, white 50%, deepskyblue 50%, white 108%);
+            -webkit-background-clip: text;
+            transition: .18s;
+            transform-origin: left;
+        }
+
+        .page-title:hover {
+            transform: scaleX(1.025) scaleY(1.02);
+        }
+
+        .chars-input {
+            width: calc(100%);
+            height: 128px;
+            box-sizing: border-box;
+            line-height: 1.5;
+        }
+
+        .chars-input::selection {
+            background-color: greenyellow;
+            color: orangered;
+            text-shadow: 0 0 3px;
+        }
+
+        @font-face {
+            font-family: "方正新楷体简体";
+            src: url("FZXKTJW.TTF");
+        }
+
+        .char-container {
+            margin: 0 12px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: start;
+            align-content: start;
+            position: relative;
+            background-color: white;
+            font-size: calc(var(--font-size) + var(--adjustment) * 8px);
+        }
+
+        .char-container:fullscreen {
+            padding: 12px;
+            overflow-y: auto;
+        }
+
+        .exit-btn {
+            display: none;
+            position: fixed;
+            top: 4px;
+            right: 4px;
+            background-color: orange;
+            z-index: 25;
+        }
+
+        .exit-btn:hover, .exit-btn:active {
+            background-color: lightgoldenrodyellow;
+            box-shadow: 0 0 4px 4px gold;
+        }
+
+        .char-container:fullscreen .exit-btn {
+            display: block;
+            font-size: 16px;
+            width: 1.8em;
+            user-select: none;
+        }
+
+        .char {
+            --side: 1.18em;
+            margin: calc((1.25em - var(--side)) / 2) 0;
+            width: var(--side);
+            height: var(--side);
+            line-height: 1;
+            vertical-align: center;
+            border: 4px solid lightseagreen;
+            border-right-width: 2px;
+            border-left-width: 2px;
+            border-collapse: collapse;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-family: "方正新楷体简体", "kaiti", "Brush Script MT", "Comic Sans MS", cursive;
+            color: indianred;
+            background-color: greenyellow;
+            background-repeat: no-repeat;
+            background-position: center;
+            -webkit-background-clip: content-box;
+            transition: .225s transform;
+        }
+
+        .char:hover {
+            transform: scale(1.1);
+            z-index: 20;
+        }
+
+        .char-bg-x {
+            background-image: repeating-linear-gradient(to right, slategrey, slategrey 6px, transparent 6px, transparent 8px),
+            repeating-linear-gradient(to bottom, slategrey, slategrey 6px, transparent 6px, transparent 8px),
+            linear-gradient(to right bottom, transparent calc(50% - 1px / 2), grey calc(50% - 1px / 2), grey calc(50% + 1px / 2), transparent calc(50% + 1px / 2)),
+            linear-gradient(to right top, transparent calc(50% - 1px / 2), grey calc(50% - 1px / 2), grey calc(50% + 1px / 2), transparent calc(50% + 1px / 2));
+            background-size: auto 1px, 1px auto, auto, auto;
+        }
+
+        .char-bg-rhomb {
+            background-image: repeating-linear-gradient(to right, slategrey, slategrey 6px, transparent 6px, transparent 8px),
+            repeating-linear-gradient(to bottom, slategrey, slategrey 6px, transparent 6px, transparent 8px),
+            linear-gradient(to right bottom, transparent calc(25% - 1px / 2), slategrey calc(25% - 1px / 2), slategrey calc(25% + 1px / 2), transparent calc(25% + 1px / 2), transparent calc(75% - 1px / 2), slategrey calc(75% - 1px / 2), slategrey calc(75% + 1px / 2), transparent calc(75% + 1px / 2)),
+            linear-gradient(to right top, transparent calc(25% - 1px / 2), slategrey calc(25% - 1px / 2), slategrey calc(25% + 1px / 2), transparent calc(25% + 1px / 2), transparent calc(75% - 1px / 2), slategrey calc(75% - 1px / 2), slategrey calc(75% + 1px / 2), transparent calc(75% + 1px / 2));
+            background-size: auto 1px, 1px auto, auto, auto;
+        }
+
+    </style>
+
+    <script>
+        const {loadedHandler, loadedPromise} = (() => {
+            let vueR;
+            const vuePromise = Promise.all([
+                new Promise(r => {
+                    vueR = r;
+                }),
+            ]);
+
+            return {
+                loadedHandler:
+                    src => {
+                        switch (src) {
+                            case 'vue':
+                                vueR();
+                                break;
+                        }
+                    },
+                loadedPromise: vuePromise
+            };
+        })();
+    </script>
+
+    <script async onload="loadedHandler('vue')"
+            src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.45/vue.global.min.js"></script>
+    <script async onload="loadedHandler('vue')"
+            src="https://cdn.jsdelivr.net/npm/vue@3.2.45/dist/vue.global.js"></script>
+    <script async onload="loadedHandler('vue')"
+            src="https://unpkg.com/vue@3.2.45/dist/vue.global.js"></script>
+
+    <template id="main">
+        <h1 class="page-title">字帖工具</h1>
+        <div style="margin: 16px 16px 0;position: sticky;z-index: 30;top: 0;">
+            <label style="display: block;">
+                <span style="margin-bottom: 8px;display: block;user-select: none;">输入文字</span>
+                <textarea @mouseover="$event.target.focus();" autofocus placeholder="输入文字" ref="ta"
+                          class="chars-input"
+                          v-model="chars"></textarea>
+            </label>
+            <button @click="chars='';$refs.ta.focus();"
+                    accesskey="c"
+                    style="margin-top: 4px;width: 32px;line-height: 1.5;color: red;position: absolute;bottom: 8px;right: 40px;user-select: none;"
+                    type="button">
+                &#x232b;
+            </button>
+        </div>
+
+        <div style="margin: 8px 16px 0;text-align: right;">
+            <button @click="$refs.chars.requestFullscreen();" accesskey="f"
+                    style="margin-left: 4px;width: 1.8em;user-select: none;" title="全屏显示"
+                    type="button">
+                ⛶
+            </button>
+            <label style="margin-left: 8px;user-select: none;"><input type="checkbox" v-model="rhomb">菱形十字格</label>
+            <button @click="adjustment > -8 && adjustment--" style="margin-left: 8px;width: 1.6em;user-select: none;"
+                    title="减小字号" type="button">-
+            </button>
+            <button @click="adjustment = 0;" style="margin-left: 4px;width: 1.8em;user-select: none;" title="默认字号"
+                    type="button">
+                ↺
+            </button>
+            <button @click="adjustment < 8 && adjustment++" style="margin-left: 4px;width: 1.6em;user-select: none;"
+                    title="增加字号" type="button">+
+            </button>
+        </div>
+
+        <div class="char-container" ref="chars">
+            <button @click="exitFullscreen" class="exit-btn" title="退出全屏" type="button">⤡</button>
+            <template v-for="c in stripped">
+                <div style="width: 100%;box-sizing: border-box;" v-if="c === '\n'"></div>
+                <span :class="!rhomb ? 'char-bg-x' : 'char-bg-rhomb'" class="char" v-else>{{c}}</span>
+            </template>
+        </div>
+    </template>
+
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            console.log('stage 1')
+            loadedPromise.then(() => {
+                Vue.createApp({
+                    template: document.getElementById('main'),
+                    data() {
+                        return {
+                            chars: '山木啸兮云幽幽，秣我归马兮无为久留。',
+                            adjustment: 0,
+                            rhomb: false,
+                        }
+                    },
+                    computed: {
+                        stripped() {
+                            return this.chars.trim().replaceAll(/(?<=\n)\s+(?=\n)/g, '').replaceAll(/\n{2,}/g, '\n');
+                        }
+                    },
+                    watch: {
+                        adjustment() {
+                            document.querySelector(':root')?.style.setProperty?.('--adjustment', this.adjustment);
+                        }
+                    },
+                    methods: {
+                        exitFullscreen() {
+                            document.exitFullscreen();
+                        },
+                    },
+                }).mount('#app');
+            });
+        });
+    </script>
+</head>
+<body>
+<div id="app" style="position: relative;"></div>
+</body>
+</html>

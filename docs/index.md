@@ -4,6 +4,7 @@
 
 ## 一些页面
 
+- [书法字帖](tool-3-caligraphy.html)
 - [英语词典](tool-1.html)
 - [搜索引擎](tool-2.html)
 - [天气查询](weather.html)
