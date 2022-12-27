@@ -201,7 +201,7 @@
         </div>
 
         <div style="margin: 8px 16px 0;text-align: right;">
-            <label style="font-size: 12px;">字体<select v-model="fontIdx" @input="doChangeFont">
+            <label style="font-size: 12px;">字体<select v-model="fontIdx" @change="doChangeFont">
                 <option v-for="(f, idx) in fonts" :value="idx">{{ f.name }}</option>
             </select></label>
 
@@ -257,29 +257,27 @@
                         stripped() {
                             return this.chars.trim().replaceAll(/(?<=\n)\s+(?=\n)/g, '').replaceAll(/\n{2,}/g, '\n');
                         },
-                        font() {
-                            return this.fonts[this.fontIdx];
-                        }
                     },
                     watch: {
                         adjustment() {
                             document.querySelector(':root')?.style.setProperty?.('--adjustment', this.adjustment);
-                        }
+                        },
                     },
                     methods: {
                         exitFullscreen() {
                             document.exitFullscreen();
                         },
                         doChangeFont() {
-                            if (!this.font.fontFace) {
-                                new Promise(() => {
-                                    this.font.fontFace = new FontFace(this.font.name, `url(fonts/${this.font.file})`);
-                                    this.font.fontFace.load();
-                                    document.fonts.add(this.font.fontFace);
+                            const font = this.fonts[this.fontIdx];
+                            if (!font.fontFace) {
+                                new Promise(async () => {
+                                    font.fontFace = new FontFace(font.name, `url(fonts/${font.file})`);
+                                    await font.fontFace.load();
+                                    document.fonts.add(font.fontFace);
                                 });
                             }
-                            const dom = document.querySelector(':root')?.style.setProperty?.('--font', this.font.name);
-                        }
+                            document.querySelector(':root')?.style.setProperty?.('--font', font.name);
+                        },
                     },
                 }).mount('#app');
             });
