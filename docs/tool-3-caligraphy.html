@@ -14,6 +14,7 @@
 
     <style>
         :root {
+            --font: "方正新楷体简体";
             --font-size: 96px;
             --adjustment: 0;
             background-image: linear-gradient(225deg, gold, transparent 42px), linear-gradient(skyblue, transparent 108px);
@@ -120,7 +121,7 @@
             align-items: center;
             justify-content: center;
             text-align: center;
-            font-family: "方正新楷体简体", "kaiti", "Brush Script MT", "Comic Sans MS", cursive;
+            font-family: var(--font), "kaiti", "Brush Script MT", "Comic Sans MS", cursive;
             color: indianred;
             background-color: greenyellow;
             background-repeat: no-repeat;
@@ -200,6 +201,10 @@
         </div>
 
         <div style="margin: 8px 16px 0;text-align: right;">
+            <label style="font-size: 12px;">字体<select v-model="fontIdx" @input="doChangeFont">
+                <option v-for="(f, idx) in fonts" :value="idx">{{ f.name }}</option>
+            </select></label>
+
             <button @click="$refs.chars.requestFullscreen();" accesskey="f"
                     style="margin-left: 4px;width: 1.8em;user-select: none;" title="全屏显示"
                     type="button">
@@ -238,11 +243,22 @@
                             chars: '山木啸兮云幽幽，秣我归马兮无为久留。',
                             adjustment: 0,
                             rhomb: false,
+                            fonts: [
+                                {file: 'FZXKTJW.TTF', name: '方正新楷体简体'},
+                                {file: 'FZSJ-WEIXXNNHWY.TTF', name: '微笑向暖年华未央'},
+                                {file: 'FZYBKSJW.TTF', name: '方正硬笔楷书简体'},
+                                {file: 'FZYBXSJW.TTF', name: '方正硬笔行书简体'},
+                                {file: 'FZZJ-HTKSJW.TTF', name: '方正字迹-海体楷书简体'},
+                            ],
+                            fontIdx: 0,
                         }
                     },
                     computed: {
                         stripped() {
                             return this.chars.trim().replaceAll(/(?<=\n)\s+(?=\n)/g, '').replaceAll(/\n{2,}/g, '\n');
+                        },
+                        font() {
+                            return this.fonts[this.fontIdx];
                         }
                     },
                     watch: {
@@ -254,6 +270,13 @@
                         exitFullscreen() {
                             document.exitFullscreen();
                         },
+                        doChangeFont() {
+                            if (!this.font.fontFace) {
+                                this.font.fontFace = new FontFace(this.font.name, `url(fonts/${this.font.file})`);
+                                this.font.fontFace.load();
+                            }
+                            const dom = document.querySelector(':root')?.style.setProperty?.('--font', this.font.name);
+                        }
                     },
                 }).mount('#app');
             });
