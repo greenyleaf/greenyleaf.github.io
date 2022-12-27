@@ -53,6 +53,7 @@
             white-space: nowrap;
             margin-right: 8px;
             font-size: 14px;
+            user-select: none;
         }
 
         .dict-input-field {
@@ -140,6 +141,10 @@
             transition: border-bottom-width cubic-bezier(.43, -0.26, .43, -0.26) .3s;
         }
 
+        .site-item-text {
+            user-select: none;
+        }
+
         .dict-site-item-input:checked {
             border-bottom-width: 1em;
             /*animation: radio-input .28s;*/
@@ -181,6 +186,7 @@
         .option-item-label-text {
             line-height: 1em;
             margin-left: 4px;
+            user-select: none;
         }
     </style>
 
@@ -240,7 +246,7 @@
                     <label class="dict-site-item" v-for="(v,k) in sites">
                         <input :value="k" class="dict-site-item-input" name="siteKey" type="radio"
                                v-model="currentSiteKey">
-                        <span>{{ k }}</span>
+                        <span class="site-item-text">{{ k }}</span>
                     </label>
                 </div>
             </div>

@@ -53,6 +53,7 @@
             white-space: nowrap;
             margin-right: 8px;
             font-size: 14px;
+            user-select: none;
         }
 
         .dict-input-field {
@@ -181,6 +182,11 @@
         .option-item-label-text {
             line-height: 1em;
             margin-left: 4px;
+            user-select: none;
+        }
+
+        .site-item-text {
+            user-select: none;
         }
     </style>
 
@@ -237,7 +243,7 @@
                     <label class="dict-site-item" v-for="(v, k) in sites">
                         <input :title="k" :value="k" accesskey="s" class="dict-site-item-input" name="dictSite" required
                                type="radio" v-model="currentSiteKey">
-                        <span>{{ k }}</span>
+                        <span class="site-item-text">{{ k }}</span>
                     </label>
                 </div>
                 <!--<select :size="Object.keys(sites).length" accesskey="s" required style="margin-left: 8px;"
