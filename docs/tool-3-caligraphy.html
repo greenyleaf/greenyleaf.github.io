@@ -272,8 +272,11 @@
                         },
                         doChangeFont() {
                             if (!this.font.fontFace) {
-                                this.font.fontFace = new FontFace(this.font.name, `url(fonts/${this.font.file})`);
-                                this.font.fontFace.load();
+                                new Promise(() => {
+                                    this.font.fontFace = new FontFace(this.font.name, `url(fonts/${this.font.file})`);
+                                    this.font.fontFace.load();
+                                    document.fonts.add(this.font.fontFace);
+                                });
                             }
                             const dom = document.querySelector(':root')?.style.setProperty?.('--font', this.font.name);
                         }
