@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head>
+    <meta charset="UTF-8">
+    <title>qrcode sample zxing js browser camera</title>
+    <script src="https://unpkg.com/@zxing/browser@0.1.1/umd/zxing-browser.min.js"></script>
+
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+        }
+
+        .cover-console {
+            margin: 0;
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #8888;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <video id="preVideo" style="max-width: 320px;max-height: 320px;"></video>
+
+</div>
+
+<pre class="cover-console" id="coverConsole"></pre>
+
+<script>
+    const coverConsole = document.getElementById('coverConsole');
+    const preVideo = document.getElementById('preVideo');
+
+    const codeReader = new ZXingBrowser.BrowserQRCodeReader();
+
+    (async function () {
+        const videoInputDevs = await ZXingBrowser.BrowserQRCodeReader.listVideoInputDevices();
+        coverConsole.append(JSON.stringify(videoInputDevs, null, 3));
+
+        if (videoInputDevs.length) {
+            const selDevId = videoInputDevs[0].deviceId;
+
+            const controls = await codeReader.decodeFromVideoDevice(selDevId, preVideo, (res, err, controls) => {
+
+            });
+
+            setTimeout(() => {
+                controls.stop();
+            }, 20000);
+        }
+    })();
+</script>
+</body>
+</html>
