@@ -10,6 +10,8 @@
         html, body {
             margin: 0;
             padding: 0;
+            height: 100%;
+            width: 100%;
         }
 
         .cover-console {
@@ -18,9 +20,9 @@
             left: 0;
             top: 0;
             width: 100vw;
-            height: 100vh;
+            height: 100%;
             background: #8888;
-            overflow: auto;
+            overflow: scroll;
         }
     </style>
 </head>
@@ -39,7 +41,7 @@
 </div>
 
 <pre class="cover-console" id="coverConsole">
-    <button id="hideBtn" style="position: sticky;">Hide</button>
+    <button id="hideBtn" style="position: sticky;top: 12px;">Hide</button>
 </pre>
 
 <script>
@@ -90,6 +92,7 @@
                 }
             })();
 
+            showBtn.click();
         }
     });
 
