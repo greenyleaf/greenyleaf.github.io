@@ -25,7 +25,7 @@
             position: fixed;
             left: 0;
             top: 0;
-            width: 100%;
+            width: 100vw;
             height: 100%;
             background: #8888;
             overflow: scroll;
@@ -65,7 +65,7 @@
     const append = obj => {
         coverConsole.append(JSON.stringify(obj, null, 3));
         coverConsole.append('\n');
-        coverConsole.scrollTo(0, coverConsole.scrollHeight);
+        coverConsoleWrapper.scrollTo(0, coverConsoleWrapper.scrollHeight);
     };
 
     const codeReader = new ZXingBrowser.BrowserQRCodeReader();
