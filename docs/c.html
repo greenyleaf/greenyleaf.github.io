@@ -19,44 +19,78 @@
             width: 100vw;
             height: 100vh;
             background: #8888;
+            overflow: auto;
         }
     </style>
 </head>
 <body>
 <div>
-    <video id="preVideo" style="max-width: 320px;max-height: 320px;"></video>
+    <div>
+        <button id="showBtn">Show</button>
+        <button id="stopBtn">Stop</button>
+        <button id="startBtn">Start</button>
+    </div>
+
+    <div>
+        <video id="preVideo" style="max-width: 100%;max-height: 75vh;"></video>
+    </div>
 
 </div>
 
-<pre class="cover-console" id="coverConsole"></pre>
+<pre class="cover-console" id="coverConsole">
+    <button id="hideBtn" style="position: sticky;">Hide</button>
+</pre>
 
 <script>
     const coverConsole = document.getElementById('coverConsole');
     const preVideo = document.getElementById('preVideo');
-
-    const codeReader = new ZXingBrowser.BrowserQRCodeReader();
+    const showBtn = document.getElementById('showBtn');
+    const hideBtn = document.getElementById('hideBtn');
+    const stopBtn = document.getElementById('stopBtn');
+    const startBtn = document.getElementById('startBtn');
 
     const append = obj => {
         coverConsole.append(JSON.stringify(obj, null, 3));
         coverConsole.append('\n');
+        coverConsole.scrollTo(coverConsole.scrollHeight);
     };
 
-    (async function () {
-        const videoInputDevs = await ZXingBrowser.BrowserQRCodeReader.listVideoInputDevices();
-        append(videoInputDevs);
+    const codeReader = new ZXingBrowser.BrowserQRCodeReader();
+    let controls = null;
 
-        if (videoInputDevs.length) {
-            const selDevId = videoInputDevs[1].deviceId;
-
-            const controls = await codeReader.decodeFromVideoDevice(selDevId, preVideo, (res, err, controls) => {
-                append(res);
-            });
-
-            setTimeout(() => {
-                controls.stop();
-            }, 20000);
+    hideBtn.addEventListener('click', () => {
+        coverConsole.hidden = true;
+    });
+    showBtn.addEventListener('click', () => {
+        coverConsole.hidden = false;
+    });
+    stopBtn.addEventListener('click', () => {
+        if (controls) {
+            controls.stop();
+            controls = null;
         }
-    })();
+    });
+    startBtn.addEventListener('click', () => {
+        if (!controls) {
+            (async function () {
+                const videoInputDevs = await ZXingBrowser.BrowserQRCodeReader.listVideoInputDevices();
+                append(videoInputDevs);
+
+                if (videoInputDevs.length) {
+                    const selDevId = videoInputDevs[1].deviceId;
+
+                    controls = await codeReader.decodeFromVideoDevice(selDevId, preVideo, (res, err, controls) => {
+                        if (res) {
+                            append(res);
+                        }
+                    });
+                } else {
+                    append('no camera found. \~o_o~/');
+                }
+            })();
+
+        }
+    });
 </script>
 </body>
 </html>
