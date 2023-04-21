@@ -20,7 +20,7 @@
             width: 100%;
         }
 
-        .cover-console {
+        .cover-console-wrapper {
             margin: 0;
             position: fixed;
             left: 0;
@@ -46,15 +46,21 @@
 
 </div>
 
-<pre class="cover-console" id="coverConsole">
-    <button id="hideBtn" style="position: sticky;top: 12px;">Hide</button>
+<pre class="cover-console-wrapper" id="coverConsoleWrapper">
+    <div style="position: sticky;top: 0;display: flex;gap: 4px;padding: 4px;">
+        <button id="hideBtn">Hide</button>
+        <button id="clearBtn">Clear</button>
+    </div>
+    <div id="coverConsole"></div>
 </pre>
 
 <script>
     const coverConsole = document.getElementById('coverConsole');
+    const coverConsoleWrapper = document.getElementById('coverConsoleWrapper');
     const preVideo = document.getElementById('preVideo');
     const showBtn = document.getElementById('showBtn');
     const hideBtn = document.getElementById('hideBtn');
+    const clearBtn = document.getElementById('clearBtn');
     const stopBtn = document.getElementById('stopBtn');
     const startBtn = document.getElementById('startBtn');
 
@@ -68,10 +74,13 @@
     let controls = null;
 
     hideBtn.addEventListener('click', () => {
-        coverConsole.hidden = true;
+        coverConsoleWrapper.hidden = true;
+    });
+    clearBtn.addEventListener('click', () => {
+        coverConsole.textContent = '';
     });
     showBtn.addEventListener('click', () => {
-        coverConsole.hidden = false;
+        coverConsoleWrapper.hidden = false;
     });
     stopBtn.addEventListener('click', () => {
         if (controls) {
