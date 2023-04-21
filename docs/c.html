@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <title>qrcode sample zxing js browser camera</title>
+    <script>
+        if (location.protocol === 'http') {
+            location.protocol = 'https';
+        }
+    </script>
+
     <script src="https://unpkg.com/@zxing/browser@0.1.1/umd/zxing-browser.min.js"></script>
 
     <style>
