@@ -52,7 +52,7 @@
     const append = obj => {
         coverConsole.append(JSON.stringify(obj, null, 3));
         coverConsole.append('\n');
-        coverConsole.scrollTo(coverConsole.scrollHeight);
+        coverConsole.scrollTo(0, coverConsole.scrollHeight);
     };
 
     const codeReader = new ZXingBrowser.BrowserQRCodeReader();
@@ -85,12 +85,14 @@
                         }
                     });
                 } else {
-                    append('no camera found. \~o_o~/');
+                    append('no camera found. ~o_o~');
                 }
             })();
 
         }
     });
+
+    startBtn.click();
 </script>
 </body>
 </html>
