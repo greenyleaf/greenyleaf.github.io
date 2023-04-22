@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta content="webkit" name="renderer"/>
+    <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+    <meta content="width=device-width,initial-scale=1" name="viewport"/>
+
+    <title>box effect demo</title>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/normalize.css@8.0.1/normalize.css" rel="stylesheet">
+
+    <style>
+        .box-shadow-inset {
+            display: block;
+            margin: 24px;
+            width: 72px;
+            height: 72px;
+            background-color: palegreen;
+            box-shadow: inset 0 0 0 8px black, 0 0 0 4px palevioletred;
+
+            transition: all 250ms;
+        }
+
+        .box-shadow-inset:hover {
+            box-shadow: inset 0 0 8px 8px black, 0 0 4px 4px palevioletred;
+        }
+
+    </style>
+</head>
+<body>
+<div>
+    <div class="box-shadow-inset"></div>
+</div>
+</body>
+</html>

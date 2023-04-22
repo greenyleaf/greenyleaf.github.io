@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta content="webkit" name="renderer"/>
+    <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+    <meta content="width=device-width,initial-scale=1" name="viewport"/>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/normalize.css@8.0.1/normalize.css" rel="stylesheet">
+
+    <title>text effect demo</title>
+
+    <style>
+        .box-1 {
+            margin: 32px;
+            padding: 32px;
+            font-size: 72px;
+            text-shadow: 3px 3px 3px gold;
+            background-color: darkblue;
+        }
+
+        .box-2 {
+            margin: 32px;
+            padding: 32px;
+            text-shadow: 0 0 3px gold;
+            background-color: darkblue;
+        }
+
+        .box-3 {
+            margin: 32px;
+            padding: 32px;
+            font-size: 72px;
+            text-shadow: 1px 1px deepskyblue,
+            2px 2px deepskyblue, 3px 3px deepskyblue, 4px 4px deepskyblue,
+            5px 5px deepskyblue, 6px 6px 1px darkblue;
+        }
+
+        .box-4 {
+            color: white;
+            margin: 32px;
+            padding: 32px;
+            font-size: 72px;
+            text-shadow: 0 0 2px blue, 0 0 2px blue, 0 0 8px deepskyblue;
+        }
+
+        .box-5-container {
+            background: aqua;
+        }
+
+        .box-5 {
+            background-image: linear-gradient(darkgrey, darkgrey .667em, gold);
+            margin: 32px;
+            font-size: 72px;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .box-6 {
+            margin: 32px;
+            padding: 32px;
+            font-size: 72px;
+            box-shadow: 2px 2px 6px 6px darkorange;
+            color: darkorange;
+            text-shadow: 2px 2px 8px black, 2px 2px 8px black, 2px 2px 8px black, 2px 2px 8px black;
+        }
+
+        .box-7 {
+            display: inline-block;
+            margin: 32px;
+            font-size: 72px;
+            box-shadow: 2px 2px 6px 6px darkorange;
+            color: transparent;
+            background-image: repeating-linear-gradient(to right, goldenrod 0, lightgrey .5em, deepskyblue 1em);
+            -webkit-background-clip: text;
+        }
+
+        .box-8 {
+            margin: 32px;
+            font-size: 72px;
+            color: white;
+            text-shadow: 0 0 hotpink, 1px 1px hotpink, 2px 2px hotpink, 3px 3px hotpink, 4px 4px hotpink, 5px 5px hotpink, 6px 6px brown;
+        }
+
+        .box-9 {
+            margin: 32px;
+            font-size: 72px;
+            color: goldenrod;
+            text-shadow: -2px -2px gold, -1px -1px gold, 0 1px darkblue, 0 2px darkblue, 0 3px darkblue, 0 4px darkblue;
+        }
+
+        .box-10 {
+            margin: 32px;
+            font-size: 72px;
+            color: white;
+            text-shadow: 2px 2px 6px grey;
+        }
+
+        .box-11 {
+            margin: 32px;
+            font-size: 72px;
+            color: black;
+            -webkit-text-fill-color: white;
+            -webkit-text-stroke: 1px gold;
+            text-shadow: 1px 1px 1px black;
+        }
+
+        .box-12 {
+            margin: 32px;
+            background-image: linear-gradient(to right bottom, gold, blue, blue);
+            font-size: 72px;
+            color: black;
+            -webkit-text-fill-color: transparent;
+            -webkit-text-stroke: 1px gold;
+            text-shadow: 3px 3px 8px #ff000044;
+        }
+
+        .box-13 {
+            margin: 32px;
+            display: inline-block;
+            background-image: linear-gradient(to bottom, lightskyblue 30%, blue 70%);
+            font-size: 72px;
+            color: black;
+            -webkit-text-fill-color: transparent;
+            -webkit-background-clip: text;
+            -webkit-text-stroke: 1.5px gold;
+        }
+
+        .box-14 {
+            margin: 32px;
+            display: inline-block;
+            background-image: linear-gradient(to right, goldenrod 20%, palegoldenrod 50%, goldenrod 80%);
+            font-size: 72px;
+            -webkit-text-fill-color: transparent;
+            -webkit-background-clip: text;
+            -webkit-text-stroke: 1px greenyellow;
+        }
+
+        .box-15 {
+            margin: 32px;
+            display: inline-block;
+            background-image: linear-gradient(to bottom, gold, palegoldenrod);
+            font-size: 72px;
+            font-weight: 900;
+            -webkit-text-fill-color: transparent;
+            -webkit-text-stroke: 3px black;
+            -webkit-background-clip: text;
+            color: black;
+        }
+
+        .box-15::first-letter {
+            font-size: 88px;
+        }
+
+        .box-16 {
+            background-color: darkslategrey;
+            margin: 32px;
+            display: inline-block;
+            font-size: 72px;
+            font-weight: 900;
+            color: deeppink;
+            -webkit-text-stroke: 1px whitesmoke;
+            text-shadow: 0 0 4px white;
+        }
+
+        .box-17 {
+            margin: 32px;
+            display: inline-block;
+            font-size: 72px;
+            font-weight: 900;
+            font-style: italic;
+            color: white;
+            -webkit-text-stroke: 4px darkslateblue;
+            text-decoration: underline 20px solid darkslateblue;
+            text-underline-offset: -6px;
+        }
+
+        .box-17-small {
+            -webkit-text-stroke: 3px darkslateblue;
+            font-size: 36px;
+        }
+
+        .box-18-wrapper {
+            background-color: green;
+        }
+
+        .box-18 {
+            margin: 32px;
+            display: inline-block;
+            font-size: 72px;
+            font-weight: 900;
+            color: black;
+            background-image: linear-gradient(darkred, gold, darkred);
+            -webkit-text-fill-color: transparent;
+            -webkit-text-stroke: 3px white;
+            -webkit-background-clip: text;
+        }
+
+        .box-18::first-letter {
+            font-size: 96px;
+        }
+
+        .box-19-wrapper {
+            background-color: grey;
+            margin: 32px;
+            padding: 0 8px;
+        }
+
+        .box-19 {
+            display: inline-block;
+            font-size: 80px;
+            font-weight: 900;
+            font-family: monospace;
+            line-height: 1em;
+            color: white;
+            text-shadow: 0 0 10px gold;
+        }
+
+        @keyframes b19b {
+            from {
+                visibility: visible;
+            }
+
+            50% {
+                visibility: hidden;
+            }
+        }
+
+        .box-19-blink {
+            animation: b19b 2s infinite step-end;
+            position: relative;
+            top: -.1em;
+        }
+
+        .box-19-line-2 {
+            font-weight: 900;
+            font-size: 21px;
+            font-family: monospace;
+            color: white;
+            text-shadow: 0 0 6px gold;
+        }
+
+        .box-wrapper-20 {
+            background-color: orange;
+        }
+
+        .box-20 {
+            letter-spacing: 2px;
+            font-size: 27px;
+            font-weight: 900;
+            font-family: cursive;
+            color: white;
+            -webkit-text-stroke: 1px cadetblue;
+        }
+
+        .box-wrapper-21 {
+            margin: 32px;
+        }
+
+        .box-21 {
+            font-size: 52px;
+            font-weight: 700;
+            font-family: cursive;
+            color: palegoldenrod;
+            text-shadow: 2px 1px 1px black;
+        }
+
+        .box-wrapper-22 {
+            margin: 32px;
+            padding: 32px;
+            background-color: midnightblue;
+        }
+
+        .box-22 {
+            font-size: 152px;
+            font-weight: 700;
+            font-family: sans-serif;
+            color: whitesmoke;
+            -webkit-text-stroke: 1px lightgrey;
+            text-shadow: 2px -8px 1px white, 2px -6px 1px white, 1px -4px 1px white, 1px -2px 1px white, -1px 2px 1px darkslategrey, -1px 4px 1px darkslategrey, -2px 4px 1px darkslategrey, -2px 8px 1px darkslategrey, 0 0 32px whitesmoke;
+        }
+
+        .box-wrapper-23 {
+            margin: 32px;
+        }
+
+        .box-23 {
+            font-size: 40px;
+            font-weight: 900;
+            font-family: sans-serif;
+            font-style: italic;
+            line-height: 1em;
+            color: black;
+            -webkit-text-fill-color: transparent;
+            -webkit-text-stroke: 1px black;
+            background-image: linear-gradient(floralwhite 50%, gold 95%);
+            -webkit-background-clip: text;
+        }
+
+        .box-wrapper {
+            margin: 32px;
+        }
+
+        .box-24 {
+            padding: 24px 0;
+            background-color: dodgerblue;
+            vertical-align: middle;
+            font-size: 40px;
+            font-weight: 900;
+            font-family: sans-serif;
+            line-height: 1em;
+            color: gold;
+            -webkit-text-stroke: 1px goldenrod;
+        }
+
+        .down-bigger-24 {
+            position: relative;
+            top: 8px;
+            font-size: 48px;
+        }
+
+        .up-smaller-24 {
+            position: relative;
+            top: -12px;
+            font-size: 32px;
+        }
+
+        .wrapper-25 {
+            background-color: green;
+        }
+
+        .box-25 {
+            display: inline-block;
+            font-size: 72px;
+            font-weight: 900;
+            font-family: sans-serif;
+            line-height: 1em;
+            z-index: 10;
+            color: black;
+            -webkit-text-stroke: 1px black;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-image: linear-gradient(to right, dimgrey, white 45%, white 55%, dimgrey);
+        }
+
+        .box-26 {
+            padding: 0 4px;
+            display: inline-block;
+            background-color: #0004;
+            border-radius: 12px;
+            font-size: 48px;
+            font-weight: 900;
+            font-family: sans-serif;
+            line-height: 1em;
+            z-index: 10;
+            color: black;
+            text-shadow: 0 0 8px white, 0 0 8px white, 0 0 8px white, 0 0 8px white, 0 0 8px white, 0 0 8px white;
+        }
+
+        .box-26-num {
+            color: indianred;
+        }
+
+        .box-27 {
+            display: inline-block;
+            font-size: 48px;
+            font-weight: 900;
+            font-family: sans-serif;
+            line-height: 1em;
+            z-index: 10;
+            color: dodgerblue;
+            text-shadow: 0 0 2px mediumblue, 0 0 6px dodgerblue;
+        }
+
+        @keyframes b28s {
+            from {
+                filter: none;
+            }
+
+            25% {
+                filter: hue-rotate(90deg);
+            }
+            50% {
+                filter: hue-rotate(180deg);
+            }
+            75% {
+                filter: hue-rotate(270deg);
+            }
+
+            to {
+                filter: hue-rotate(360deg);
+            }
+        }
+
+        .box-28 {
+            display: inline-block;
+            font-size: 48px;
+            font-weight: 900;
+            font-family: sans-serif;
+            line-height: 1em;
+            z-index: 10;
+            color: dodgerblue;
+            text-shadow: 0 0 2px mediumblue, 0 0 6px dodgerblue;
+            animation: b28s 12s infinite;
+        }
+
+        @keyframes b29s {
+            from, to {
+                text-shadow: 0 0 2px red, 0 0 6px red;
+            }
+            33.3% {
+                text-shadow: 0 0 2px paleturquoise, 0 0 6px paleturquoise;
+            }
+            66.7% {
+                text-shadow: 0 0 2px dodgerblue, 0 0 6px dodgerblue;
+            }
+        }
+
+        .box-29 {
+            display: inline-block;
+            font-size: 48px;
+            font-weight: 900;
+            font-family: sans-serif;
+            line-height: 1em;
+            z-index: 10;
+            color: black;
+            -webkit-text-fill-color: white;
+            -webkit-text-stroke: 1px black;
+            animation: b29s 6s infinite step-end;
+        }
+
+        @keyframes b30s {
+            from {
+                transform-origin: bottom;
+            }
+
+            20% {
+                transform: scaleX(.98) scaleY(1.1);
+            }
+
+            55% {
+                transform: scaleX(1.06) scaleY(.8);
+            }
+        }
+
+        .box-30 {
+            display: inline-block;
+            font-size: 48px;
+            font-weight: 900;
+            font-family: sans-serif;
+            line-height: 1em;
+            z-index: 10;
+            color: black;
+            -webkit-text-fill-color: white;
+            -webkit-text-stroke: 1px black;
+            text-shadow: 0 0 2px mediumblue, 0 0 6px dodgerblue;
+            animation: b30s 5s infinite;
+        }
+
+        .box-31 {
+            color: lightgrey;
+            font-family: sans-serif;
+            font-weight: 700;
+            font-size: 56px;
+            text-shadow: 0 -1px 1px black, 0 1px lightpink;
+        }
+
+        .box-32 {
+            color: white;
+            font-family: sans-serif;
+            font-weight: 700;
+            font-size: 56px;
+            text-shadow: 0 -1px 3px gold, 0 -2px 3px gold, 0 -3px 3px gold, 0 -4px 3px gold, 0 -6px 16px orangered, 0 -6px 16px orangered;
+        }
+
+        .box-33 {
+            color: white;
+            font-family: sans-serif;
+            font-weight: 700;
+            font-size: 42px;
+            text-shadow: 0 0 4px white, 0 0 4px white, 0 0 36px deeppink, 0 0 36px deeppink;
+        }
+
+        .box-34 {
+            color: white;
+            font-family: sans-serif;
+            font-weight: 700;
+            font-size: 42px;
+            -webkit-text-fill-color: white;
+            -webkit-text-stroke: 1px black;
+            text-shadow: 0 -1px 1px black;
+        }
+
+        .box-35 {
+            color: black;
+            font-family: sans-serif;
+            font-weight: 700;
+            font-size: 42px;
+            text-shadow: 2px 2px white, 3px 3px grey;
+        }
+
+        @keyframes a36 {
+            0%, 100% {
+                text-shadow: 0 -2px 4px gold, 0 2px 4px gold, 0 -6px 12px orange, 0 6px 12px orange;
+            }
+            50% {
+                text-shadow: 0 -8px 16px gold, 0 8px 16px gold, 0 -16px 32px orange, 0 16px 32px orange;
+            }
+        }
+
+        .box-36 {
+            color: black;
+            font-family: sans-serif;
+            font-weight: 700;
+            font-size: 42px;
+            animation: a36 3s infinite linear;
+        }
+
+    </style>
+</head>
+<body>
+<div>
+    <div class="box-1">长河落日圆，大漠孤烟直</div>
+</div>
+<div>
+    <div class="box-2">长河落日圆，大漠孤烟直</div>
+</div>
+<div>
+    <div class="box-3">长河落日圆，大漠孤烟直</div>
+</div>
+
+<div>
+    <div class="box-4">长河落日圆，大漠孤烟直</div>
+</div>
+
+<div class="box-5-container">
+    <div class="box-5">长河落日圆，大漠孤烟直</div>
+</div>
+
+<div>
+    <div class="box-6">长河落日圆，大漠孤烟直</div>
+</div>
+
+<div>
+    <div class="box-7">长河落日圆，大漠孤烟直</div>
+</div>
+
+<div>
+    <div class="box-8">长河落日圆，大漠孤烟直</div>
+</div>
+
+<div>
+    <div class="box-9">长河落日圆，大漠孤烟直</div>
+</div>
+
+<div>
+    <div class="box-10">长河落日圆，大漠孤烟直</div>
+</div>
+
+<div>
+    <div class="box-11">长河落日圆，大漠孤烟直</div>
+</div>
+
+<div>
+    <div class="box-12">长河落日圆，大漠孤烟直</div>
+</div>
+
+<div>
+    <div class="box-13">长河落日圆，大漠孤烟直</div>
+</div>
+
+<div>
+    <div class="box-14">长河落日圆，大漠孤烟直</div>
+</div>
+
+<div>
+    <div class="box-15"><span>长河落日圆</span>，<span>大漠孤烟直</span></div>
+</div>
+
+<div>
+    <div class="box-16">何日君再来</div>
+</div>
+
+<div>
+    <div class="box-17">&nbsp;&nbsp;游戏机<span class="box-17-small">实用技术</span>&nbsp;</div>
+</div>
+
+<div class="box-18-wrapper">
+    <div class="box-18">电子游戏软件</div>
+</div>
+
+<div class="box-19-wrapper">
+    <div class="box-19">15<span class="box-19-blink">:</span>46</div>
+    <div class="box-19-line-2">2022/12/12 | 星期一</div>
+</div>
+
+<div class="box-wrapper-20">
+    <div class="box-20">ios充值移步公众号</div>
+</div>
+
+<div class="box-wrapper-21">
+    <div class="box-21">首次点歌加粉牌</div>
+</div>
+
+<div class="box-wrapper-22">
+    <div class="box-22">游戏事宜大会</div>
+</div>
+
+<div class="box-wrapper-23">
+    <div class="box-23">旁白文字一段</div>
+</div>
+
+<div class="box-wrapper">
+    <div class="box-24">太行<span class="down-bigger-24">名</span><span class="up-smaller-24">山</span>的节目</div>
+</div>
+
+<div class="box-wrapper wrapper-25">
+    <div class="box-25">1945<br>PLUS</div>
+</div>
+
+<div class="box-wrapper">
+    <div class="box-26">FIFA <span class="box-26-num">2016</span></div>
+</div>
+
+<div class="box-wrapper">
+    <div class="box-27">佚名的小站</div>
+</div>
+
+<div class="box-wrapper">
+    <div class="box-28">佚名的小站</div>
+</div>
+
+<div class="box-wrapper">
+    <div class="box-29">佚名的小站</div>
+</div>
+
+<div class="box-wrapper">
+    <div class="box-30">佚名的小站</div>
+</div>
+
+<div class="box-wrapper">
+    <div class="box-31">凸显</div>
+</div>
+
+<div class="box-wrapper">
+    <div class="box-32">火焰</div>
+</div>
+
+<div class="box-wrapper">
+    <div class="box-33">霓虹灯</div>
+</div>
+
+<div class="box-wrapper">
+    <div class="box-34">轮廓</div>
+</div>
+
+<div class="box-wrapper">
+    <div class="box-36">炫光炫光炫光</div>
+</div>
+
+</body>
+</html>
