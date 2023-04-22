@@ -57,7 +57,8 @@
         <button @click="showCon">Show</button>
         <button @click="stopScan">Stop</button>
         <button @click="startScan">Start</button>
-        <label v-for="d in camDevs"><input type="radio" :value="d.deviceId" @input="changeCam">{{ d.label }}</label>
+        <label v-for="d in camDevs"><input type="radio" v-model="curCam" :value="d.deviceId"
+                                           @input="changeCam">{{ d.label }}</label>
     </div>
 
     <div>
@@ -81,6 +82,7 @@
                 controls: null,
                 conLog: '',
                 camDevs: [],
+                curCam: undefined,
             };
         },
         mounted() {
