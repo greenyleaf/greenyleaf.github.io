@@ -57,7 +57,7 @@
         <button @click="showCon">Show</button>
         <button @click="stopScan">Stop</button>
         <button @click="startScan">Start</button>
-        <label><input type="radio" v-for="d in camDevs" value="d.deviceId">{{ d.deviceId }}</label>
+        <label><input type="radio" v-for="d in camDevs" value="d.deviceId" @input="">{{ d.label }}</label>
     </div>
 
     <div>
@@ -83,8 +83,13 @@
                 camDevs: [],
             };
         },
-        created() {
+        mounted() {
             console.log('stage 1');
+
+            (async () => {
+                this.camDevs = await ZXingBrowser.BrowserQRCodeReader.listVideoInputDevices();
+                this.appendLog(this.camDevs);
+            })();
         },
         methods: {
             appendLog(obj) {
@@ -104,14 +109,12 @@
                     this.controls = null;
                 }
             },
+
             startScan() {
                 if (!this.controls) {
                     (async () => {
-                        const camDevs = await ZXingBrowser.BrowserQRCodeReader.listVideoInputDevices();
-                        this.appendLog(camDevs);
-
-                        if (camDevs.length) {
-                            const selDevId = camDevs[1].deviceId;
+                        if (this.camDevs.length) {
+                            const selDevId = this.camDevs[1].deviceId;
 
                             this.controls = await codeReader.decodeFromVideoDevice(selDevId, this.$refs.preVideo, (res, err, controls) => {
                                 if (res) {
