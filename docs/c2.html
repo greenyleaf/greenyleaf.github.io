@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <title>qrcode sample zxing js browser camera</title>
+
+    <script>
+        if (location.protocol === 'http') {
+            location.protocol = 'https';
+        }
+    </script>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/normalize.css@8.0.1/normalize.css" rel="stylesheet">
+
+    <script src="https://www.unpkg.com/vue/dist/vue.global.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.47/vue.global.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.global.min.js"></script>
+
+    <script src="https://unpkg.com/@zxing/browser@0.1.1/umd/zxing-browser.min.js"></script>
+
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+        }
+
+        .cover-console-wrapper {
+            margin: 0;
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100vw;
+            height: 100%;
+            background: #8888;
+            overflow: scroll;
+        }
+
+        .nonVis {
+            display: none;
+        }
+
+    </style>
+</head>
+<body>
+
+<div v-cloak id="app">
+    <div>
+        <button @click="showCon">Show</button>
+        <button @click="stopScan">Stop</button>
+        <button @click="startScan">Start</button>
+        <label><input type="radio" v-for="d in camDevs" value="d.deviceId">{{ d.deviceId }}</label>
+    </div>
+
+    <div>
+        <video ref="preVideo" style="max-width: 100%;height: 75vh;"></video>
+    </div>
+
+    <pre
+            class="cover-console-wrapper" ref="coverConsoleWrapper" :class="{nonVis: nonVis}"><span
+            style="position: sticky;top: 0;left: 0;display: flex;gap: 4px;padding: 4px;"><button
+            @click="hideCon">Hide</button><button @click="clearLog">Clear</button></span><span ref="coverConsole"
+                                                                                               v-text="conLog"></span></pre>
+</div>
+
+<script>
+    const codeReader = new ZXingBrowser.BrowserQRCodeReader();
+
+    const inst = Vue.createApp({
+        data() {
+            return {
+                nonVis: false,
+                controls: null,
+                conLog: '',
+                camDevs: [],
+            };
+        },
+        created() {
+            console.log('stage 1');
+        },
+        methods: {
+            appendLog(obj) {
+                this.conLog = [this.conLog, JSON.stringify(obj, null, 3), '\n'].join('');
+                this.$refs.coverConsoleWrapper.scrollTo(0, this.$refs.coverConsoleWrapper.scrollHeight);
+            },
+            showCon() {
+                this.nonVis = false;
+            },
+            hideCon() {
+                console.log('stage 2');
+                this.nonVis = true;
+            },
+            stopScan() {
+                if (this.controls) {
+                    this.controls.stop();
+                    this.controls = null;
+                }
+            },
+            startScan() {
+                if (!this.controls) {
+                    (async () => {
+                        const camDevs = await ZXingBrowser.BrowserQRCodeReader.listVideoInputDevices();
+                        this.appendLog(camDevs);
+
+                        if (camDevs.length) {
+                            const selDevId = camDevs[1].deviceId;
+
+                            this.controls = await codeReader.decodeFromVideoDevice(selDevId, this.$refs.preVideo, (res, err, controls) => {
+                                if (res) {
+                                    this.appendLog(res);
+                                }
+                            });
+                        } else {
+                            this.appendLog('no camera found. ~o_o~');
+                        }
+                    })();
+
+                    this.showCon();
+                }
+            },
+            clearLog() {
+                this.conLog = '';
+            }
+        },
+    }).mount('#app');
+</script>
+</body>
+</html>
