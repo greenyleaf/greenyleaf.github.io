@@ -57,7 +57,7 @@
         <button @click="showCon">Show</button>
         <button @click="stopScan">Stop</button>
         <button @click="startScan">Start</button>
-        <label><input type="radio" v-for="d in camDevs" value="d.deviceId" @input="">{{ d.label }}</label>
+        <label v-for="d in camDevs"><input type="radio" :value="d.deviceId" @input="changeCam">{{ d.label }}</label>
     </div>
 
     <div>
@@ -77,7 +77,7 @@
     const inst = Vue.createApp({
         data() {
             return {
-                nonVis: false,
+                nonVis: true,
                 controls: null,
                 conLog: '',
                 camDevs: [],
@@ -109,29 +109,29 @@
                     this.controls = null;
                 }
             },
+            changeCam() {
 
-            startScan() {
+            },
+            async startScan() {
                 if (!this.controls) {
-                    (async () => {
-                        if (this.camDevs.length) {
-                            const selDevId = this.camDevs[1].deviceId;
+                    if (this.camDevs.length) {
+                        const selDevId = this.camDevs[1].deviceId;
 
-                            this.controls = await codeReader.decodeFromVideoDevice(selDevId, this.$refs.preVideo, (res, err, controls) => {
-                                if (res) {
-                                    this.appendLog(res);
-                                }
-                            });
-                        } else {
-                            this.appendLog('no camera found. ~o_o~');
-                        }
-                    })();
+                        this.controls = await codeReader.decodeFromVideoDevice(selDevId, this.$refs.preVideo, (res, err, controls) => {
+                            if (res) {
+                                this.appendLog(res);
+                            }
+                        });
+                    } else {
+                        this.appendLog('no camera found. ~o_o~');
+                    }
 
                     this.showCon();
                 }
             },
             clearLog() {
                 this.conLog = '';
-            }
+            },
         },
     }).mount('#app');
 </script>
