@@ -31,6 +31,7 @@
             padding: 0;
             height: 100%;
             width: 100%;
+            box-sizing: border-box;
         }
 
         .main {
@@ -38,6 +39,34 @@
             height: 100%;
             display: flex;
             flex-direction: column;
+            box-sizing: border-box;
+        }
+
+        .toolbar {
+            display: flex;
+            gap: 4px;
+            padding: 4px;
+            flex-wrap: wrap;
+            flex: 0 0;
+        }
+
+        .master {
+            flex: 1 1;
+            position: relative;
+            border: 0 red solid;
+            box-sizing: border-box;
+            display: flex;
+            align-items: stretch;
+            justify-content: center;
+        }
+
+        .camera {
+            max-width: 100%;
+            max-height: 100%;
+            border: 0 solid;
+            box-sizing: border-box;
+            /*display: none;*/
+            display: block;
         }
 
         .cover-con {
@@ -48,6 +77,7 @@
             height: 100%;
             background: #8888;
             overflow: auto;
+            box-sizing: border-box;
         }
 
         .nonVis {
@@ -62,7 +92,7 @@
 <body>
 
 <div v-cloak id="app" class="main">
-    <div style="display: flex;gap: 4px;padding: 4px;flex-wrap: wrap;flex: 0 0;">
+    <div class="toolbar">
         <button @click="showCon">Show</button>
         <button @click="hideCon">Hide</button>
 
@@ -75,10 +105,11 @@
                                            @input="changeCam">{{ d.label }}</label>
     </div>
 
-    <div style="flex: 1 0;position: relative;">
-        <video ref="preVideo" style="max-width: 100%;height: 100%;border: 1px solid;margin: 4px;"></video>
+    <div class="master">
+        <video ref="preVideo"
+               class="camera"></video>
 
-        <pre class="cover-con" :class="{nonVis: nonVis}" ref="coverCon" v-text="conLog"></pre>
+        <pre class="cover-con" :class="{nonVis: nonVis}" ref="coverCon" v-text="conLog" style="display: none;"></pre>
     </div>
 </div>
 
