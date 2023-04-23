@@ -55,6 +55,7 @@
             position: relative;
             border: 0 red solid;
             box-sizing: border-box;
+
             display: flex;
             align-items: stretch;
             justify-content: center;
@@ -118,7 +119,7 @@
     const inst = Vue.createApp({
         data() {
             return {
-                nonVis: true,
+                nonVis: false,
                 controls: null,
                 conLog: '',
                 camDevs: [],
@@ -127,6 +128,9 @@
         },
         mounted() {
             console.log('stage 1');
+            // for (let i = 0; i < 1000; i++) {
+            //     this.conLog += Date.now() + '\n';
+            // }
 
             (async () => {
                 this.camDevs = await ZXingBrowser.BrowserQRCodeReader.listVideoInputDevices();
@@ -136,7 +140,9 @@
         methods: {
             appendLog(obj) {
                 this.conLog = [this.conLog, JSON.stringify(obj, null, 3), '\n'].join('');
-                this.$refs.coverCon.scrollTo(0, this.$refs.coverCon.scrollHeight);
+                this.$nextTick(() => {
+                    this.$refs.coverCon.scrollTo(0, this.$refs.coverCon.scrollHeight);
+                });
             },
             showCon() {
                 this.nonVis = false;
@@ -161,7 +167,8 @@
 
                         this.controls = await codeReader.decodeFromVideoDevice(selDevId, this.$refs.preVideo, (res, err, controls) => {
                             if (res) {
-                                this.appendLog(res);
+                                const {text, timestamp} = res;
+                                this.appendLog({text, timestamp});
                             }
                         });
                     } else {
