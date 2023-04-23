@@ -169,12 +169,13 @@
                 }
             },
             changeCam() {
-
+                console.log('changeCam', 'curCam', curCam);
             },
             async startScan() {
                 if (!this.controls) {
                     if (this.camDevs.length) {
-                        const selDevId = this.camDevs[1].deviceId;
+                        // const selDevId = this.camDevs[1].deviceId;
+                        const selDevId = this.curCam;
 
                         this.controls = await codeReader.decodeFromVideoDevice(selDevId, this.$refs.preVideo, (res, err, controls) => {
                             if (res) {
