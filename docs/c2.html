@@ -33,43 +33,48 @@
             width: 100%;
         }
 
-        .cover-console-wrapper {
+        .main {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cover-con {
             margin: 0;
-            position: fixed;
-            left: 0;
-            top: 0;
-            width: 100vw;
+            padding: 4px;
+            width: 100%;
             height: 100%;
             background: #8888;
-            overflow: scroll;
+            overflow: auto;
         }
 
         .nonVis {
             display: none;
         }
-
     </style>
 </head>
 <body>
 
-<div v-cloak id="app">
-    <div>
+<div v-cloak id="app" class="main">
+    <div style="display: flex;gap: 4px;padding: 4px;flex-wrap: wrap;flex: 0 0;">
         <button @click="showCon">Show</button>
-        <button @click="stopScan">Stop</button>
+        <button @click="hideCon">Hide</button>
+
         <button @click="startScan">Start</button>
+        <button @click="stopScan">Stop</button>
+
+        <button @click="clearLog">Clear</button>
+
         <label v-for="d in camDevs"><input type="radio" v-model="curCam" :value="d.deviceId"
                                            @input="changeCam">{{ d.label }}</label>
     </div>
 
-    <div>
-        <video ref="preVideo" style="max-width: 100%;height: 75vh;"></video>
-    </div>
+    <div style="flex: 1 0;">
+        <video ref="preVideo" style="max-width: 100%;height: 100%;border: 1px solid;"></video>
 
-    <pre
-            class="cover-console-wrapper" ref="coverConsoleWrapper" :class="{nonVis: nonVis}"><span
-            style="position: sticky;top: 0;left: 0;display: flex;gap: 4px;padding: 4px;"><button
-            @click="hideCon">Hide</button><button @click="clearLog">Clear</button></span><span ref="coverConsole"
-                                                                                               v-text="conLog"></span></pre>
+        <pre class="cover-con" :class="{nonVis: nonVis}" ref="coverCon" v-text="conLog"></pre>
+    </div>
 </div>
 
 <script>
@@ -96,7 +101,7 @@
         methods: {
             appendLog(obj) {
                 this.conLog = [this.conLog, JSON.stringify(obj, null, 3), '\n'].join('');
-                this.$refs.coverConsoleWrapper.scrollTo(0, this.$refs.coverConsoleWrapper.scrollHeight);
+                this.$refs.coverCon.scrollTo(0, this.$refs.coverCon.scrollHeight);
             },
             showCon() {
                 this.nonVis = false;
