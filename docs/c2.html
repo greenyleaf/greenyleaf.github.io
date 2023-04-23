@@ -41,6 +41,7 @@
         }
 
         .cover-con {
+            position: absolute;
             margin: 0;
             padding: 4px;
             width: 100%;
@@ -51,6 +52,10 @@
 
         .nonVis {
             display: none;
+        }
+
+        .z-radio {
+
         }
     </style>
 </head>
@@ -66,12 +71,12 @@
 
         <button @click="clearLog">Clear</button>
 
-        <label v-for="d in camDevs"><input type="radio" v-model="curCam" :value="d.deviceId"
+        <label v-for="d in camDevs"><input type="radio" v-model="curCam" :value="d.deviceId" class="z-radio"
                                            @input="changeCam">{{ d.label }}</label>
     </div>
 
-    <div style="flex: 1 0;">
-        <video ref="preVideo" style="max-width: 100%;height: 100%;border: 1px solid;"></video>
+    <div style="flex: 1 0;position: relative;">
+        <video ref="preVideo" style="max-width: 100%;height: 100%;border: 1px solid;margin: 4px;"></video>
 
         <pre class="cover-con" :class="{nonVis: nonVis}" ref="coverCon" v-text="conLog"></pre>
     </div>
