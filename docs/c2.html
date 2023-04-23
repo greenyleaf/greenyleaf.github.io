@@ -92,6 +92,10 @@
         .z-radio {
 
         }
+
+        .copied {
+            box-shadow: 0 0 2px 2px palegreen;
+        }
     </style>
 </head>
 <body>
@@ -105,6 +109,8 @@
         <button @click="stopScan">Stop</button>
 
         <button @click="clearLog">Clear</button>
+
+        <button @click="copyDecoded" :disabled="!decodedContent" :class="{copied:copyDone}">Copy</button>
 
         <label v-for="d in camDevs"><input type="radio" v-model="curCam" :value="d.deviceId" class="z-radio"
                                            @input="changeCam">{{ d.label }}</label>
@@ -129,6 +135,8 @@
                 conLog: '',
                 camDevs: [],
                 curCam: undefined,
+                decodedContent: '',
+                copyDone: false,
             };
         },
         mounted() {
@@ -172,6 +180,7 @@
                             if (res) {
                                 const {text, timestamp} = res;
                                 this.appendLog({text, timestamp});
+                                this.decodedContent = text;
                             }
                         });
                     } else {
@@ -183,6 +192,10 @@
             },
             clearLog() {
                 this.conLog = '';
+            },
+            copyDecoded() {
+                navigator.clipboard.writeText(this.decodedContent);
+                this.copyDone = true;
             },
         },
     }).mount('#app');
