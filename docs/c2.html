@@ -75,7 +75,7 @@
             padding: 4px;
             width: 100%;
             height: 100%;
-            background: #8888;
+            background: #bbbb;
             overflow: auto;
             box-sizing: border-box;
         }
@@ -127,7 +127,6 @@
             };
         },
         mounted() {
-            console.log('stage 1');
             // for (let i = 0; i < 1000; i++) {
             //     this.conLog += Date.now() + '\n';
             // }
@@ -148,7 +147,6 @@
                 this.nonVis = false;
             },
             hideCon() {
-                console.log('stage 2');
                 this.nonVis = true;
             },
             stopScan() {
