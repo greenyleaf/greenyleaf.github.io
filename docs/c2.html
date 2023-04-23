@@ -26,6 +26,10 @@
             display: none;
         }
 
+        :root {
+            --grey: #333a;
+        }
+
         html, body {
             margin: 0;
             padding: 0;
@@ -48,6 +52,7 @@
             padding: 4px;
             flex-wrap: wrap;
             flex: 0 0;
+            background: var(--grey);
         }
 
         .master {
@@ -66,7 +71,7 @@
             max-height: 100%;
             border: 0 solid;
             box-sizing: border-box;
-            display: block;
+            /*display: block;*/
         }
 
         .cover-con {
@@ -75,7 +80,7 @@
             padding: 4px;
             width: 100%;
             height: 100%;
-            background: #bbbb;
+            background: var(--grey);
             overflow: auto;
             box-sizing: border-box;
         }
