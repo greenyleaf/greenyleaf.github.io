@@ -27,7 +27,7 @@
         }
 
         :root {
-            --grey: #333a;
+            --grey: #333b;
         }
 
         html, body {
@@ -52,7 +52,7 @@
             padding: 4px;
             flex-wrap: wrap;
             flex: 0 0;
-            background: var(--grey);
+            background: yellowgreen;
         }
 
         .master {
@@ -194,8 +194,10 @@
                 this.conLog = '';
             },
             copyDecoded() {
-                navigator.clipboard.writeText(this.decodedContent);
-                this.copyDone = true;
+                if (this.decodedContent) {
+                    navigator.clipboard.writeText(this.decodedContent);
+                    this.copyDone = true;
+                }
             },
         },
     }).mount('#app');
