@@ -6,8 +6,8 @@
     <title>qrcode sample zxing js browser camera</title>
 
     <script>
-        if (location.protocol === 'http') {
-            location.protocol = 'https';
+        if (!location.host.startsWith('localhost:') && location.protocol === 'http:') {
+            location.protocol = 'https:';
         }
     </script>
 
@@ -27,7 +27,7 @@
         }
 
         :root {
-            --grey: #0003;
+            --grey: #0001;
         }
 
         html, body {
