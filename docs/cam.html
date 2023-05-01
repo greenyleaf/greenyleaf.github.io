@@ -31,7 +31,7 @@
 <body>
 <div id="app" class="app">
     <div>
-        <video id="video" style="width: 640px;height: 480px;" class="simp-border"></video>
+        <video id="video" style="width: 100%;height: auto;" class="simp-border"></video>
     </div>
 
     <div>
@@ -65,9 +65,6 @@
         con.append('\n');
     };
 
-    appendLog(23423);
-    appendLog('asdfd');
-
     btn.addEventListener('click', () => {
         if (!btn.dataset.started) {
             btn.dataset.started = true;
@@ -88,15 +85,14 @@
             btn.dataset.started = false;
 
             try {
-                video.stop();
+                // video.stop();
+
+                gStream.getTracks().forEach(track => {
+                    track.stop();
+                });
             } catch (err) {
                 appendLog(err);
             }
-
-
-            // gStream.getTracks().forEach(track => {
-            //     track.stop();
-            // });
         }
     });
 
