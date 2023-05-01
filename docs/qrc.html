@@ -84,7 +84,7 @@
             overflow: auto;
             box-sizing: border-box;
             color: orangered;
-            text-shadow: 0 0 6px hotpink;
+            text-shadow: 0 0 3px pink;
         }
 
         .nonVis {
@@ -156,7 +156,8 @@
         },
         methods: {
             appendLog(obj) {
-                this.conLog = [this.conLog, JSON.stringify(obj, null, 3), '\n'].join('');
+                this.conLog += JSON.stringify(obj, null, 3);
+                this.conLog += '\n';
                 this.$nextTick(() => {
                     this.$refs.coverCon.scrollTo(0, this.$refs.coverCon.scrollHeight);
                 });
