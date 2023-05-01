@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>camera demo</title>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" rel="stylesheet">
+    <!--    <link href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css" rel="stylesheet">-->
+    <link href="https://unpkg.com/normalize.css@8.0.1/normalize.css" rel="stylesheet">
+
+    <style>
+
+    </style>
+</head>
+<body>
+<div id="app">
+    <div>
+        <video id="video" style="width: 640px;height: 480px;"></video>
+    </div>
+
+    <div>
+        <button id="btn">Start Video</button>
+        <button id="captureBtn">Capture</button>
+    </div>
+
+    <div>
+        <canvas id="captureOut"></canvas>
+    </div>
+</div>
+
+<script>
+
+    // new Vue({}).mount('#app');
+
+    const video = document.getElementById('video');
+    const btn = document.getElementById('btn');
+    const captureBtn = document.getElementById('captureBtn');
+    const captureOut = document.getElementById('captureOut');
+
+    btn.addEventListener('click', () => {
+        navigator.mediaDevices.getUserMedia({video: true, audio: false})
+            .then(stream => {
+                video.srcObject = stream;
+                video.play();
+                video.getVideoTracks();
+            })
+            .catch(err => {
+                console.log('err', err);
+            });
+    });
+
+    captureBtn.addEventListener('click', () => {
+        const cxt = captureOut.getContext('2d');
+        cxt.drawImage(video, 0, 0, video.width, video.height);
+    });
+</script>
+</body>
+</html>
