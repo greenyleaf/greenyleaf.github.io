@@ -57,6 +57,7 @@
     const captureBtn = document.getElementById('captureBtn');
     const captureOut = document.getElementById('captureOut');
     const con = document.getElementById('con');
+    const cxt = captureOut.getContext('2d');
 
     let gStream;
 
@@ -90,6 +91,7 @@
                 gStream.getTracks().forEach(track => {
                     track.stop();
                 });
+                video.srcObject = null;
             } catch (err) {
                 appendLog(err);
             }
@@ -97,8 +99,11 @@
     });
 
     captureBtn.addEventListener('click', () => {
-        const cxt = captureOut.getContext('2d');
-        cxt.drawImage(video, 0, 0, video.width, video.height);
+        try {
+            cxt.drawImage(video, 0, 0, video.width, video.height);
+        } catch (err) {
+            appendLog(err);
+        }
     });
 </script>
 </body>
