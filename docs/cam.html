@@ -1,61 +1,212 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh_CN">
 <head>
     <meta charset="UTF-8">
-    <meta content="width=device-width,initial-scale=1" name="viewport"/>
-    <title>camera demo</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <title>qrcode sample zxing js browser camera</title>
+
+    <script>
+        if (!location.host.startsWith('localhost:') && location.protocol === 'http:') {
+            location.protocol = 'https:';
+        }
+    </script>
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" rel="stylesheet">
-    <!--    <link href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css" rel="stylesheet">-->
+    <link href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css" rel="stylesheet">
     <link href="https://unpkg.com/normalize.css@8.0.1/normalize.css" rel="stylesheet">
 
+    <script src="https://www.unpkg.com/vue/dist/vue.global.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.47/vue.global.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.global.min.js"></script>
+
+    <script src="https://unpkg.com/@zxing/browser@0.1.1/umd/zxing-browser.min.js"></script>
+
     <style>
-        .simp-border {
-            border: black 1px solid;
+        [v-cloak] {
+            display: none;
+        }
+
+        :root {
+            --grey: #fff1;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .main {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+        }
+
+        .toolbar {
+            display: flex;
+            gap: 4px;
+            padding: 4px;
+            flex-wrap: wrap;
+            flex: 0 0;
+            background: yellowgreen;
+        }
+
+        .master {
+            flex: 1 1;
+            position: relative;
+            border: 0 red solid;
+            box-sizing: border-box;
+
+            display: flex;
+            align-items: stretch;
+            justify-content: center;
+        }
+
+        .camera {
+            max-width: 100%;
+            max-height: 100%;
+            border: 0 solid;
+            box-sizing: border-box;
+            /*display: block;*/
+        }
+
+        .cover-con {
+            position: absolute;
+            margin: 0;
+            padding: 4px;
+            width: 100%;
+            height: 100%;
+            background: var(--grey);
+            overflow: auto;
+            box-sizing: border-box;
+            color: orangered;
+            text-shadow: 0 0 4px deeppink;
+        }
+
+        .nonVis {
+            display: none;
+        }
+
+        .z-radio {
+
+        }
+
+        .copied {
+            box-shadow: 0 0 2px 2px palegreen;
         }
     </style>
 </head>
 <body>
-<div id="app">
-    <div>
-        <video id="video" style="width: 640px;height: 480px;" class="simp-border"></video>
+
+<div v-cloak id="app" class="main">
+    <div class="toolbar">
+        <button @click="showCon">Show</button>
+        <button @click="hideCon">Hide</button>
+
+        <button @click="startScan">Start</button>
+        <button @click="stopScan">Stop</button>
+
+        <button @click="clearLog">Clear</button>
+
+        <button @click="copyDecoded" :disabled="!decodedContent" :class="{copied:copyDone}">Copy</button>
+
+        <label v-for="d in camDevs"><input type="radio" v-model="curCam" :value="d.deviceId" class="z-radio"
+                                           @input="changeCam">{{ d.label }}</label>
     </div>
 
-    <div>
-        <button id="btn">Start Video</button>
-        <button id="captureBtn">Capture</button>
-    </div>
+    <div class="master">
+        <video ref="preVideo"
+               class="camera"></video>
 
-    <div>
-        <canvas id="captureOut" class="simp-border"></canvas>
+        <pre class="cover-con" :class="{nonVis: nonVis}" ref="coverCon" v-text="conLog"></pre>
     </div>
 </div>
 
 <script>
+    const codeReader = new ZXingBrowser.BrowserQRCodeReader();
 
-    // new Vue({}).mount('#app');
+    const inst = Vue.createApp({
+        data() {
+            return {
+                nonVis: false,
+                controls: null,
+                conLog: '',
+                camDevs: [],
+                curCam: undefined,
+                decodedContent: '',
+                copyDone: false,
+            };
+        },
+        mounted() {
+            // for (let i = 0; i < 1000; i++) {
+            //     this.conLog += Date.now() + '\n';
+            // }
 
-    const video = document.getElementById('video');
-    const btn = document.getElementById('btn');
-    const captureBtn = document.getElementById('captureBtn');
-    const captureOut = document.getElementById('captureOut');
+            (async () => {
+                this.camDevs = await ZXingBrowser.BrowserQRCodeReader.listVideoInputDevices();
+                if (!this.camDevs.length) {
+                    this.appendLog('没有找到摄像头!');
+                }
+                // this.appendLog(this.camDevs);
+            })();
+        },
+        methods: {
+            appendLog(obj) {
+                this.conLog = [this.conLog, JSON.stringify(obj, null, 3), '\n'].join('');
+                this.$nextTick(() => {
+                    this.$refs.coverCon.scrollTo(0, this.$refs.coverCon.scrollHeight);
+                });
+            },
+            showCon() {
+                this.nonVis = false;
+            },
+            hideCon() {
+                this.nonVis = true;
+            },
+            stopScan() {
+                if (this.controls) {
+                    this.controls.stop();
+                    this.controls = null;
+                }
+            },
+            changeCam() {
+                console.log('changeCam', 'curCam', curCam);
+            },
+            async startScan() {
+                if (!this.controls) {
+                    if (this.camDevs.length) {
+                        // const selDevId = this.camDevs[1].deviceId;
+                        const selDevId = this.curCam;
 
-    btn.addEventListener('click', () => {
-        navigator.mediaDevices.getUserMedia({video: true, audio: false})
-            .then(stream => {
-                video.srcObject = stream;
-                video.play();
-                video.getVideoTracks();
-            })
-            .catch(err => {
-                console.log('err', err);
-            });
-    });
+                        this.controls = await codeReader.decodeFromVideoDevice(selDevId, this.$refs.preVideo, (res, err, controls) => {
+                            if (res) {
+                                const {text, timestamp} = res;
+                                this.appendLog({text, timestamp});
+                                this.decodedContent = text;
+                            }
+                        });
+                    } else {
+                        this.appendLog('no camera found. ~o_o~');
+                    }
 
-    captureBtn.addEventListener('click', () => {
-        const cxt = captureOut.getContext('2d');
-        cxt.drawImage(video, 0, 0, video.width, video.height);
-    });
+                    this.showCon();
+                }
+            },
+            clearLog() {
+                this.conLog = '';
+            },
+            copyDecoded() {
+                if (this.decodedContent) {
+                    navigator.clipboard.writeText(this.decodedContent);
+                    this.copyDone = true;
+                }
+            },
+        },
+    }).mount('#app');
 </script>
 </body>
 </html>
