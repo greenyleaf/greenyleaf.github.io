@@ -76,11 +76,9 @@
 
             navigator.mediaDevices.getUserMedia({video: {facingMode: 'environment'}, audio: false})
                 .then(stream => {
+                    gStream = stream;
                     video.srcObject = stream;
                     video.play();
-                    video.getVideoTracks();
-
-                    gStream = stream;
                 })
                 .catch(err => {
                     console.log('err', err);
