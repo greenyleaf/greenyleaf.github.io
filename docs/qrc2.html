@@ -12,12 +12,12 @@
     </script>
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css" rel="stylesheet">
+    <!--<link href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css" rel="stylesheet">-->
     <link href="https://unpkg.com/normalize.css@8.0.1/normalize.css" rel="stylesheet">
 
-    <script src="https://www.unpkg.com/vue/dist/vue.global.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.47/vue.global.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.global.min.js"></script>
+    <!--<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.global.min.js"></script>-->
+    <script src="https://www.unpkg.com/vue/dist/vue.global.js"></script>
 
     <style>
         [v-cloak] {
@@ -113,6 +113,7 @@
 
     <div class="master">
         <video autoplay class="camera" ref="preVideo"></video>
+        <canvas ref="captureOut" style="display: none;"></canvas>
 
         <pre class="cover-con" :class="{nonVis: nonVis}" ref="coverCon" v-text="conLog"></pre>
     </div>
