@@ -6,7 +6,7 @@
     <title>qrcode sample zxing js browser camera</title>
 
     <script>
-        if (!location.host.startsWith('localhost:') && location.protocol === 'http:') {
+        if (location.hostname !== 'localhost' && location.protocol === 'http:') {
             location.protocol = 'https:';
         }
     </script>
@@ -112,13 +112,12 @@
 
         <button @click="copyDecoded" :disabled="!decodedContent" :class="{copied:copyDone}">Copy</button>
 
-        <label v-for="d in camDevs"><input type="radio" v-model="curCam" :value="d.deviceId" class="z-radio"
-                                           @input="changeCam">{{ d.label }}</label>
+        <!--        <label v-for="d in camDevs"><input type="radio" v-model="curCam" :value="d.deviceId" class="z-radio"-->
+        <!--                                           @input="changeCam">{{ d.label }}</label>-->
     </div>
 
     <div class="master">
-        <video ref="preVideo"
-               class="camera"></video>
+        <video autoplay class="camera" ref="preVideo"></video>
 
         <pre class="cover-con" :class="{nonVis: nonVis}" ref="coverCon" v-text="conLog"></pre>
     </div>
@@ -140,10 +139,6 @@
             };
         },
         mounted() {
-            // for (let i = 0; i < 1000; i++) {
-            //     this.conLog += Date.now() + '\n';
-            // }
-
             (async () => {
                 this.camDevs = await ZXingBrowser.BrowserQRCodeReader.listVideoInputDevices();
                 if (!this.camDevs.length) {
@@ -172,14 +167,14 @@
                     this.controls = null;
                 }
             },
-            changeCam() {
-                console.log('changeCam', 'curCam', curCam);
-            },
+            // changeCam() {
+            //     console.log('changeCam', 'curCam', curCam);
+            // },
             async startScan() {
                 if (!this.controls) {
                     if (this.camDevs.length) {
                         // const selDevId = this.camDevs[1].deviceId;
-                        const selDevId = this.curCam;
+                        // const selDevId = this.curCam;
 
                         //this.controls = await codeReader.decodeFromVideoDevice(selDevId, this.$refs.preVideo, (res, err, controls) => {
                         this.controls = await codeReader.decodeFromVideoDevice(null, this.$refs.preVideo, (res, err, controls) => {
