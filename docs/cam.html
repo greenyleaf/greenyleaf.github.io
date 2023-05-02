@@ -45,11 +45,14 @@
 <body>
 <div id="app" class="app">
     <div>
-        <video id="video" class="simp-border full-width"></video>
+        <video id="video" class="simp-border full-width" autoplay></video>
     </div>
 
     <div>
         <canvas id="captureOut" class="simp-border full-width"></canvas>
+    </div>
+    <div>
+        <img id="imgOut" class="simp-border full-width"></img>
     </div>
 
     <div class="con-wrapper simp-border">
@@ -71,6 +74,8 @@
     const captureBtn = document.getElementById('captureBtn');
     const captureOut = document.getElementById('captureOut');
     const con = document.getElementById('con');
+    const imgOut = document.getElementById('imgOut');
+
     const cxt = captureOut.getContext('2d');
 
     let gStream;
@@ -114,6 +119,10 @@
             captureOut.width = video.clientWidth;
             captureOut.height = video.clientHeight;
             cxt.drawImage(video, 0, 0, video.clientWidth, video.clientHeight);
+            captureOut.toBlob(blob => {
+                URL.revokeObjectURL(imgOut.src);
+                imgOut.src = URL.createObjectURL(blob);
+            });
         } catch (err) {
             appendLog(err);
         }
