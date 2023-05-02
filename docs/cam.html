@@ -116,6 +116,8 @@
                 cw: video.clientWidth, ch: video.clientHeight,
                 cow: captureOut.width, coh: captureOut.height,
             });
+            captureOut.width = video.clientWidth;
+            captureOut.height = video.clientHeight;
             cxt.drawImage(video, 0, 0, video.clientWidth, video.clientHeight);
         } catch (err) {
             appendLog(err);
