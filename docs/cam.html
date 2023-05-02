@@ -105,7 +105,7 @@
         try {
             appendLog({w: video.width, h: video.height});
             appendLog({w: captureOut.width, h: captureOut.height});
-            cxt.drawImage(video, 0, 0, video.width, video.height);
+            cxt.drawImage(video, 0, 0, captureOut.width, captureOut.height);
         } catch (err) {
             appendLog(err);
         }
