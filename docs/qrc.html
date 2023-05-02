@@ -181,7 +181,8 @@
                         // const selDevId = this.camDevs[1].deviceId;
                         const selDevId = this.curCam;
 
-                        this.controls = await codeReader.decodeFromVideoDevice(selDevId, this.$refs.preVideo, (res, err, controls) => {
+                        //this.controls = await codeReader.decodeFromVideoDevice(selDevId, this.$refs.preVideo, (res, err, controls) => {
+                        this.controls = await codeReader.decodeFromVideoDevice(null, this.$refs.preVideo, (res, err, controls) => {
                             if (res) {
                                 const {text, timestamp} = res;
                                 this.appendLog({text, timestamp});

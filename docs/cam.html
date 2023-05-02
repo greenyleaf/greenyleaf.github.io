@@ -88,7 +88,6 @@
                     gStream = stream;
                     video.srcObject = stream;
                     video.play();
-                    appendLog({w: video.width, h: video.height});
                 })
                 .catch(err => {
                     console.log('err', err);
@@ -112,11 +111,6 @@
 
     captureBtn.addEventListener('click', () => {
         try {
-            appendLog({
-                w: video.width, h: video.height,
-                cw: video.clientWidth, ch: video.clientHeight,
-                cow: captureOut.width, coh: captureOut.height,
-            });
             captureOut.width = video.clientWidth;
             captureOut.height = video.clientHeight;
             cxt.drawImage(video, 0, 0, video.clientWidth, video.clientHeight);
