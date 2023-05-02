@@ -48,7 +48,7 @@
     </div>
 
     <div>
-        <canvas id="captureOut" class="simp-border full-width" style="width: 320px;height: 240px;"></canvas>
+        <canvas id="captureOut" class="simp-border full-width"></canvas>
     </div>
 
     <div class="con-wrapper simp-border">
@@ -111,9 +111,12 @@
 
     captureBtn.addEventListener('click', () => {
         try {
-            appendLog({w: video.width, h: video.height});
-            appendLog({w: captureOut.width, h: captureOut.height});
-            cxt.drawImage(video, 0, 0, captureOut.width, captureOut.height);
+            appendLog({
+                w: video.width, h: video.height,
+                cw: video.clientWidth, ch: video.clientHeight,
+                cow: captureOut.width, coh: captureOut.height,
+            });
+            cxt.drawImage(video, 0, 0, video.clientWidth, video.clientHeight);
         } catch (err) {
             appendLog(err);
         }
