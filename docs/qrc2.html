@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <title>qrcode nuintun camera vue</title>
+
+    <script>
+        if (location.hostname !== 'localhost' && location.protocol === 'http:') {
+            location.protocol = 'https:';
+        }
+    </script>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/normalize.css@8.0.1/normalize.css" rel="stylesheet">
+
+    <script src="https://www.unpkg.com/vue/dist/vue.global.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.47/vue.global.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.global.min.js"></script>
+
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .main {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+        }
+
+        .toolbar {
+            display: flex;
+            gap: 4px;
+            padding: 4px;
+            flex-wrap: wrap;
+            flex: 0 0;
+            background: yellowgreen;
+        }
+
+        .master {
+            flex: 1 1;
+            position: relative;
+            border: 0 red solid;
+            box-sizing: border-box;
+
+            display: flex;
+            align-items: stretch;
+            justify-content: center;
+        }
+
+        .camera {
+            max-width: 100%;
+            max-height: 100%;
+            border: 0 solid;
+            box-sizing: border-box;
+            /*display: block;*/
+        }
+
+        .cover-con {
+            position: absolute;
+            margin: 0;
+            padding: 4px;
+            width: 100%;
+            height: 100%;
+            background: #fff1;
+            overflow: auto;
+            box-sizing: border-box;
+            color: white;
+            /*font-size: 18px;*/
+            text-shadow: 0 0 4px gold;
+            text-outline: black 1px;
+        }
+
+        .nonVis {
+            display: none;
+        }
+
+        .z-radio {
+
+        }
+
+        .copied {
+            box-shadow: 0 0 2px 2px palegreen;
+        }
+    </style>
+</head>
+<body>
+
+<div v-cloak id="app" class="main">
+    <div class="toolbar">
+        <button @click="showCon">Show</button>
+        <button @click="hideCon">Hide</button>
+
+        <button @click="startScan">Start</button>
+        <button @click="stopScan">Stop</button>
+
+        <button @click="clearLog">Clear</button>
+
+        <button @click="copyDecoded" :disabled="!decodedContent" :class="{copied:copyDone}">Copy</button>
+    </div>
+
+    <div class="master">
+        <video autoplay class="camera" ref="preVideo"></video>
+
+        <pre class="cover-con" :class="{nonVis: nonVis}" ref="coverCon" v-text="conLog"></pre>
+    </div>
+</div>
+
+<script>
+    import {
+        Encoder,
+        QRByte,
+        QRKanji,
+        ErrorCorrectionLevel,
+        Decoder
+    } from 'https://cdn.jsdelivr.net/npm/@nuintun/qrcode/+esm';
+
+    const qrDecoder = Decoder();
+
+    const inst = Vue.createApp({
+        data() {
+            return {
+                nonVis: false,
+                controls: null,
+                conLog: '',
+                camDevs: [],
+                curCam: undefined,
+                decodedContent: '',
+                copyDone: false,
+                stream: null,
+                canvasCtx: null,
+            };
+        },
+        mounted() {
+            d.scan(u3)
+                .then(res => {
+                    console.log(res.data);
+                })
+                .catch(err => {
+                    console.error(err);
+                });
+        },
+        methods: {
+            appendLog(obj) {
+                this.conLog += JSON.stringify(obj, null, 3);
+                this.conLog += '\n';
+                this.$nextTick(() => {
+                    this.$refs.coverCon.scrollTo(0, this.$refs.coverCon.scrollHeight);
+                });
+            },
+            showCon() {
+                this.nonVis = false;
+            },
+            hideCon() {
+                this.nonVis = true;
+            },
+            stopScan() {
+                try {
+                    this.stream.getTracks().forEach(track => {
+                        track.stop();
+                    });
+                    this.$refs.preVideo.srcObject = null;
+                } catch (err) {
+                    appendLog(err);
+                }
+
+                clearInterval(this._handle);
+                this.stream = null;
+            },
+            async startScan() {
+                navigator.mediaDevices.getUserMedia({video: {facingMode: 'environment'}, audio: false})
+                    .then(stream => {
+                        this.stream = stream;
+                        this.$refs.preVideo.srcObject = stream;
+
+                        this._handle = setInterval(() => {
+                            const d = new Decoder();
+                            this.$refs.captureOut.width = this.$refs.preVideo.clientWidth;
+                            this.$refs.captureOut.height = this.$refs.preVideo.clientHeight;
+                            this.canvasCtx.drawImage(this.$refs.preVideo, 0, 0, this.$refs.preVideo.clientWidth, this.$refs.preVideo.clientHeight);
+                            URL.revokeObjectURL(this._blobSrc);
+                            this._blobSrc = URL.createObjectURL(blob);
+
+                            d.scan(this._blobSrc)
+                                .then(res => {
+                                    console.log(res.data);
+                                    this.appendLog(res.data);
+                                    this.decodedContent = res.data;
+                                })
+                                .catch(err => {
+                                    console.error(err);
+                                });
+                        }, 600);
+
+                    })
+                    .catch(err => {
+                        console.log('err', err);
+                        this.appendLog(err);
+                    });
+
+                this.showCon();
+            },
+            clearLog() {
+                this.conLog = '';
+            },
+            copyDecoded() {
+                if (this.decodedContent) {
+                    navigator.clipboard.writeText(this.decodedContent);
+                    this.copyDone = true;
+                }
+            },
+        },
+    }).mount('#app');
+</script>
+</body>
+</html>
