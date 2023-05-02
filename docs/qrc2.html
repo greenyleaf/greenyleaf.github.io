@@ -118,7 +118,7 @@
     </div>
 </div>
 
-<script>
+<script type="module">
     import {
         Encoder,
         QRByte,
@@ -126,8 +126,6 @@
         ErrorCorrectionLevel,
         Decoder
     } from 'https://cdn.jsdelivr.net/npm/@nuintun/qrcode/+esm';
-
-    const qrDecoder = Decoder();
 
     const inst = Vue.createApp({
         data() {
@@ -142,15 +140,6 @@
                 stream: null,
                 canvasCtx: null,
             };
-        },
-        mounted() {
-            d.scan(u3)
-                .then(res => {
-                    console.log(res.data);
-                })
-                .catch(err => {
-                    console.error(err);
-                });
         },
         methods: {
             appendLog(obj) {
@@ -186,14 +175,14 @@
                         this.$refs.preVideo.srcObject = stream;
 
                         this._handle = setInterval(() => {
-                            const d = new Decoder();
+                            const qrDecoder = new Decoder();
                             this.$refs.captureOut.width = this.$refs.preVideo.clientWidth;
                             this.$refs.captureOut.height = this.$refs.preVideo.clientHeight;
                             this.canvasCtx.drawImage(this.$refs.preVideo, 0, 0, this.$refs.preVideo.clientWidth, this.$refs.preVideo.clientHeight);
                             URL.revokeObjectURL(this._blobSrc);
                             this._blobSrc = URL.createObjectURL(blob);
 
-                            d.scan(this._blobSrc)
+                            qrDecoder.scan(this._blobSrc)
                                 .then(res => {
                                     console.log(res.data);
                                     this.appendLog(res.data);
