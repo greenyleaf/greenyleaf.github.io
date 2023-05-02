@@ -77,9 +77,9 @@
             background: #fff1;
             overflow: auto;
             box-sizing: border-box;
-            color: white;
-            /*font-size: 18px;*/
-            text-shadow: 0 0 4px gold;
+            color: darkgoldenrod;
+            font-size: 18px;
+            text-shadow: 0 0 2px gold;
             text-outline: black 1px;
         }
 
@@ -142,10 +142,12 @@
                 canvasCtx: null,
             };
         },
+        mounted() {
+            this.appendLog(123456789);
+        },
         methods: {
             appendLog(obj) {
-                this.conLog += JSON.stringify(obj, null, 3);
-                this.conLog += '\n';
+                this.conLog += JSON.stringify(obj, null, 3) + '\n';
                 this.$nextTick(() => {
                     this.$refs.coverCon.scrollTo(0, this.$refs.coverCon.scrollHeight);
                 });
