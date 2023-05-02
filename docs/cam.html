@@ -26,16 +26,21 @@
             bottom: 0;
             background-color: #4169e122;
         }
+
+        .full-width {
+            width: 100%;
+            height: auto;
+        }
     </style>
 </head>
 <body>
 <div id="app" class="app">
     <div>
-        <video id="video" style="width: 100%;height: auto;" class="simp-border"></video>
+        <video id="video" class="simp-border full-width"></video>
     </div>
 
     <div>
-        <canvas id="captureOut" class="simp-border"></canvas>
+        <canvas id="captureOut" class="simp-border full-width"></canvas>
     </div>
 
     <div class="con-wrapper simp-border">
