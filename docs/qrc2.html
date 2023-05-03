@@ -111,7 +111,7 @@
         <button @click="copyDecoded" :disabled="!decodedContent" :class="{copied:copyDone}">Copy</button>
     </div>
 
-    <div class="master">
+    <div>
         <div>
             <video autoplay class="camera" ref="preVideo"></video>
         </div>
@@ -176,11 +176,10 @@
                 clearInterval(this._handle);
                 this.stream = null;
             },
-            async startScan() {
+            startScan() {
                 navigator.mediaDevices.getUserMedia({video: {facingMode: 'environment'}, audio: false})
                     .then(stream => {
-                        this.stream = stream;
-                        this.$refs.preVideo.srcObject = stream;
+                        this.$refs.preVideo.srcObject = this.stream = stream;
 
                         this._handle = setInterval(() => {
 
