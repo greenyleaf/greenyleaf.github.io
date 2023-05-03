@@ -2,12 +2,33 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta content="width=device-width,initial-scale=1" name="viewport"/>
     <title>qrcode sample zxing js browser, DnD image</title>
 
     <style>
         .drop-effect {
             box-shadow: 0 0 8px 8px pink;
         }
+
+        .img-drag {
+            color: orangered;
+            text-shadow: 0 0 6px hotpink;
+        }
+
+        .drop-zone {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px dashed;
+            min-width: 200px;
+            min-height: 200px;
+            padding: 2px;
+        }
+
+        .drop-zone:hover {
+            box-shadow: inset 4px 4px 6px deepskyblue, inset -4px -4px 6px royalblue;
+        }
+
     </style>
 
     <script src="https://unpkg.com/@zxing/browser@0.1.1/umd/zxing-browser.min.js"></script>
@@ -15,7 +36,7 @@
 
     <script src="https://www.unpkg.com/vue/dist/vue.global.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.47/vue.global.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.global.min.js"></script>
+    <!--<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.global.min.js"></script>-->
 </head>
 <body>
 <div>
@@ -35,10 +56,11 @@
     </div>
 
     <div>
-        <input type="file" hidden id="fileInput">
+        <input type="file" hidden id="fileInput" accept="image/*">
         <div id="dropZone"
-             style="display: inline-flex;align-items: center;justify-content: center;border: 1px dashed;min-width: 200px;min-height: 200px;padding: 2px;">
-            <img src="about:blank" id="qrImg" alt="拖放图片" style="max-width: 360px;max-height: 360px;">
+             class="drop-zone">
+            <img src="about:blank" id="qrImg" class="img-drag" alt="选择文件或者拖放图片"
+                 style="max-width: 360px;max-height: 360px;">
         </div>
     </div>
 </div>
@@ -88,16 +110,19 @@
 
     dropZone.addEventListener('dragenter', function (evt) {
         //效果
-        console.log('dragenter', this);
+        // console.log('dragenter 添加效果', this);
         this.classList.add('drop-effect');
         evt.dataTransfer.dropEffect = 'link';
     });
     dropZone.addEventListener('dragleave', function (evt) {
+        // console.log('dragleave 去掉效果', this);
         //去掉效果
         this.classList.remove('drop-effect');
     });
-    dropZone.addEventListener('dragover', evt => {
+    dropZone.addEventListener('dragover', function (evt) {
+        // console.log('dragover 添加效果', this);
         evt.preventDefault();
+        this.classList.add('drop-effect');
     });
     dropZone.addEventListener('drop', function (evt) {
         //去掉效果
