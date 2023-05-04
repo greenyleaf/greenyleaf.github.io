@@ -194,17 +194,21 @@
                                 this.$refs.captureOut.height = this.$refs.preVideo.clientHeight;
                                 this.canvasCtx.drawImage(this.$refs.preVideo, 0, 0, this.$refs.preVideo.clientWidth, this.$refs.preVideo.clientHeight);
                                 URL.revokeObjectURL(this._blobSrc);
-                                this._blobSrc = URL.createObjectURL(blob);
 
-                                qrDecoder.scan(this._blobSrc)
-                                    .then(res => {
-                                        console.log(res.data);
-                                        this.appendLog(res.data);
-                                        this.decodedContent = res.data;
-                                    })
-                                    .catch(err => {
-                                        console.error(err);
-                                    });
+                                this.$refs.captureOut.toBlob(blob => {
+                                    this._blobSrc = URL.createObjectURL(blob);
+
+                                    qrDecoder.scan(this._blobSrc)
+                                        .then(res => {
+                                            console.log(res.data);
+                                            this.appendLog(res.data);
+                                            this.decodedContent = res.data;
+                                        })
+                                        .catch(err => {
+                                            console.error('.catch err', err);
+                                            this.appendLog(err);
+                                        });
+                                });
 
                             } catch (err) {
                                 this.appendLog(err);
