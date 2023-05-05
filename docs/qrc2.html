@@ -206,12 +206,12 @@
                                         })
                                         .catch(err => {
                                             console.error('.catch err', err);
-                                            this.appendLog(err);
+                                            // this.appendLog(err);
                                         });
                                 });
 
                             } catch (err) {
-                                // this.appendLog(err);
+                                this.appendLog(err);
                             }
 
                         }, 600);
