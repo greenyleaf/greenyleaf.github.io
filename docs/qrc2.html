@@ -116,8 +116,8 @@
 
     <div style="position: relative;">
         <div>
-            <video autoplay class="camera" ref="preVideo"></video>
-            <canvas ref="captureOut" style="display: none;"></canvas>
+            <video autoplay class="camera" ref="preVideo" v-show="stream"></video>
+            <canvas ref="captureOut" style="display: none;" v-show="!stream"></canvas>
         </div>
 
         <pre class="cover-con" :class="{'non-vis': nonVis}" ref="coverCon" v-text="conLog"></pre>
