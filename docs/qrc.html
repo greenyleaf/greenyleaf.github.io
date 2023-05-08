@@ -81,10 +81,10 @@
             box-sizing: border-box;
             /*font-size: 18px;*/
             color: white;
-            text-shadow: 0 0 1px black, 0 0 3px yellow;
+            text-shadow: 0 0 2px black, 0 0 3px black;
         }
 
-        .nonVis {
+        .non-vis {
             display: none;
         }
 
@@ -101,8 +101,8 @@
 
 <div v-cloak id="app" class="main">
     <div class="toolbar">
-        <button @click="showCon">Show</button>
-        <button @click="hideCon">Hide</button>
+        <button @click="showCon" v-if="nonVis">Show</button>
+        <button @click="hideCon" v-else>Hide</button>
 
         <button @click="startScan">Start</button>
         <button @click="stopScan">Stop</button>
@@ -118,7 +118,7 @@
     <div class="master">
         <video autoplay class="camera" ref="preVideo"></video>
 
-        <pre class="cover-con" :class="{nonVis: nonVis}" ref="coverCon" v-text="conLog"></pre>
+        <pre class="cover-con" :class="{'non-vis': nonVis}" ref="coverCon" v-text="conLog"></pre>
     </div>
 </div>
 
