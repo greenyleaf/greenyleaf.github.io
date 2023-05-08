@@ -145,7 +145,11 @@
                 copyDone: false,
                 stream: null,
                 canvasCtx: null,
+                qrDecoder: null,
             };
+        },
+        created() {
+            this.qrDecoder = new Decoder();
         },
         mounted() {
             this.appendLog(123456789);
@@ -185,8 +189,6 @@
                         this._handle = setInterval(() => {
 
                             try {
-
-                                const qrDecoder = new Decoder();
                                 this.$refs.captureOut.width = this.$refs.preVideo.clientWidth;
                                 this.$refs.captureOut.height = this.$refs.preVideo.clientHeight;
                                 this.canvasCtx.drawImage(this.$refs.preVideo, 0, 0, this.$refs.preVideo.clientWidth, this.$refs.preVideo.clientHeight);
