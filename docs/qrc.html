@@ -1,212 +1,206 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh_CN">
 <head>
     <meta charset="UTF-8">
-    <meta content="width=device-width,initial-scale=1" name="viewport"/>
-    <title>qrcode sample zxing lib, DnD image</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <title>qrcode sample zxing js browser camera</title>
 
-    <style>
-        .img-drag {
-            color: orangered;
-            text-shadow: 0 0 6px hotpink;
+    <script>
+        if (location.hostname !== 'localhost' && location.protocol === 'http:') {
+            location.protocol = 'https:';
         }
+    </script>
 
-        .drop-zone {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px dashed;
-            min-width: 200px;
-            min-height: 200px;
-            padding: 2px;
-            position: relative;
-        }
-
-        .drop-effect {
-            box-shadow: 0 0 5px 5px slategrey;
-        }
-
-        .drop-cover {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-        }
-
-        .drop-cover:hover {
-            box-shadow: inset 6px 6px 6px lightgrey, inset -6px -6px 6px slategrey;
-        }
-
-        .err-msg {
-            color: darkred;
-            font-weight: bold;
-        }
-
-        .copy-btn {
-            height: 60px;
-            width: 60px;
-            border: none;
-            border-radius: 50%;
-            background-image: radial-gradient(circle at 27% 27%, lightgoldenrodyellow 0%, transparent 18%), radial-gradient(yellow 0%, orange 72%, orange);
-            font-size: 15px;
-            font-weight: bolder;
-            color: white;
-            -webkit-text-stroke: 1px black;
-            text-shadow: 0 0 2px black;
-            transition: filter .18s;
-        }
-
-        .copy-btn:hover {
-            filter: brightness(107%);
-        }
-
-        .copy-btn:active {
-            filter: hue-rotate(-12deg);
-        }
-
-        .copy-btn:focus {
-            outline: brown 1px dashed;
-        }
-
-    </style>
-
-    <script src="https://unpkg.com/@zxing/library@0.18.6/umd/index.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/normalize.css@8.0.1/normalize.css" rel="stylesheet">
 
     <script src="https://www.unpkg.com/vue/dist/vue.global.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.47/vue.global.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.global.min.js"></script>
 
-    <template id="main">
-        <div>
-            <input @paste="doPaste" placeholder="在这里粘贴图片" readonly style="width: 100px;">
-        </div>
-        <div v-if="decoded">
-            <div>格式：{{ formatName }}</div>
-            <div><span style="user-select: none">内容：</span>{{ decoded?.text ?? '' }}</div>
-            <button @click="doCopyDecoded" v-if="decoded" class="copy-btn">复制</button>
-        </div>
-        <div class="err-msg" v-if="decodeErr">解码错误</div>
+    <script src="https://unpkg.com/@zxing/browser@0.1.1/umd/zxing-browser.min.js"></script>
 
-        <input @input="fileInput" accept="image/*" hidden ref="fileInput" type="file">
+    <style>
+        [v-cloak] {
+            display: none;
+        }
 
-        <div @click="$refs.fileInput.click()"
-             @dragenter="dragEnter" @dragleave="dragLeave" @dragover="dragOver" @drop="drop" class="drop-zone">
-            <img :src="qrImgSrc" alt="选择文件或者拖放图片" class="img-drag"
-                 style="max-width: 360px;max-height: 360px;">
-            <div class="drop-cover" :class="{'drop-effect': dropEffect}"></div>
-        </div>
-    </template>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            box-sizing: border-box;
+        }
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            Vue.createApp({
-                template: '#main',
-                data() {
-                    return {
-                        codeReader: null,
-                        qrImgSrc: undefined,
-                        decoded: null,
-                        decodeErr: false,
-                        dropEffect: false,
-                    };
-                },
-                computed: {
-                    formatName() {
-                        return ZXing.BarcodeFormat[this.decoded?.format] ?? '';
-                    }
-                },
-                watch: {
-                    qrImgSrc() {
-                        if (this.qrImgSrc) {
-                            this.scan();
-                        }
-                    }
-                },
-                created() {
-                    // this.codeReader = new ZXing.BrowserQRCodeReader();
-                    this.codeReader = new ZXing.BrowserMultiFormatReader();
-                },
-                methods: {
-                    fileInput() {
-                        if (this.$refs.fileInput.files.length) {
-                            URL.revokeObjectURL(qrImg.src);
-                            this.qrImgSrc = URL.createObjectURL(this.$refs.fileInput.files[0]);
-                        }
-                    },
-                    scan() {
-                        this.codeReader.decodeFromImageUrl(this.qrImgSrc)
-                            .then(res => {
-                                this.decoded = res;
-                                this.decodeErr = false;
-                                console.log(res);
-                            })
-                            .catch(err => {
-                                // 解码错误
-                                this.decoded = null;
-                                this.decodeErr = true;
-                                console.debug('解码错误');
-                            });
-                    },
-                    doPaste(evt) {
-                        console.log(evt.clipboardData.files.length);
-                        console.log(evt.clipboardData.items.length);
+        .main {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+        }
 
-                        if (evt.clipboardData.items.length) {
-                            for (item of evt.clipboardData.items) {
-                                if (item.kind === 'file') {
-                                    URL.revokeObjectURL(this.qrImgSrc);
-                                    this.qrImgSrc = URL.createObjectURL(item.getAsFile());
-                                    break;
-                                }
-                            }
-                        }
-                    },
-                    doCopyDecoded() {
-                        navigator.clipboard.writeText(this.decoded?.text ?? '');
-                    },
-                    dragEnter(evt) {
-                        //添加css效果
-                        this.dropEffect = true;
-                        // evt.dataTransfer.dropEffect = 'link';
-                    },
-                    dragLeave() {
-                        //去掉效果
-                        this.dropEffect = false;
-                    },
-                    dragOver(evt) {
-                        evt.preventDefault();
-                        // 添加 CSS 效果
-                        this.dropEffect = true;
-                    },
-                    drop(evt) {
-                        evt.preventDefault();
-                        //去掉效果
-                        this.dropEffect = false;
+        .toolbar {
+            display: flex;
+            gap: 4px;
+            padding: 4px;
+            flex-wrap: wrap;
+            flex: 0 0;
+            background: yellowgreen;
+        }
 
-                        if (evt.dataTransfer.items) {
-                            for (const item of evt.dataTransfer.items) {
-                                if (item.kind === 'file') {
-                                    const file = item.getAsFile();
-                                    URL.revokeObjectURL(this.qrImgSrc);
-                                    this.qrImgSrc = URL.createObjectURL(file);
-                                    break;
-                                }
-                            }
-                        } else {
-                            for (const file of evt.dataTransfer.files) {
-                                console.log(file.name);
-                            }
-                        }
-                    },
-                },
-            }).mount('#app');
+        .master {
+            flex: 1 1;
+            position: relative;
+            border: 0 red solid;
+            box-sizing: border-box;
 
-        });
+            display: flex;
+            align-items: stretch;
+            justify-content: center;
+        }
 
-    </script>
+        .camera {
+            max-width: 100%;
+            max-height: 100%;
+            border: 0 solid;
+            box-sizing: border-box;
+            /*display: block;*/
+        }
+
+        .cover-con {
+            position: absolute;
+            margin: 0;
+            padding: 4px;
+            width: 100%;
+            height: 100%;
+            background: #fff1;
+            overflow: auto;
+            box-sizing: border-box;
+            /*font-size: 18px;*/
+            color: white;
+            text-shadow: 0 0 2px black, 0 0 3px black;
+        }
+
+        .non-vis {
+            display: none;
+        }
+
+        .z-radio {
+
+        }
+
+        .copied {
+            box-shadow: 0 0 2px 2px palegreen;
+        }
+    </style>
 </head>
 <body>
-<div id="app"></div>
 
+<div v-cloak id="app" class="main">
+    <div class="toolbar">
+        <button @click="showCon" v-if="nonVis">Show</button>
+        <button @click="hideCon" v-else>Hide</button>
+
+        <button @click="startScan">Start</button>
+        <button @click="stopScan">Stop</button>
+
+        <button @click="clearLog">Clear</button>
+
+        <button @click="copyDecoded" :disabled="!decodedContent" :class="{copied:copyDone}">Copy</button>
+
+        <!--        <label v-for="d in camDevs"><input type="radio" v-model="curCam" :value="d.deviceId" class="z-radio"-->
+        <!--                                           @input="changeCam">{{ d.label }}</label>-->
+    </div>
+
+    <div class="master">
+        <video autoplay class="camera" ref="preVideo"></video>
+
+        <pre class="cover-con" :class="{'non-vis': nonVis}" ref="coverCon" v-text="conLog"></pre>
+    </div>
+</div>
+
+<script>
+    const codeReader = new ZXingBrowser.BrowserQRCodeReader();
+
+    const inst = Vue.createApp({
+        data() {
+            return {
+                nonVis: false,
+                controls: null,
+                conLog: '',
+                camDevs: [],
+                curCam: undefined,
+                decodedContent: '',
+                copyDone: false,
+            };
+        },
+        mounted() {
+            (async () => {
+                this.camDevs = await ZXingBrowser.BrowserQRCodeReader.listVideoInputDevices();
+                if (!this.camDevs.length) {
+                    this.appendLog('没有找到摄像头!');
+                }
+                // this.appendLog(this.camDevs);
+            })();
+        },
+        methods: {
+            appendLog(obj) {
+                this.conLog += JSON.stringify(obj, null, 3);
+                this.conLog += '\n';
+                this.$nextTick(() => {
+                    this.$refs.coverCon.scrollTo(0, this.$refs.coverCon.scrollHeight);
+                });
+            },
+            showCon() {
+                this.nonVis = false;
+            },
+            hideCon() {
+                this.nonVis = true;
+            },
+            stopScan() {
+                if (this.controls) {
+                    this.controls.stop();
+                    this.controls = null;
+                }
+            },
+            // changeCam() {
+            //     console.log('changeCam', 'curCam', curCam);
+            // },
+            async startScan() {
+                if (!this.controls) {
+                    if (this.camDevs.length) {
+                        // const selDevId = this.camDevs[1].deviceId;
+                        // const selDevId = this.curCam;
+
+                        //this.controls = await codeReader.decodeFromVideoDevice(selDevId, this.$refs.preVideo, (res, err, controls) => {
+                        this.controls = await codeReader.decodeFromVideoDevice(null, this.$refs.preVideo, (res, err, controls) => {
+                            if (res) {
+                                const {text, timestamp} = res;
+                                this.appendLog({text, timestamp});
+                                this.decodedContent = text;
+                            }
+                        });
+                    } else {
+                        this.appendLog('no camera found. ~o_o~');
+                    }
+
+                    this.showCon();
+                }
+            },
+            clearLog() {
+                this.conLog = '';
+            },
+            copyDecoded() {
+                if (this.decodedContent) {
+                    navigator.clipboard.writeText(this.decodedContent);
+                    this.copyDone = true;
+                }
+            },
+        },
+    }).mount('#app');
+</script>
 </body>
 </html>
