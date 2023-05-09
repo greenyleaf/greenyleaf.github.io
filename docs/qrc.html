@@ -12,14 +12,12 @@
     </script>
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css" rel="stylesheet">
     <link href="https://unpkg.com/normalize.css@8.0.1/normalize.css" rel="stylesheet">
 
     <script src="https://www.unpkg.com/vue/dist/vue.global.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.47/vue.global.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.global.min.js"></script>
 
-    <script src="https://unpkg.com/@zxing/browser@0.1.1/umd/zxing-browser.min.js"></script>
+    <script src="https://unpkg.com/@zxing/library@0.18.6/umd/index.min.js"></script>
 
     <style>
         [v-cloak] {
@@ -110,9 +108,6 @@
         <button @click="clearLog">Clear</button>
 
         <button @click="copyDecoded" :disabled="!decodedContent" :class="{copied:copyDone}">Copy</button>
-
-        <!--        <label v-for="d in camDevs"><input type="radio" v-model="curCam" :value="d.deviceId" class="z-radio"-->
-        <!--                                           @input="changeCam">{{ d.label }}</label>-->
     </div>
 
     <div class="master">
@@ -123,7 +118,7 @@
 </div>
 
 <script>
-    const codeReader = new ZXingBrowser.BrowserQRCodeReader();
+    const codeReader = new ZXing.BrowserMultiFormatReader();
 
     const inst = Vue.createApp({
         data() {
@@ -139,11 +134,10 @@
         },
         mounted() {
             (async () => {
-                this.camDevs = await ZXingBrowser.BrowserQRCodeReader.listVideoInputDevices();
+                this.camDevs = codeReader.listVideoInputDevices();
                 if (!this.camDevs.length) {
                     this.appendLog('没有找到摄像头!');
                 }
-                // this.appendLog(this.camDevs);
             })();
         },
         methods: {
@@ -166,16 +160,9 @@
                     this.controls = null;
                 }
             },
-            // changeCam() {
-            //     console.log('changeCam', 'curCam', curCam);
-            // },
             async startScan() {
                 if (!this.controls) {
                     if (this.camDevs.length) {
-                        // const selDevId = this.camDevs[1].deviceId;
-                        // const selDevId = this.curCam;
-
-                        //this.controls = await codeReader.decodeFromVideoDevice(selDevId, this.$refs.preVideo, (res, err, controls) => {
                         this.controls = await codeReader.decodeFromVideoDevice(null, this.$refs.preVideo, (res, err, controls) => {
                             if (res) {
                                 const {text, timestamp} = res;
