@@ -6,6 +6,10 @@
     <title>qrcode sample zxing js browser, DnD image</title>
 
     <style>
+        .drop-effect {
+            box-shadow: 0 0 8px 8px pink;
+        }
+
         .img-drag {
             color: orangered;
             text-shadow: 0 0 6px hotpink;
@@ -19,194 +23,153 @@
             min-width: 200px;
             min-height: 200px;
             padding: 2px;
-            position: relative;
         }
 
-        .drop-effect {
-            box-shadow: 0 0 5px 5px slategrey;
-        }
-
-        .drop-cover {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-        }
-
-        .drop-cover:hover {
-            box-shadow: inset 6px 6px 6px lightgrey, inset -6px -6px 6px slategrey;
-        }
-
-        .err-msg {
-            color: darkred;
-            font-weight: bold;
-        }
-
-        .copy-btn {
-            height: 60px;
-            width: 60px;
-            border: none;
-            border-radius: 50%;
-            background-image: radial-gradient(circle at 27% 27%, lightgoldenrodyellow 0%, transparent 18%), radial-gradient(yellow 0%, orange 72%, orange);
-            font-size: 15px;
-            font-weight: bolder;
-            color: white;
-            -webkit-text-stroke: 1px black;
-            text-shadow: 0 0 2px black;
-            transition: filter .18s;
-        }
-
-        .copy-btn:hover {
-            filter: brightness(107%);
-        }
-
-        .copy-btn:active {
-            filter: hue-rotate(-12deg);
-        }
-
-        .copy-btn:focus {
-            outline: brown 1px dashed;
+        .drop-zone:hover {
+            box-shadow: inset 4px 4px 6px deepskyblue, inset -4px -4px 6px royalblue;
         }
 
     </style>
 
+    <!--<script src="https://unpkg.com/@zxing/browser@0.1.1/umd/zxing-browser.min.js"></script>-->
     <script src="https://unpkg.com/@zxing/library@0.18.6/umd/index.min.js"></script>
+    <!--<script src="https://unpkg.com/@zxing/browser"></script>-->
 
     <script src="https://www.unpkg.com/vue/dist/vue.global.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.47/vue.global.min.js"></script>
-
-    <template id="main">
-        <div>
-            <input @paste="doPaste" placeholder="在这里粘贴图片" readonly style="width: 100px;">
-        </div>
-        <div v-if="decoded">
-            <div>格式：{{ formatName }}</div>
-            <div><span style="user-select: none">内容：</span>{{ decoded?.text ?? '' }}</div>
-            <button @click="doCopyDecoded" v-if="decoded" class="copy-btn">复制</button>
-        </div>
-        <div class="err-msg" v-if="decodeErr">解码错误</div>
-
-        <input @input="fileInput" accept="image/*" hidden ref="fileInput" type="file">
-
-        <div @click="$refs.fileInput.click()"
-             @dragenter="dragEnter" @dragleave="dragLeave" @dragover="dragOver" @drop="drop" class="drop-zone">
-            <img :src="qrImgSrc" alt="选择文件或者拖放图片" class="img-drag"
-                 style="max-width: 360px;max-height: 360px;">
-            <div class="drop-cover" :class="{'drop-effect': dropEffect}"></div>
-        </div>
-    </template>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            Vue.createApp({
-                template: '#main',
-                data() {
-                    return {
-                        codeReader: null,
-                        qrImgSrc: undefined,
-                        decoded: null,
-                        decodeErr: false,
-                        dropEffect: false,
-                    };
-                },
-                computed: {
-                    formatName() {
-                        return ZXing.BarcodeFormat[this.decoded?.format] ?? '';
-                    }
-                },
-                watch: {
-                    qrImgSrc() {
-                        if (this.qrImgSrc) {
-                            this.scan();
-                        }
-                    }
-                },
-                created() {
-                    // this.codeReader = new ZXing.BrowserQRCodeReader();
-                    this.codeReader = new ZXing.BrowserMultiFormatReader();
-                },
-                methods: {
-                    fileInput() {
-                        if (this.$refs.fileInput.files.length) {
-                            URL.revokeObjectURL(qrImg.src);
-                            this.qrImgSrc = URL.createObjectURL(this.$refs.fileInput.files[0]);
-                        }
-                    },
-                    scan() {
-                        this.codeReader.decodeFromImageUrl(this.qrImgSrc)
-                            .then(res => {
-                                this.decoded = res;
-                                this.decodeErr = false;
-                                console.log(res);
-                            })
-                            .catch(err => {
-                                // 解码错误
-                                this.decoded = null;
-                                this.decodeErr = true;
-                                console.debug('解码错误');
-                            });
-                    },
-                    doPaste(evt) {
-                        console.log(evt.clipboardData.files.length);
-                        console.log(evt.clipboardData.items.length);
-
-                        if (evt.clipboardData.items.length) {
-                            for (item of evt.clipboardData.items) {
-                                if (item.kind === 'file') {
-                                    URL.revokeObjectURL(this.qrImgSrc);
-                                    this.qrImgSrc = URL.createObjectURL(item.getAsFile());
-                                    break;
-                                }
-                            }
-                        }
-                    },
-                    doCopyDecoded() {
-                        navigator.clipboard.writeText(this.decoded?.text ?? '');
-                    },
-                    dragEnter(evt) {
-                        //添加css效果
-                        this.dropEffect = true;
-                        // evt.dataTransfer.dropEffect = 'link';
-                    },
-                    dragLeave() {
-                        //去掉效果
-                        this.dropEffect = false;
-                    },
-                    dragOver(evt) {
-                        evt.preventDefault();
-                        // 添加 CSS 效果
-                        this.dropEffect = true;
-                    },
-                    drop(evt) {
-                        evt.preventDefault();
-                        //去掉效果
-                        this.dropEffect = false;
-
-                        if (evt.dataTransfer.items) {
-                            for (const item of evt.dataTransfer.items) {
-                                if (item.kind === 'file') {
-                                    const file = item.getAsFile();
-                                    URL.revokeObjectURL(this.qrImgSrc);
-                                    this.qrImgSrc = URL.createObjectURL(file);
-                                    break;
-                                }
-                            }
-                        } else {
-                            for (const file of evt.dataTransfer.files) {
-                                console.log(file.name);
-                            }
-                        }
-                    },
-                },
-            }).mount('#app');
-
-        });
-
-    </script>
+    <!--<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.global.min.js"></script>-->
 </head>
 <body>
-<div id="app"></div>
+<div>
+    <div>
+        <button id="scanBtn">Scan</button>
+    </div>
+    <div>
+        <input id="pasteInput" readonly placeholder="在这里粘贴图片" style="width: 100px;">
+    </div>
 
+    <div>
+        <div id="decodedText"></div>
+        <div id="errTipText" hidden="">解码错误</div>
+    </div>
+
+    <div>
+        <button id="copyBtn">Copy</button>
+    </div>
+
+    <div>
+        <input type="file" hidden id="fileInput" accept="image/*">
+        <div id="dropZone"
+             class="drop-zone">
+            <img src="about:blank" id="qrImg" class="img-drag" alt="选择文件或者拖放图片"
+                 style="max-width: 360px;max-height: 360px;">
+        </div>
+    </div>
+</div>
+
+<script>
+    const codeReader = new ZXing.BrowserMultiFormatReader();
+
+    const scanBtn = document.getElementById('scanBtn');
+    const dropZone = document.getElementById('dropZone');
+    const qrImg = document.getElementById('qrImg');
+    const decodedText = document.getElementById('decodedText');
+    const errTipText = document.getElementById('errTipText');
+
+    const fileInput = document.getElementById('fileInput');
+    const pasteInput = document.getElementById('pasteInput');
+    const copyBtn = document.getElementById('copyBtn');
+
+    copyBtn.addEventListener('click', () => {
+        navigator.clipboard.writeText(decodedText.textContent);
+    });
+
+    pasteInput.addEventListener('paste', evt => {
+        console.log('pasteInput', 'paste', evt);
+        console.log(evt.clipboardData.files.length);
+        console.log(evt.clipboardData.items.length);
+        if (evt.clipboardData.items.length) {
+            for (i of evt.clipboardData.items) {
+                console.log(i.kind);
+                if (i.kind === 'file') {
+                    const u = URL.createObjectURL(i.getAsFile());
+                    URL.revokeObjectURL(qrImg.src);
+                    qrImg.src = u;
+                    break;
+                }
+            }
+        }
+    });
+
+    fileInput.addEventListener('input', evt => {
+        if (fileInput.files.length) {
+            URL.revokeObjectURL(qrImg.src);
+            qrImg.src = URL.createObjectURL(fileInput.files[0]);
+        }
+    });
+
+    dropZone.addEventListener('click', () => {
+        fileInput.click();
+    });
+
+    dropZone.addEventListener('dragenter', function (evt) {
+        //效果
+        // console.log('dragenter 添加效果', this);
+        this.classList.add('drop-effect');
+        evt.dataTransfer.dropEffect = 'link';
+    });
+    dropZone.addEventListener('dragleave', function (evt) {
+        // console.log('dragleave 去掉效果', this);
+        //去掉效果
+        this.classList.remove('drop-effect');
+    });
+    dropZone.addEventListener('dragover', function (evt) {
+        // console.log('dragover 添加效果', this);
+        evt.preventDefault();
+        this.classList.add('drop-effect');
+    });
+    dropZone.addEventListener('drop', function (evt) {
+        //去掉效果
+        this.classList.remove('drop-effect');
+        evt.preventDefault();
+
+        if (evt.dataTransfer.items) {
+            console.log('stage 1');
+
+            for (const i of evt.dataTransfer.items) {
+                if (['file'].includes(i.kind)) {
+                    const file = i.getAsFile();
+                    const u = URL.createObjectURL(file);
+                    URL.revokeObjectURL(qrImg.src);
+                    qrImg.src = u;
+                    break;
+                }
+            }
+        } else {
+            console.log('stage 2');
+            for (const file of evt.dataTransfer.files) {
+                console.log(file.name);
+            }
+        }
+    });
+
+    scanBtn.addEventListener('click', (evt) => {
+        codeReader.decodeFromImageUrl(qrImg.src)
+            .then(res => {
+                // ZXing.BarcodeFormat[res.format]
+                decodedText.textContent = res.text;
+                console.log(res);
+                decodedText.hidden = false;
+                errTipText.hidden = true;
+            })
+            .catch(err => {
+                // 处理解码错误
+                // console.log(err);
+                decodedText.hidden = true;
+                errTipText.hidden = false;
+            });
+
+    });
+</script>
 </body>
 </html>
