@@ -102,7 +102,7 @@
         <button @click="showCon" v-if="nonVis">Show</button>
         <button @click="hideCon" v-else>Hide</button>
 
-        <button @click="startScan">Start</button>
+        <button @click="startScan" :disabled="!camDevs.length">Start</button>
         <button @click="stopScan">Stop</button>
 
         <button @click="clearLog">Clear</button>
@@ -156,7 +156,7 @@
             },
             stopScan() {
                 if (this.controls) {
-                    this.controls.stop();
+                    this.controls.reset();
                     this.controls = null;
                 }
             },
