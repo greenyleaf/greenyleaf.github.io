@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width,initial-scale=1" name="viewport"/>
+    <title>qrcode sample zxing js browser, DnD image</title>
+
+    <style>
+        .drop-effect {
+            box-shadow: 0 0 8px 8px pink;
+        }
+
+        .img-drag {
+            color: orangered;
+            text-shadow: 0 0 6px hotpink;
+        }
+
+        .drop-zone {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px dashed;
+            min-width: 200px;
+            min-height: 200px;
+            padding: 2px;
+        }
+
+        .drop-zone:hover {
+            box-shadow: inset 4px 4px 6px deepskyblue, inset -4px -4px 6px royalblue;
+        }
+
+    </style>
+
+    <script src="https://unpkg.com/@zxing/browser@0.1.1/umd/zxing-browser.min.js"></script>
+
+    <script src="https://www.unpkg.com/vue/dist/vue.global.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.47/vue.global.min.js"></script>
+</head>
+<body>
+<div>
+    <div>
+        <button id="scanBtn">Scan</button>
+    </div>
+    <div>
+        <input id="pasteInput" readonly placeholder="在这里粘贴图片" style="width: 100px;">
+    </div>
+
+    <div>
+        <div id="decodedText"></div>
+    </div>
+
+    <div>
+        <button id="copyBtn">Copy</button>
+    </div>
+
+    <div>
+        <input type="file" hidden id="fileInput" accept="image/*">
+        <div id="dropZone"
+             class="drop-zone">
+            <img src="about:blank" id="qrImg" class="img-drag" alt="选择文件或者拖放图片"
+                 style="max-width: 360px;max-height: 360px;">
+        </div>
+    </div>
+</div>
+
+<script>
+    const codeReader = new ZXingBrowser.BrowserQRCodeReader();
+
+    const scanBtn = document.getElementById('scanBtn');
+    const dropZone = document.getElementById('dropZone');
+    const qrImg = document.getElementById('qrImg');
+    const decodedText = document.getElementById('decodedText');
+    const fileInput = document.getElementById('fileInput');
+    const pasteInput = document.getElementById('pasteInput');
+    const copyBtn = document.getElementById('copyBtn');
+
+    copyBtn.addEventListener('click', () => {
+        navigator.clipboard.writeText(decodedText.textContent);
+    });
+
+    pasteInput.addEventListener('paste', evt => {
+        console.log('pasteInput', 'paste', evt);
+        console.log(evt.clipboardData.files.length);
+        console.log(evt.clipboardData.items.length);
+        if (evt.clipboardData.items.length) {
+            for (i of evt.clipboardData.items) {
+                console.log(i.kind);
+                if (i.kind === 'file') {
+                    const u = URL.createObjectURL(i.getAsFile());
+                    URL.revokeObjectURL(qrImg.src);
+                    qrImg.src = u;
+                    break;
+                }
+            }
+        }
+    });
+
+    fileInput.addEventListener('input', evt => {
+        if (fileInput.files.length) {
+            URL.revokeObjectURL(qrImg.src);
+            qrImg.src = URL.createObjectURL(fileInput.files[0]);
+        }
+    });
+
+    dropZone.addEventListener('click', () => {
+        fileInput.click();
+    });
+
+    dropZone.addEventListener('dragenter', function (evt) {
+        //效果
+        // console.log('dragenter 添加效果', this);
+        this.classList.add('drop-effect');
+        evt.dataTransfer.dropEffect = 'link';
+    });
+    dropZone.addEventListener('dragleave', function (evt) {
+        // console.log('dragleave 去掉效果', this);
+        //去掉效果
+        this.classList.remove('drop-effect');
+    });
+    dropZone.addEventListener('dragover', function (evt) {
+        // console.log('dragover 添加效果', this);
+        evt.preventDefault();
+        this.classList.add('drop-effect');
+    });
+    dropZone.addEventListener('drop', function (evt) {
+        //去掉效果
+        this.classList.remove('drop-effect');
+        evt.preventDefault();
+
+        if (evt.dataTransfer.items) {
+            console.log('stage 1');
+
+            for (const i of evt.dataTransfer.items) {
+                if (['file'].includes(i.kind)) {
+                    const file = i.getAsFile();
+                    const u = URL.createObjectURL(file);
+                    URL.revokeObjectURL(qrImg.src);
+                    qrImg.src = u;
+                    break;
+                }
+            }
+        } else {
+            console.log('stage 2');
+            for (const file of evt.dataTransfer.files) {
+                console.log(file.name);
+            }
+        }
+    });
+
+    scanBtn.addEventListener('click', (evt) => {
+        codeReader.decodeFromImageElement(document.getElementById('qrImg'))
+            .then(res => {
+                decodedText.textContent = res;
+                console.log(res);
+            })
+            .catch(err => {
+                // 处理解码错误
+                // console.log(err);
+            });
+    });
+</script>
+</body>
+</html>
