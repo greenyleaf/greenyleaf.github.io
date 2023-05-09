@@ -134,7 +134,7 @@
         },
         mounted() {
             (async () => {
-                this.camDevs = codeReader.listVideoInputDevices();
+                this.camDevs = await codeReader.listVideoInputDevices();
                 if (!this.camDevs.length) {
                     this.appendLog('没有找到摄像头!');
                 }
