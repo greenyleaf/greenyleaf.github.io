@@ -118,7 +118,8 @@
 </div>
 
 <script>
-    const codeReader = new ZXing.BrowserBarcodeReader();
+    // const codeReader = new ZXing.BrowserBarcodeReader();
+    const codeReader = new ZXing.BrowserMultiFormatReader();
 
     const inst = Vue.createApp({
         data() {
@@ -155,10 +156,7 @@
                 this.nonVis = true;
             },
             stopScan() {
-                if (this.controls) {
-                    this.controls.reset();
-                    this.controls = null;
-                }
+                codeReader.reset();
             },
             async startScan() {
                 if (!this.controls) {
