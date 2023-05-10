@@ -84,8 +84,8 @@
                     <button v-if="!conVis" @click="conVis=true">Show</button>
                     <button v-if="conVis" @click="conVis=false">Hide</button>
                     <button @click="doClear">Clear</button>
-                    <button v-if="!videoSteam" @click="doStart">Start</button>
-                    <button v-if="videoSteam" @click="doStop">Stop</button>
+                    <button v-if="!videoStream" @click="doStart">Start</button>
+                    <button v-if="videoStream" @click="doStop">Stop</button>
                     <button @click="doCopy">Copy</button>
                 </div>
 
@@ -101,7 +101,7 @@
                 data: () => ({
                     conVis: true,
                     consoleContent: '',
-                    videoSteam: null,
+                    videoStream: null,
                     canvasObj: null,
                     canvasCtx: null,
                     lastDecoded: null,
@@ -138,7 +138,7 @@
                     doStart() {
                         navigator.mediaDevices.getUserMedia({video: {facingMode: 'environment'}, audio: false})
                             .then(stream => {
-                                this.$refs.camera.srcObject = this.stream = stream;
+                                this.$refs.camera.srcObject = this.videoStream = stream;
 
                                 this.timerHandle = setInterval(() => {
 
@@ -173,7 +173,7 @@
 
                     },
                     doStop() {
-                        if (this.videoSteam) {
+                        if (this.videoStream) {
                             clearInterval(this.timerHandle);
 
                             {
@@ -183,10 +183,10 @@
                                 ctx.drawImage(this.$refs.camera, 0, 0, this.$refs.camera.clientWidth, this.$refs.camera.clientHeight);
                             }
 
-                            for (t of this.videoSteam.getTracks()) {
+                            for (t of this.videoStream.getTracks()) {
                                 t.stop();
                             }
-                            this.videoSteam = null;
+                            this.videoStream = null;
 
                             this.copied = false;
                         }
