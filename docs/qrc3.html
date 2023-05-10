@@ -32,9 +32,6 @@
             box-sizing: border-box;
         }
 
-        body {
-        }
-
         .main {
             position: absolute;
             height: 100%;
@@ -148,7 +145,8 @@
 
                         navigator.mediaDevices.getUserMedia({video: {facingMode: 'environment'}, audio: false})
                             .then(stream => {
-                                this.$refs.camera.srcObject = this.videoStream = stream;
+                                this.$refs.camera.srcObject = stream;
+                                this.videoStream = stream;
 
                                 // this.timerHandle = setInterval(() => {
                                 //     this.canvasObj.width = this.$refs.camera.clientWidth;
