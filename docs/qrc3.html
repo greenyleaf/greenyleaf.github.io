@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <title>barcode zxing camera vue</title>
+
+    <script>
+        if (location.hostname !== 'localhost' && location.protocol === 'http:') {
+            location.protocol = 'https:';
+        }
+    </script>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/normalize.css@8.0.1/normalize.css" rel="stylesheet">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.47/vue.global.min.js"></script>
+    <script src="https://www.unpkg.com/vue/dist/vue.global.js"></script>
+
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        body {
+        }
+
+        .main {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+        }
+
+        .camera-layer {
+            position: absolute;
+            background-color: sandybrown;
+            height: 100%;
+            width: 100%;
+        }
+
+        .camera-video {
+            max-height: 100%;
+            max-width: 100%;
+            width: 100%;
+            height: auto;
+        }
+
+        .util-layer {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .toolbar {
+
+        }
+
+        .console {
+            flex: 1;
+            overflow: auto;
+        }
+    </style>
+
+    <template id="main">
+        <div class="main">
+            <div class="camera-layer">
+                <video ref="camera" class="camera-video"></video>
+                <canvas ref="canvas" v-show="false"></canvas>
+            </div>
+            <div class="util-layer">
+                <div class="toolbar">
+                    <button v-if="!conVis" @click="conVis=true">Show</button>
+                    <button v-if="conVis" @click="conVis=false">Hide</button>
+                    <button @click="doClear">Clear</button>
+                    <button v-if="!videoSteam" @click="doStart">Start</button>
+                    <button v-if="videoSteam" @click="doStop">Stop</button>
+                    <button @click="doCopy">Copy</button>
+                </div>
+
+                <pre class="console" ref="console" v-text="consoleContent"></pre>
+            </div>
+        </div>
+    </template>
+
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            Vue.createApp({
+                template: '#main',
+                data: () => ({
+                    conVis: true,
+                    consoleContent: '',
+                    videoSteam: null,
+                    canvasObj: null,
+                    canvasCtx: null,
+                    lastDecoded: null,
+                    copied: false,
+                    timerHandle: undefined,
+                }),
+                created() {
+                    this.decoder = new ZXing.BrowserMultiFormatReader();
+                },
+                mounted() {
+                    this.convasObj = document.createElement('canvas');
+                    this.canvasCtx = this.canvasObj.getContext('2d');
+                },
+                methods: {
+                    appendLog(obj) {
+                        this.conLog += JSON.stringify(obj, null, 3) + '\n';
+                        this.$nextTick(() => {
+                            this.$refs.console.scrollTo(0, this.$refs.console.scrollHeight);
+                        });
+                    },
+                    doClear() {
+                        this.consoleContent = '';
+                    },
+                    doCopy() {
+                        if (this.lastDecoded) {
+                            navigator.clipboard.writeText(this.decodedContent);
+                            this.copied = true;
+                        }
+                    },
+                    doStart() {
+                        navigator.mediaDevices.getUserMedia({video: {facingMode: 'environment'}, audio: false})
+                            .then(stream => {
+                                this.$refs.camera.srcObject = this.stream = stream;
+
+                                this.timerHandle = setInterval(() => {
+
+                                    try {
+                                        this.canvasObj.width = this.$refs.camera.clientWidth;
+                                        this.canvasObj.height = this.$refs.camera.clientHeight;
+                                        this.canvasCtx.drawImage(this.$refs.camera, 0, 0, this.$refs.camera.clientWidth, this.$refs.camera.clientHeight);
+
+                                        this.decoder.decodeFromCanvas(this.canvasCtx)
+                                            .then(res => {
+                                                console.log(res.data);
+                                                this.appendLog(res.data);
+                                                this.lastDecoded = res.data;
+                                            })
+                                            .catch(err => {
+                                                console.error('.catch err', err);
+                                                // this.appendLog(err);
+                                            });
+
+                                    } catch (err) {
+                                        this.appendLog(err);
+                                    }
+
+                                }, this.interval);
+
+                                this.conVis = true;
+                            })
+                            .catch(err => {
+                                console.log('err', err);
+                                this.appendLog(err);
+                            });
+
+                    },
+                    doStop() {
+                        if (this.videoSteam) {
+                            clearInterval(this.timerHandle);
+
+                            {
+                                this.$refs.canvas.width = this.$refs.camera.clientWidth;
+                                this.$refs.canvas.height = this.$refs.camera.clientHeight;
+                                const ctx = this.$refs.canvas.getContext('2d');
+                                ctx.drawImage(this.$refs.camera, 0, 0, this.$refs.camera.clientWidth, this.$refs.camera.clientHeight);
+                            }
+
+                            for (t of this.videoSteam.getTracks()) {
+                                t.stop();
+                            }
+                            this.videoSteam = null;
+
+                            this.copied = false;
+                        }
+                    },
+                },
+            }).mount('#app');
+
+        });
+    </script>
+</head>
+<body>
+<div id="app"></div>
+
+</body>
+</html>
