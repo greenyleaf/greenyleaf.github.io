@@ -76,9 +76,8 @@
     <template id="main">
         <div class="main">
             <div class="camera-layer">
-                <img src="https://p4.img.cctvpic.com/photoAlbum/page/performance/img/2023/5/10/1683683300088_1.jpg">
                 <video autoplay class="camera-video" ref="camera"></video>
-                <canvas ref="canvas" v-show="false"></canvas>
+                <canvas ref="canvas" v-show="!videoStream"></canvas>
             </div>
             <div class="util-layer">
                 <div class="toolbar">
