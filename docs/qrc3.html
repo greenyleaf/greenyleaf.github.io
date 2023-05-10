@@ -107,7 +107,7 @@
                     lastDecoded: null,
                     copied: false,
                     timerHandle: undefined,
-                    interval: 600,
+                    interval: 800,
                 }),
                 created() {
                     this.decoder = new ZXingBrowser.BrowserMultiFormatReader();
@@ -152,14 +152,14 @@
                                     this.appendLog(this.interval, 'interval entered');
 
                                     try {
-                                        this.canvasObj.width = this.$refs.camera.clientWidth;
-                                        this.canvasObj.height = this.$refs.camera.clientHeight;
-                                        this.canvasCtx.drawImage(this.$refs.camera, 0, 0, this.$refs.camera.clientWidth, this.$refs.camera.clientHeight);
+                                        // this.canvasObj.width = this.$refs.camera.clientWidth;
+                                        // this.canvasObj.height = this.$refs.camera.clientHeight;
+                                        // this.canvasCtx.drawImage(this.$refs.camera, 0, 0, this.$refs.camera.clientWidth, this.$refs.camera.clientHeight);
 
-                                        this.decoder.decodeFromVideo(this.$refs.camera)
+                                        this.decoder.decodeOnceFromVideoElement(this.$refs.camera)
                                             .then(res => {
                                                 console.log(res);
-                                                this.appendLog(res);
+                                                this.appendLog(res.text);
                                                 this.lastDecoded = res.text;
                                             })
                                             .catch(err => {
