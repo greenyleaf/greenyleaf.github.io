@@ -77,7 +77,7 @@
         <div class="main">
             <div class="camera-layer">
                 <video ref="camera" class="camera-video"></video>
-                <canvas ref="canvas" v-show="false"></canvas>
+                <canvas ref="canvas" v-show="!videoStream"></canvas>
             </div>
             <div class="util-layer">
                 <div class="toolbar">
@@ -147,7 +147,7 @@
                                         this.canvasObj.height = this.$refs.camera.clientHeight;
                                         this.canvasCtx.drawImage(this.$refs.camera, 0, 0, this.$refs.camera.clientWidth, this.$refs.camera.clientHeight);
 
-                                        this.decoder.decodeFromCanvas(this.canvasCtx)
+                                        this.decoder.decodeFromCanvas(this.canvasObj)
                                             .then(res => {
                                                 console.log(res);
                                                 this.appendLog(res);
