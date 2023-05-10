@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>camera demo 3</title>
+
+</head>
+<body>
+<div>
+    <button id="startBtn">Start</button>
+    <button id="stopBtn">Stop</button>
+</div>
+<video id="video"></video>
+
+<script>
+    const startBtn = document.getElementById('startBtn');
+    const stopBtn = document.getElementById('stopBtn');
+    const video = document.getElementById('video');
+
+    let _stream;
+
+    startBtn.addEventListener('click', () => {
+        navigator.mediaDevices.getUserMedia({video: {facingMode: 'environment'}, audio: false})
+            .then(stream => {
+                video.srcObject = _stream = stream;
+            });
+    });
+
+    stopBtn.addEventListener('click', () => {
+        for (t of _stream) {
+            t.stop();
+        }
+    })
+</script>
+</body>
+</html>
