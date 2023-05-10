@@ -149,9 +149,9 @@
 
                                         this.decoder.decodeFromCanvas(this.canvasCtx)
                                             .then(res => {
-                                                console.log(res.data);
-                                                this.appendLog(res.data);
-                                                this.lastDecoded = res.data;
+                                                console.log(res);
+                                                this.appendLog(res);
+                                                this.lastDecoded = res.text;
                                             })
                                             .catch(err => {
                                                 console.error('.catch err', err);
@@ -159,7 +159,7 @@
                                             });
 
                                     } catch (err) {
-                                        this.appendLog(err);
+                                        // this.appendLog(err);
                                     }
 
                                 }, this.interval);
