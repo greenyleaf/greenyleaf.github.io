@@ -147,22 +147,22 @@
                                 this.$refs.camera.srcObject = stream;
                                 this.videoStream = stream;
 
-                                // this.timerHandle = setInterval(() => {
-                                //     this.canvasObj.width = this.$refs.camera.clientWidth;
-                                //     this.canvasObj.height = this.$refs.camera.clientHeight;
-                                //     this.canvasCtx.drawImage(this.$refs.camera, 0, 0, this.$refs.camera.clientWidth, this.$refs.camera.clientHeight);
-                                //
-                                //     this.decoder.decodeFromCanvas(this.canvasObj)
-                                //         .then(res => {
-                                //             console.log(res);
-                                //             this.appendLog(res);
-                                //             this.lastDecoded = res.text;
-                                //         })
-                                //         .catch(err => {
-                                //             console.error('.catch err', err);
-                                //             // this.appendLog(err);
-                                //         });
-                                // }, this.interval);
+                                this.timerHandle = setInterval(() => {
+                                    this.canvasObj.width = this.$refs.camera.clientWidth;
+                                    this.canvasObj.height = this.$refs.camera.clientHeight;
+                                    this.canvasCtx.drawImage(this.$refs.camera, 0, 0, this.$refs.camera.clientWidth, this.$refs.camera.clientHeight);
+
+                                    this.decoder.decodeFromCanvas(this.canvasObj)
+                                        .then(res => {
+                                            console.log(res);
+                                            this.appendLog(res);
+                                            this.lastDecoded = res.text;
+                                        })
+                                        .catch(err => {
+                                            console.error('.catch err', err);
+                                            // this.appendLog(err);
+                                        });
+                                }, this.interval);
 
                                 this.conVis = true;
                             })
