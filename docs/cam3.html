@@ -35,7 +35,7 @@
     });
 
     stopBtn.addEventListener('click', () => {
-        for (t of _stream) {
+        for (t of _stream.getTracks()) {
             t.stop();
         }
     })
