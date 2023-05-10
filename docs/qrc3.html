@@ -82,7 +82,7 @@
             <div class="util-layer">
                 <div class="toolbar">
                     <button v-if="!conVis" @click="conVis=true">Show</button>
-                    <button v-if="conVis" @click="conVis=false">Hide</button>
+                    <button v-else @click="conVis=false">Hide</button>
                     <button @click="doClear">Clear</button>
                     <button v-if="!videoStream" @click="doStart">Start</button>
                     <button v-if="videoStream" @click="doStop">Stop</button>
@@ -112,6 +112,7 @@
                     this.decoder = new ZXing.BrowserMultiFormatReader();
                 },
                 mounted() {
+                    this.appendLog(null, 'mounted entered');
                     this.canvasObj = document.createElement('canvas');
                     this.canvasCtx = this.canvasObj.getContext('2d');
                 },
@@ -127,15 +128,20 @@
                         });
                     },
                     doClear() {
+                        this.appendLog(null, 'doClear entered');
                         this.consoleContent = '';
                     },
                     doCopy() {
+                        this.appendLog(null, 'doCopy entered');
+
                         if (this.lastDecoded) {
                             navigator.clipboard.writeText(this.decodedContent);
                             this.copied = true;
                         }
                     },
                     doStart() {
+                        this.appendLog(null, 'doStart entered');
+
                         navigator.mediaDevices.getUserMedia({video: {facingMode: 'environment'}, audio: false})
                             .then(stream => {
                                 this.$refs.camera.srcObject = this.videoStream = stream;
@@ -166,6 +172,8 @@
 
                     },
                     doStop() {
+                        this.appendLog(null, 'doStop entered');
+
                         if (this.videoStream) {
                             clearInterval(this.timerHandle);
 
