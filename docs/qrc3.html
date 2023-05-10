@@ -147,16 +147,16 @@
                                         this.canvasObj.height = this.$refs.camera.clientHeight;
                                         this.canvasCtx.drawImage(this.$refs.camera, 0, 0, this.$refs.camera.clientWidth, this.$refs.camera.clientHeight);
 
-                                        this.decoder.decodeFromCanvas(this.canvasObj)
-                                            .then(res => {
-                                                console.log(res);
-                                                this.appendLog(res);
-                                                this.lastDecoded = res.text;
-                                            })
-                                            .catch(err => {
-                                                console.error('.catch err', err);
-                                                // this.appendLog(err);
-                                            });
+                                        // this.decoder.decodeFromCanvas(this.canvasObj)
+                                        //     .then(res => {
+                                        //         console.log(res);
+                                        //         this.appendLog(res);
+                                        //         this.lastDecoded = res.text;
+                                        //     })
+                                        //     .catch(err => {
+                                        //         console.error('.catch err', err);
+                                        //         // this.appendLog(err);
+                                        //     });
 
                                     } catch (err) {
                                         // this.appendLog(err);
