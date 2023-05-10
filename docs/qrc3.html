@@ -14,7 +14,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" rel="stylesheet">
     <link href="https://unpkg.com/normalize.css@8.0.1/normalize.css" rel="stylesheet">
 
-    <script src="https://unpkg.com/@zxing/library@0.18.6/umd/index.min.js"></script>
+    <script src="https://unpkg.com/@zxing/browser@0.1.1/umd/zxing-browser.min.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.47/vue.global.min.js"></script>
     <script src="https://www.unpkg.com/vue/dist/vue.global.js"></script>
@@ -110,7 +110,7 @@
                     interval: 600,
                 }),
                 created() {
-                    this.decoder = new ZXing.BrowserMultiFormatReader();
+                    this.decoder = new ZXingBrowser.BrowserMultiFormatReader();
                 },
                 mounted() {
                     this.appendLog(null, 'mounted entered');
