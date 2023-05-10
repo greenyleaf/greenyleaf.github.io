@@ -83,10 +83,10 @@
                 <div class="toolbar">
                     <button v-if="!conVis" @click="conVis=true">Show</button>
                     <button v-else @click="conVis=false">Hide</button>
-                    <button @click="doClear">Clear</button>
-                    <button v-if="!videoStream" @click="doStart">Start</button>
-                    <button v-if="videoStream" @click="doStop">Stop</button>
-                    <button @click="doCopy">Copy</button>
+                    <button @click="doClear"> 🧹</button>
+                    <button v-if="!videoStream" @click="doStart"> ▶️</button>
+                    <button v-if="videoStream" @click="doStop"> ⏹️</button>
+                    <button @click="doCopy"> ♟️</button>
                 </div>
 
                 <pre class="console" ref="console" v-if="conVis" v-text="consoleContent"></pre>
