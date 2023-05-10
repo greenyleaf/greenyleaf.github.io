@@ -165,6 +165,8 @@
                                         });
                                 }, this.interval);
 
+                                this.appendLog(this.timerHandle, 'interval handle');
+
                                 this.conVis = true;
                             })
                             .catch(err => {
