@@ -156,7 +156,7 @@
                                         this.canvasObj.height = this.$refs.camera.clientHeight;
                                         this.canvasCtx.drawImage(this.$refs.camera, 0, 0, this.$refs.camera.clientWidth, this.$refs.camera.clientHeight);
 
-                                        this.decoder.decodeOnceFromVideoElement(this.$refs.camera)
+                                        this.decoder.decodeFromVideo(this.$refs.camera)
                                             .then(res => {
                                                 console.log(res);
                                                 this.appendLog(res);
