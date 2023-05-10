@@ -81,8 +81,8 @@
             </div>
             <div class="util-layer">
                 <div class="toolbar">
-                    <button v-if="!conVis" @click="conVis=true">Show</button>
-                    <button v-else @click="conVis=false">Hide</button>
+                    <button v-if="!conVis" @click="conVis=true"> 🤯</button>
+                    <button v-else @click="conVis=false"> 🙈</button>
                     <button @click="doClear"> 🧹</button>
                     <button v-if="!videoStream" @click="doStart"> ▶️</button>
                     <button v-if="videoStream" @click="doStop"> ⏹️</button>
@@ -151,20 +151,24 @@
                                 this.timerHandle = setInterval(() => {
                                     this.appendLog(this.interval, 'interval entered');
 
-                                    this.canvasObj.width = this.$refs.camera.clientWidth;
-                                    this.canvasObj.height = this.$refs.camera.clientHeight;
-                                    this.canvasCtx.drawImage(this.$refs.camera, 0, 0, this.$refs.camera.clientWidth, this.$refs.camera.clientHeight);
+                                    try {
+                                        this.canvasObj.width = this.$refs.camera.clientWidth;
+                                        this.canvasObj.height = this.$refs.camera.clientHeight;
+                                        this.canvasCtx.drawImage(this.$refs.camera, 0, 0, this.$refs.camera.clientWidth, this.$refs.camera.clientHeight);
 
-                                    this.decoder.decodeFromCanvas(this.canvasObj)
-                                        .then(res => {
-                                            console.log(res);
-                                            this.appendLog(res);
-                                            this.lastDecoded = res.text;
-                                        })
-                                        .catch(err => {
-                                            console.error('.catch err', err);
-                                            this.appendLog(err, '扫描失败');
-                                        });
+                                        this.decoder.decodeOnceFromVideoElement(this.$refs.camera)
+                                            .then(res => {
+                                                console.log(res);
+                                                this.appendLog(res);
+                                                this.lastDecoded = res.text;
+                                            })
+                                            .catch(err => {
+                                                console.error('.catch err', err);
+                                                this.appendLog(err, '扫描失败');
+                                            });
+                                    } catch (ex) {
+                                        this.appendLog(res, 'interval catch block');
+                                    }
                                 }, this.interval);
 
                                 this.appendLog(this.interval, 'this.interval');
