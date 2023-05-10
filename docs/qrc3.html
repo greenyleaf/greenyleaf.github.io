@@ -167,7 +167,7 @@
                                                 this.appendLog(err, '扫描失败');
                                             });
                                     } catch (ex) {
-                                        this.appendLog(res, 'interval catch block');
+                                        this.appendLog(ex, 'interval catch block');
                                     }
                                 }, this.interval);
 
