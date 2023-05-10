@@ -116,7 +116,7 @@
 
     <div style="position: relative;">
         <div>
-            <canvas ref="captureOut" style="position: absolute;" v-show="!stream"></canvas>
+            <canvas ref="captureOut" v-show="!stream"></canvas>
             <video autoplay class="camera" ref="preVideo" v-show="stream"></video>
         </div>
 
@@ -144,6 +144,7 @@
                 decodedContent: '',
                 copyDone: false,
                 stream: null,
+                canvasObj: null,
                 canvasCtx: null,
                 qrDecoder: null,
             };
@@ -153,7 +154,8 @@
         },
         mounted() {
             this.appendLog(123456789);
-            this.canvasCtx = this.$refs.captureOut.getContext('2d');
+            this.canvasObj = document.createElement('canvas');
+            this.canvasCtx = this.canvasObj.getContext('2d');
         },
         methods: {
             appendLog(obj) {
@@ -169,6 +171,11 @@
                 this.nonVis = true;
             },
             stopScan() {
+                this.$refs.captureOut.width = this.$refs.preVideo.clientWidth;
+                this.$refs.captureOut.height = this.$refs.preVideo.clientHeight;
+                const tCtx = this.$refs.captureOut.getContext('2d');
+                tCtx.drawImage(this.$refs.preVideo, 0, 0, this.$refs.preVideo.clientWidth, this.$refs.preVideo.clientHeight);
+
                 try {
                     this.stream.getTracks().forEach(track => {
                         track.stop();
@@ -189,12 +196,12 @@
                         this._handle = setInterval(() => {
 
                             try {
-                                this.$refs.captureOut.width = this.$refs.preVideo.clientWidth;
-                                this.$refs.captureOut.height = this.$refs.preVideo.clientHeight;
+                                this.canvasCtx.width = this.$refs.preVideo.clientWidth;
+                                this.canvasCtx.height = this.$refs.preVideo.clientHeight;
                                 this.canvasCtx.drawImage(this.$refs.preVideo, 0, 0, this.$refs.preVideo.clientWidth, this.$refs.preVideo.clientHeight);
-                                URL.revokeObjectURL(this._blobSrc);
 
-                                this.$refs.captureOut.toBlob(blob => {
+                                URL.revokeObjectURL(this._blobSrc);
+                                this.canvasObj.toBlob(blob => {
                                     this._blobSrc = URL.createObjectURL(blob);
 
                                     this.qrDecoder.scan(this._blobSrc)
