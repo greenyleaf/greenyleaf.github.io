@@ -79,7 +79,8 @@
     <template id="main">
         <div class="main">
             <div class="camera-layer">
-                <video ref="camera" class="camera-video"></video>
+                <img src="https://p4.img.cctvpic.com/photoAlbum/page/performance/img/2023/5/10/1683683300088_1.jpg">
+                <video ref="camera" class="camera-video" v-show="false"></video>
                 <canvas ref="canvas" v-show="false"></canvas>
             </div>
             <div class="util-layer">
@@ -92,7 +93,7 @@
                     <button @click="doCopy">Copy</button>
                 </div>
 
-                <pre class="console" ref="console" v-text="consoleContent"></pre>
+                <pre class="console" ref="console" v-if="conVis" v-text="consoleContent"></pre>
             </div>
         </div>
     </template>
