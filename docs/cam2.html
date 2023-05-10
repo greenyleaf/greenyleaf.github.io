@@ -43,7 +43,7 @@
             <button @click="doStop">Stop</button>
         </div>
         <div>
-            <video class="camera" ref="video"></video>
+            <video autoplay class="camera" ref="video"></video>
         </div>
     </template>
 
@@ -55,8 +55,7 @@
                 methods: {
                     doStart() {
                         navigator.mediaDevices.getUserMedia({
-                            video: {facingMode: 'environment'},
-                            audio: false
+                            video: {facingMode: 'environment'}, audio: false
                         }).then(stream => {
                             this.$refs.video.srcObject = this._stream = stream;
                         });
