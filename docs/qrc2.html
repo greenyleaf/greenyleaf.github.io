@@ -147,6 +147,10 @@
                 innerCanvas: null,
                 canvasCtx: null,
                 qrDecoder: null,
+                /**
+                 * ms of time unit
+                 */
+                interval: 600,
             };
         },
         created() {
@@ -221,7 +225,7 @@
                                 this.appendLog(err);
                             }
 
-                        }, 600);
+                        }, this.interval);
 
                     })
                     .catch(err => {
