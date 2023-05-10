@@ -154,8 +154,10 @@
         },
         mounted() {
             this.appendLog(123456789);
+
             this.canvasObj = document.createElement('canvas');
-            this.canvasCtx = this.canvasObj.getContext('2d');
+
+            this.canvasCtx = this.$refs.captureOut.getContext('2d');
         },
         methods: {
             appendLog(obj) {
