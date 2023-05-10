@@ -11,6 +11,8 @@
         }
     </script>
 
+    <script src="https://unpkg.com/@zxing/library@0.18.6/umd/index.min.js"></script>
+
     <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" rel="stylesheet">
     <link href="https://unpkg.com/normalize.css@8.0.1/normalize.css" rel="stylesheet">
 
@@ -110,12 +112,16 @@
                     this.decoder = new ZXing.BrowserMultiFormatReader();
                 },
                 mounted() {
-                    this.convasObj = document.createElement('canvas');
+                    this.canvasObj = document.createElement('canvas');
                     this.canvasCtx = this.canvasObj.getContext('2d');
                 },
                 methods: {
-                    appendLog(obj) {
-                        this.conLog += JSON.stringify(obj, null, 3) + '\n';
+                    appendLog(obj, msg) {
+                        if (msg) {
+                            msg += ': ';
+                            this.consoleContent += msg;
+                        }
+                        this.consoleContent += JSON.stringify(obj, null, 3) + '\n';
                         this.$nextTick(() => {
                             this.$refs.console.scrollTo(0, this.$refs.console.scrollHeight);
                         });
@@ -162,7 +168,7 @@
                             })
                             .catch(err => {
                                 console.log('err', err);
-                                this.appendLog(err);
+                                this.appendLog(err, '启动摄像头遇到错误');
                             });
 
                     },
