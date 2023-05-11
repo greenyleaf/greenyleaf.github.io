@@ -174,9 +174,9 @@
 
                                 this.timerHandle = setInterval(() => {
                                     try {
-                                        this.canvasObj.width = this.$refs.camera.clientWidth;
-                                        this.canvasObj.height = this.$refs.camera.clientHeight;
-                                        this.canvasCtx.drawImage(this.$refs.camera, 0, 0, this.$refs.camera.clientWidth, this.$refs.camera.clientHeight);
+                                        this.canvasObj.width = this.$refs.camera.width;
+                                        this.canvasObj.height = this.$refs.camera.height;
+                                        this.canvasCtx.drawImage(this.$refs.camera, 0, 0, this.$refs.camera.width, this.$refs.camera.height);
 
                                         // do scan
                                         this.decoder.decodeFromCanvas(this.canvasObj)
