@@ -182,7 +182,7 @@
                                         this.decoder.decodeFromCanvas(this.canvasObj)
                                             .then(res => {
                                                 console.log(res);
-                                                this.appendLog(res.text);
+                                                this.appendLog(res.text, 'Decoded');
                                                 this.lastDecoded = res.text;
                                             })
                                             .finally(() => {
