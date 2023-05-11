@@ -156,13 +156,13 @@
                                 this.$refs.camera.srcObject = stream;
                                 this.videoStream = stream;
 
-                                this.decoder.decodeFromVideoElementContinuously(this.$refs.camera, res => {
-                                    if (res) {
-                                        console.log(res);
-                                        this.appendLog(res.text);
-                                        this.lastDecoded = res.text;
-                                    }
-                                });
+                                // this.decoder.decodeFromVideoElementContinuously(this.$refs.camera, res => {
+                                //     if (res) {
+                                //         console.log(res);
+                                //         this.appendLog(res.text);
+                                //         this.lastDecoded = res.text;
+                                //     }
+                                // });
 
                                 // const call = () => this.decoder.decodeFromVideo(this.$refs.camera)
                                 //     // this.decoder.decodeOnceFromVideoElement(this.$refs.camera)
