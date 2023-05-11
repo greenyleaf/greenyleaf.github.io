@@ -127,8 +127,6 @@
                     }
                 },
                 created() {
-                    // this.codeReader = new ZXing.BrowserQRCodeReader();
-                    // this.codeReader = new ZXing.BrowserBarcodeReader();
                     this.codeReader = new ZXingBrowser.BrowserMultiFormatReader();
                 },
                 methods: {
