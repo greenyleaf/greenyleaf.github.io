@@ -115,7 +115,8 @@
                 mounted() {
                     this.appendLog(null, 'mounted entered');
                     this.canvasObj = document.createElement('canvas');
-                    this.canvasCtx = this.canvasObj.getContext('2d');
+                    // this.canvasCtx = this.canvasObj.getContext('2d');
+                    this.canvasCtx = this.$refs.canvas.getContext('2d');
                 },
                 methods: {
                     appendLog(obj, desc) {
@@ -174,6 +175,9 @@
 
                                 this.timerHandle = setInterval(() => {
                                     try {
+                                        this.$refs.canvas.width = this.$refs.camera.width;
+                                        this.$refs.canvas.height = this.$refs.camera.height;
+
                                         this.canvasObj.width = this.$refs.camera.width;
                                         this.canvasObj.height = this.$refs.camera.height;
                                         this.canvasCtx.drawImage(this.$refs.camera, 0, 0, this.$refs.camera.width, this.$refs.camera.height);
