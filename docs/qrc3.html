@@ -156,16 +156,7 @@
                                 this.$refs.camera.srcObject = stream;
                                 this.videoStream = stream;
 
-                                // this.decoder.decodeFromVideoElementContinuously(this.$refs.camera, res => {
-                                //     if (res) {
-                                //         console.log(res);
-                                //         this.appendLog(res.text);
-                                //         this.lastDecoded = res.text;
-                                //     }
-                                // });
-
-                                // const call = () => this.decoder.decodeFromVideo(this.$refs.camera)
-                                //     // this.decoder.decodeOnceFromVideoElement(this.$refs.camera)
+                                // const call = () => this.decoder.decodeFromCanvas()
                                 //     .then(res => {
                                 //         console.log(res);
                                 //         this.appendLog(res.text);
@@ -181,19 +172,33 @@
                                 //         this.appendLog(err, '扫描失败');
                                 //     });
 
-                                // call();
+                                this.timerHandle = setInterval(() => {
+                                    try {
+                                        this.canvasObj.width = this.$refs.camera.clientWidth;
+                                        this.canvasObj.height = this.$refs.camera.clientHeight;
+                                        this.canvasCtx.drawImage(this.$refs.camera, 0, 0, this.$refs.camera.clientWidth, this.$refs.camera.clientHeight);
 
-                                // this.timerHandle = setInterval(() => {
-                                //     try {
-                                //         // this.canvasObj.width = this.$refs.camera.clientWidth;
-                                //         // this.canvasObj.height = this.$refs.camera.clientHeight;
-                                //         // this.canvasCtx.drawImage(this.$refs.camera, 0, 0, this.$refs.camera.clientWidth, this.$refs.camera.clientHeight);
-                                //
-                                //         // do scan
-                                //     } catch (ex) {
-                                //         this.appendLog(ex, 'interval catch block');
-                                //     }
-                                // }, this.interval);
+                                        // do scan
+                                        this.decoder.decodeFromCanvas(this.canvasObj)
+                                            .then(res => {
+                                                console.log(res);
+                                                this.appendLog(res.text);
+                                                this.lastDecoded = res.text;
+                                            })
+                                            .finally(() => {
+                                                // if (this.stream) {
+                                                //     call();
+                                                // }
+                                            })
+                                            .catch(err => {
+                                                console.error('.catch err', err);
+                                                this.appendLog(err, '扫描失败');
+                                            });
+
+                                    } catch (ex) {
+                                        this.appendLog(ex, 'interval catch block');
+                                    }
+                                }, this.interval);
 
                                 this.appendLog(this.interval, 'this.interval');
                                 this.appendLog(this.timerHandle, 'interval handle');
