@@ -76,8 +76,12 @@
     <template id="main">
         <div class="main">
             <div class="camera-layer">
-                <video autoplay class="camera-video" ref="camera"></video>
-                <canvas ref="canvas" v-show="!videoStream"></canvas>
+                <div>
+                    <video autoplay class="camera-video" ref="camera"></video>
+                </div>
+                <div>
+                    <canvas ref="canvas" v-show="!videoStream"></canvas>
+                </div>
             </div>
             <div class="util-layer">
                 <div class="toolbar">
@@ -218,9 +222,9 @@
                     doStop() {
                         this.appendLog(null, 'doStop entered');
 
-                        if (this.videoStream) {
-                            clearInterval(this.timerHandle);
+                        clearInterval(this.timerHandle);
 
+                        if (this.videoStream) {
                             // {
                             //     this.$refs.canvas.width = this.$refs.camera.clientWidth;
                             //     this.$refs.canvas.height = this.$refs.camera.clientHeight;
