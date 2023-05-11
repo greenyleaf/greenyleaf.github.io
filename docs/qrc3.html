@@ -156,22 +156,30 @@
                                 this.$refs.camera.srcObject = stream;
                                 this.videoStream = stream;
 
-                                const call = () => this.decoder.decodeFromVideoElementContinuously(this.$refs.camera)
-                                    // this.decoder.decodeOnceFromVideoElement(this.$refs.camera)
-                                    .then(res => {
+                                this.decoder.decodeFromVideoElementContinuously(this.$refs.camera, res => {
+                                    if (res) {
                                         console.log(res);
                                         this.appendLog(res.text);
                                         this.lastDecoded = res.text;
-                                    })
-                                    .finally(() => {
-                                        if (this.stream) {
-                                            call();
-                                        }
-                                    })
-                                    .catch(err => {
-                                        console.error('.catch err', err);
-                                        this.appendLog(err, '扫描失败');
-                                    });
+                                    }
+                                });
+
+                                // const call = () => this.decoder.decodeFromVideo(this.$refs.camera)
+                                //     // this.decoder.decodeOnceFromVideoElement(this.$refs.camera)
+                                //     .then(res => {
+                                //         console.log(res);
+                                //         this.appendLog(res.text);
+                                //         this.lastDecoded = res.text;
+                                //     })
+                                //     .finally(() => {
+                                //         if (this.stream) {
+                                //             call();
+                                //         }
+                                //     })
+                                //     .catch(err => {
+                                //         console.error('.catch err', err);
+                                //         this.appendLog(err, '扫描失败');
+                                //     });
 
                                 call();
 
