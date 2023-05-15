@@ -11,15 +11,18 @@
         }
     </script>
 
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css" rel="stylesheet">
-    <link href="https://unpkg.com/normalize.css@8.0.1/normalize.css" rel="stylesheet">
+    <!--<link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" rel="stylesheet">-->
+    <!--<link href="https://cdn.jsdelivr.net/npm/normalize.css@8.0.1/normalize.min.css" rel="stylesheet">-->
+    <!--<link href="https://unpkg.com/normalize.css@8.0.1/normalize.css" rel="stylesheet">-->
+    <link href="../lib/normalize-8.0.1.min.css" rel="stylesheet">
 
-    <script src="https://www.unpkg.com/vue/dist/vue.global.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.47/vue.global.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.global.min.js"></script>
+    <!--<script src="https://www.unpkg.com/vue/dist/vue.global.js"></script>-->
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.2.47/vue.global.min.js"></script>-->
+    <!--<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.global.min.js"></script>-->
+    <script src="../lib/zxing-browser-0.1.1.min.js"></script>
 
-    <script src="https://unpkg.com/@zxing/browser@0.1.1/umd/zxing-browser.min.js"></script>
+    <!--<script src="https://unpkg.com/@zxing/browser@0.1.1/umd/zxing-browser.min.js"></script>-->
+    <script src="../lib/vue-3.3.2.global.min.js"></script>
 
     <style>
         [v-cloak] {
@@ -63,24 +66,25 @@
         }
 
         .scanner-cover {
-            --bar-height: 28px;
+            --bar-height: 21px;
             max-width: 280px;
             height: 280px;
             background-color: #0002;
-            background-image: radial-gradient(#0004, transparent 2px), linear-gradient(transparent 0, #0705 21px, transparent var(--bar-height));
-            background-size: 12px 12px, 100% var(--bar-height);
-            background-repeat: repeat, no-repeat;
-            background-position: 0 0, 0 0;
-            animation: scanner-cover 5s infinite linear;
+            background-image: linear-gradient(transparent 0, #0C0B 70%, transparent 100%), radial-gradient(transparent 2px, #0003 2px);
+            background-size: 100% var(--bar-height), 16px 16px;
+            background-repeat: no-repeat, repeat;
+            background-position: 0 0, -12px -12px;
+            animation: cam-scanner 5s infinite linear;
         }
+
 
         @keyframes scanner-cover {
             from {
-                background-position: 0 0, 0 0;
+                background-position: 0 0, -4px -4px;
             }
 
             to {
-                background-position: 0 0, 0 calc(100% + 2 * var(--bar-height));
+                background-position: 0 calc(100% + 2 * var(--bar-height)), -4px -4px;
             }
         }
 
@@ -147,7 +151,8 @@
 </div>
 
 <script>
-    const codeReader = new ZXingBrowser.BrowserQRCodeReader();
+    // const codeReader = new ZXingBrowser.BrowserQRCodeReader();
+    const codeReader = new ZXingBrowser.BrowserMultiFormatReader();
 
     const inst = Vue.createApp({
         data() {
