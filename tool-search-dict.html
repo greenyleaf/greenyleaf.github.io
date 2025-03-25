@@ -213,7 +213,7 @@
 
             <div class="dict-input-line">
                 <label class="dict-input-box">
-                    <span class="dict-input-label-text">输入(<u>W</u>)</span>
+                    <span class="dict-input-label-text">输入(<u>I</u>)</span>
                     <input @mouseover="$event.target.focus()" accesskey="w" autocomplete="words" autofocus
                            class="dict-input-field" enterkeyhint="search" placeholder="输入查询的单词"
                            ref="dictInputField" required v-model.trim="q">
@@ -226,7 +226,7 @@
             </div>
 
             <div class="dict-sites-line">
-                <div class="dict-sites-label-text">选择站点(<u>S</u>)</div>
+                <div class="dict-sites-label-text">选择站点(<u>O</u>)</div>
 
                 <div class="dict-sites-wrapper">
                     <label class="dict-site-item" v-for="(v, k) in sites">
