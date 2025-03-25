@@ -8,5 +8,5 @@
 - [英语词典](tool-1.html)
 - [搜索引擎](tool-2.html)
 - [电视节目表](/cctv-epg/)
-- [扫雷](/vue-mines-demo/)
+- [扫雷](/vue-minesweeper-demo/)
 - [QR Code 解码](/qrcode/qr.html)
