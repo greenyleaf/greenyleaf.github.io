@@ -9,4 +9,4 @@
 - [搜索引擎](/vue-search-util-demo/#/web-search)
 - [电视节目表](/cctv-epg/)
 - [扫雷](/vue-minesweeper-demo/)
-- [QR Code 解码](/qrcode/qr.html)
+- [QR Code 解码](/qr-code/)
