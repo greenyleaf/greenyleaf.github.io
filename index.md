@@ -5,8 +5,8 @@
 ## 一些页面
 
 - [书法字帖](tool-3-caligraphy.html)
-- [英语词典](/vue-search-util-demo/#/web-search)
-- [搜索引擎](/vue-search-util-demo/#/dict)
+- [英语词典](/vue-search-util-demo/#/dict)
+- [搜索引擎](/vue-search-util-demo/#/web-search)
 - [电视节目表](/cctv-epg/)
 - [扫雷](/vue-minesweeper-demo/)
 - [QR Code 解码](/qrcode/qr.html)
