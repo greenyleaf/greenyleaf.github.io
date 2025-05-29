@@ -6,7 +6,7 @@
 
 - [书法字帖](/calligraphy/)
 - [英语词典](/vue-search-util-demo/#/dict)
-- [搜索引擎](/vue-search-util-demo/#/web-search)
+- [搜索引擎](/vue-search-util-demo/#/search)
 - [电视节目表](/cctv-epg/)
 - [扫雷](/vue-minesweeper-demo/)
 - [QR Code 解码](/qr-code/)
